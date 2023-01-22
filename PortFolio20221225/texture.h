@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "renderer.h"
 
 int LoadTexture(char* fileName);

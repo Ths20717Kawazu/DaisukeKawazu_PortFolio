@@ -8,10 +8,11 @@
 ==============================================================================*/
 #include "renderer.h"
 #include "texture.h"
-#include "sprite.h"
+//#include "sprite.h"
 #include "input.h"
 #include "main.h"
-
+#include "SpriteComponent.h"
+#include "game.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -67,6 +68,9 @@ static HWND						g_hWnd;
 static D3DXCOLOR				g_ClearColor;			// バックバッファのクリアカラー
 static char* g_PixelShaderName = (char*)"PixelShaderTexture";
 //static char						*g_PixelShaderName = (char*)"PixelShaderPolygon";
+
+Game game;
+
 
 #ifdef _DEBUG
 int		g_CountFPS;							// FPSカウンタ
@@ -322,7 +326,6 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// 頂点シェーダコンパイル・生成
 	ID3DBlob* pErrorBlob;
-
 	ID3DBlob* pVSBlob = NULL;
 	hr = D3DX11CompileFromFile("shader.hlsl", NULL, NULL, "VertexShaderPolygon", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, NULL, &pVSBlob, &pErrorBlob, NULL);
 	if (FAILED(hr))
@@ -407,8 +410,8 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 //=============================================================================
 void UninitRenderer(void)
 {
-	//テクスチャ解放
-	UninitTexture();
+	//テクスチャ解放は各アクターのデストラクタで各々開放を実施する
+	//UninitTexture();
 
 	// オブジェクト解放
 	if (g_ConstantBuffer)		g_ConstantBuffer->Release();
@@ -500,9 +503,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	dwExecLastTime = dwFPSLastTime = timeGetTime();	// システム時刻をミリ秒単位で取得
 	dwCurrentTime = dwFrameCount = 0;
 
+
+	//===============================//
 	//ゲームの初期化処理
-	GameInitialize();
-	InitData();
+	//GameInitialize(&game);
+	game.gameInit();
+
+
+	//==============================//
+
+	//InitData();
 
 	//入力系の初期化
 	InitInput(hInstance, g_hWnd);
@@ -555,8 +565,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				SetWorldViewProjection2D();
 
 				//ゲームループ
-				GameLoop();
-
+				//GameLoop(&game);
+				game.gameRunloop();
 				dwFrameCount++;		// 処理回数のカウントを加算
 			}
 		}
@@ -568,7 +578,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	timeEndPeriod(1);				// 分解能を戻す
 
 	// 終了処理
-	UninitData();
+	//UninitData();
 	UninitInput();
 	UninitRenderer();
 
@@ -599,15 +609,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-void InitData(void)
-{
-	InitSprite();
-}
-
-void UninitData(void)
-{
-	UninitSprite();
-}
+//void InitData(void)
+//{
+//	SpriteComponent::InitSprite();
+//}
+//
+//void UninitData(void)
+//{
+//	SpriteComponent::UninitSprite();
+//}
 
 void SetDebugString(char* str)
 {

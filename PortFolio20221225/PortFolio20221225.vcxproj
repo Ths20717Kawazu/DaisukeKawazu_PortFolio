@@ -132,19 +132,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="input.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

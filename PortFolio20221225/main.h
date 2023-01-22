@@ -60,8 +60,8 @@ struct Float4
 // プロトタイプ宣言
 //*****************************************************************************
 
-void GameInitialize(void);
-void GameLoop(void);
+void GameInitialize(class Game* game);
+void GameLoop(class Game* game);
 void GameUninitialize(void);
 
 float frand(void);
