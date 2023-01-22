@@ -16,9 +16,10 @@ class SpriteComponent :
         void DrawSpriteColor(float x, float y, float width, float height, float u, float v, float uw, float vh, float r, float g, float b, float a);
         
         void Draw(void);
-        void SetTexture(int tex);
+        void SetTextureID(int tID) { TextureID = tID; }
+       // void SetTexture(int tex);
     private:
-        int g_TextureNo;
+        int TextureID;
         //class Actor* mOwner;
 
 };

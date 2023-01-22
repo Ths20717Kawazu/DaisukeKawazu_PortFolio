@@ -64,37 +64,19 @@ void Game::gameInit(void) {
 	a->SetUvpositonV(1.0f);
 	a->SetUWidth(1.0f);
 	a->SetVHeight(1.0f);
-	a->TextureNo = LoadTexture((char*)"images/enemy.png");
-		
-	//”wŒiˆ—‚Ì‰Šú‰»
-	//InitBG();
-
-	//ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
-	//InitPlayer();
-
-	//ƒGƒlƒ~[‚Ì‰Šú‰»
-	//InitEnemy();
-
-	////’e‚Ì‰Šú‰»
-	//InitBullet();
-
-	////“G’e‚Ì‰Šú‰»
-	//InitEBullet();
-	
-
+	//a->SetTextureID(LoadTexture((char*)"images/enemy.png"));
 }
 
 
 void Game::gameUninit(void) {
-	/*UninitEBullet();
 
-	UninitBullet();
+}
 
-	UninitEnemy();
-
-	UninitPlayer();
-
-	UninitBG();*/
+void Game::gameUpdate(void) {
+	for (auto actor : mActors) 
+	{
+		actor->SetPositionX(actor->GetPositionX() + 1.0f);
+	}
 }
 
 void Game::gameRunloop(void) {
@@ -108,6 +90,7 @@ void Game::gameRunloop(void) {
 	Clear();
 	//•`‰æÀ{
 	gameDraw();
+	gameUpdate();
 	//ƒoƒbƒNƒoƒbƒtƒ@A
 	SwapBuffers();
 }
@@ -295,29 +278,9 @@ void Game::gameDraw(void) {
 	{
 		component->Draw();
 	}
-	////”wŒi‚Ì•`‰æ
-	//DrawBG();
-	////’e‚Ì•`‰æ
-	//DrawBullet();
-	////“G’e‚Ì•`‰æ
-	//DrawEBullet();
-	////“G‚Ì•`‰æ
-	//DrawEnemy();
-	// 
-	// 
-	// //========================================
-	////ƒvƒŒƒCƒ„[‚Ì•`‰æ
-	
-	//========================================
+
 };
-//
-//bool Game::gameInitialize(void) 
-//{
-//	Actor* a;
-//	a = new Player(this);
-//	new Player(this);
-//	return true;
-//}
+
 
 void Game::AddActor(Actor* actor)
 {

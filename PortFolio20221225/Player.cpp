@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "SpriteComponent.h"
-
+#include "texture.h"
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
@@ -11,6 +11,8 @@ static int g_TextureChara;
 static int g_AnimePtn;
 static int g_AnimeWait;
 static int g_Muki;
+
+
 
 //データをあらかじめテーブル化する
 static float g_AnimeUV[4] =
@@ -24,8 +26,8 @@ static float g_AnimeUV[4] =
 Player::Player(Game* game) 
 	:Actor(game)
 {
-	new SpriteComponent(this);
-
+	auto SC = new SpriteComponent(this);
+	SC->SetTextureID(LoadTexture((char*)"images/enemy.png"));
 }
 
 Player::~Player() {};

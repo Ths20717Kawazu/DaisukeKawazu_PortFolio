@@ -15,6 +15,11 @@ class Actor
 			EActive, EPause, EDead
 		};
 
+		//画像の表示番号
+		int  GetTextureID() { return TextureID; }
+		void SetTextureID(int tID) { TextureID = tID; }
+
+		//描画するために必用な情報の取得及び代入
 		float GetPositionX() { return mPositionX; }
 		void SetPositionX(float positionX) { mPositionX = positionX; }
 		
@@ -42,8 +47,8 @@ class Actor
 		float GetRotation() { return mRotation; }
 		void SetRotation(float rotation) { mRotation = rotation; }
 
+		//Gameクラスの公開メンバへのアクセス
 		class Game* GetGame() { return mGame; }
-		int TextureNo;
 	private:
 		float mPositionX;
 		float mPositionY;
@@ -55,6 +60,7 @@ class Actor
 		float mVHeight;
 		float mRotation;
 
+		int TextureID;
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
 		class Game* mGame;
 		std::vector<class Component*> mComponents;

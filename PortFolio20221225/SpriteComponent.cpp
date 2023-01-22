@@ -7,11 +7,11 @@
 SpriteComponent::SpriteComponent(class Actor* owner):Component(owner)
 {
 	InitSprite();
+	mOwner->GetGame()->AddSprites(this);
 	//画像を読み込む
 	//g_TextureNo = LoadTexture((char*)"images/enemy.png");
 	//テクスチャ識別子のセット
 	//SetTexture(g_TextureNo);
-	mOwner->GetGame()->AddSprites(this);
 }
 
 SpriteComponent::~SpriteComponent() 
@@ -58,8 +58,11 @@ void SpriteComponent::DrawSprite(float x, float y, float width, float height, fl
 
 	// テクスチャ設定
 	//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Texture));
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(mOwner->TextureNo));
+
+
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(TextureID));
 	//TextureNoはなにも入っていない場合はー１が返るはず。１枚だけ読み込んでいるなら０でも問題ない
+
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
@@ -95,7 +98,6 @@ void SpriteComponent::DrawSprite(float x, float y, float width, float height, fl
 
 	// ポリゴン描画
 	// ここのdrawはDirectXの関数
-	//
 	GetDeviceContext()->Draw(4, 0);
 }
 
@@ -268,7 +270,6 @@ void SpriteComponent::DrawSpriteColor(float x, float y, float width, float heigh
 }
 
 void SpriteComponent::Draw() {
-
 	//DrawSpriteに渡すのに必用な引数を取得する。
 	float x = mOwner->GetPositionX();
 	float y = mOwner->GetPositionY();
@@ -278,12 +279,5 @@ void SpriteComponent::Draw() {
 	float v = mOwner->GetUvpositonV();
 	float uw = mOwner->GetUWidth();
     float vh = mOwner->GetVHeight();
-	
-	//SetTexture(mOwner->TextureNo);
 	DrawSprite(x, y, width, height, u, v, uw, vh );
 }
-
-//void SpriteComponent::SetTexture(int tex)
-//{
-//	g_Texture = tex;
-//}
