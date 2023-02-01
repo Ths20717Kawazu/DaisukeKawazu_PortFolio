@@ -135,7 +135,9 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="game.cpp" />
@@ -149,6 +151,8 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="main.h" />

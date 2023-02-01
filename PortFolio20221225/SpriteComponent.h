@@ -17,10 +17,9 @@ class SpriteComponent :
         
         void Draw(void);
         void SetTextureID(int tID) { TextureID = tID; }
-       // void SetTexture(int tex);
+    
     private:
         int TextureID;
-        //class Actor* mOwner;
-
+       
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+//#include "Component.h"
 
 class Actor
 {
@@ -9,6 +10,8 @@ class Actor
 
 		//GameクラスのPublicにアクセスするためのポインタを取得する	
 		void AddComponent(class Component*);
+
+		void ProcessInput(void);
 
 		enum STATE
 		{

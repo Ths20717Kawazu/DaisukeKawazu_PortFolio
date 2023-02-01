@@ -2,25 +2,20 @@
 #pragma once
 
 #include "main.h"
+#include "input.h"
 #include "renderer.h"
 #include "texture.h"
-#include "input.h"
-//#include "bg.h"
 #include "sprite.h"
-//#include "player.h"
-//#include "enemy.h"
-//#include "bullet.h"
-//#include "enemybullet.h"
-//#include "title.h"
-
-#include "Player.h"
 #include "game.h"
-#include "Component.h"
 #include "SpriteComponent.h"
+#include "Actor.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Component.h"
+#include "MoveComponent.h"
+#include "InputComponent.h"
 
 //========================追加======================//
-#include "Actor.h"
-#include "Enemy.h"
 
 
 
@@ -64,7 +59,7 @@ void Game::gameInit(void) {
 	a->SetUvpositonV(1.0f);
 	a->SetUWidth(1.0f);
 	a->SetVHeight(1.0f);
-	//a->SetTextureID(LoadTexture((char*)"images/enemy.png"));
+	
 }
 
 
@@ -73,10 +68,10 @@ void Game::gameUninit(void) {
 }
 
 void Game::gameUpdate(void) {
-	for (auto actor : mActors) 
-	{
-		actor->SetPositionX(actor->GetPositionX() + 1.0f);
-	}
+	//for (auto actor : mActors) 
+	//{
+	//	actor->SetPositionX(actor->GetPositionX() + 1.0f);
+	//}
 }
 
 void Game::gameRunloop(void) {
@@ -89,6 +84,8 @@ void Game::gameRunloop(void) {
 	ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	Clear();
 	//描画実施
+	gameProcessInput();
+	
 	gameDraw();
 	gameUpdate();
 	//バックバッファ、
@@ -280,6 +277,19 @@ void Game::gameDraw(void) {
 	}
 
 };
+
+
+void Game::gameProcessInput(void) {
+	float x;
+
+
+	for (auto actor : mActors)
+	{
+
+
+		actor->ProcessInput();
+	}
+}
 
 
 void Game::AddActor(Actor* actor)

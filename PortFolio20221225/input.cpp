@@ -145,6 +145,11 @@ HRESULT InitKeyboard(HINSTANCE hInst, HWND hWnd)
 		MessageBox(hWnd, "キーボードがねぇ！", "警告！", MB_ICONWARNING);
 		return hr;
 	}
+	else
+	{
+		MessageBox(hWnd, "キーボードOK", "警告！", MB_ICONWARNING);
+		return hr;
+	}
 
 	// データフォーマットを設定
 	hr = g_pDIDevKeyboard->SetDataFormat(&c_dfDIKeyboard);

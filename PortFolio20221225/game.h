@@ -14,6 +14,8 @@ public:
 		float boxBwidth,
 		float boxBheight
 	);
+
+	void gameProcessInput(void);
 	//bool HitCheckBC(D3DXVECTOR2 posA, float rA,
 	//	D3DXVECTOR2 posB, float rB);
 	//bool HitCheckBCSq(D3DXVECTOR2 posA, float rA,

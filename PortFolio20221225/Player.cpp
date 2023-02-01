@@ -1,6 +1,8 @@
 #include "Player.h"
-#include "SpriteComponent.h"
 #include "texture.h"
+#include "SpriteComponent.h"
+#include "MoveComponent.h"
+#include "InputComponent.h"
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
@@ -26,8 +28,11 @@ static float g_AnimeUV[4] =
 Player::Player(Game* game) 
 	:Actor(game)
 {
+	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
 	auto SC = new SpriteComponent(this);
+	auto IC = new InputComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/enemy.png"));
+	
 }
 
 Player::~Player() {};

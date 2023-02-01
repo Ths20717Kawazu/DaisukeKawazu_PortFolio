@@ -7,6 +7,7 @@
 SpriteComponent::SpriteComponent(class Actor* owner):Component(owner)
 {
 	InitSprite();
+
 	mOwner->GetGame()->AddSprites(this);
 	//画像を読み込む
 	//g_TextureNo = LoadTexture((char*)"images/enemy.png");
@@ -269,6 +270,8 @@ void SpriteComponent::DrawSpriteColor(float x, float y, float width, float heigh
 	GetDeviceContext()->Draw(4, 0);
 }
 
+
+//======2023/1/22 Draw関数をオーバーロードにして、DrawSprite等が変化しても機能するようにしたい=======//
 void SpriteComponent::Draw() {
 	//DrawSpriteに渡すのに必用な引数を取得する。
 	float x = mOwner->GetPositionX();
