@@ -28,40 +28,37 @@ void InputComponent::ProcessInput(void)
 	
 	D3DXVECTOR2 dir(0,0);
 	float posx = 0;
-	//float posx2 = 0;
+	float posy = 0;
+	posx = mOwner->GetPositionX();
+	posy = mOwner->GetPositionY();
+
 	if (GetKeyboardPress(DIK_LEFT)) 
 	{
-		posx = mOwner->GetPositionX();
-		posx += 10.0f;
-		mOwner->SetPositionX(posx);
-	}
-	else 
-	{
-		posx = mOwner->GetPositionX();
-		posx += -1.0f;
-		mOwner->SetPositionX(posx);
-	}
+		//mPlayer->playerState = mPlayer->FACE_LEFT;
 
-
+		posx += -10.0f;
+	}
 
 	if (GetKeyboardPress(DIK_RIGHT))
 	{
-		dir.x += 10.0f;
+		//mPlayer->playerState = mPlayer->FACE_RIGHT;
+		posx += 10.0f;
 	}
 	if (GetKeyboardPress(DIK_UP))
 	{
-		dir.y -= 10.0f;
+		//mPlayer->playerState = mPlayer->JUMP;
+		posy -= 10.0f;
 	}
-	if (GetKeyboardPress(DIK_DOWN))
+	if (GetKeyboardPress(DIK_DOWN)) 
 	{
-		dir.y += 10.0f;
+		//地面に接している時
+				
+		//空中にいるとき
+
+		posy += 10.0f;
 	}
-
-	////mOwnerの現在のポジション取得し入力値を追加
-	//posx = mOwner->GetPositionX();
-	//posx += 10.0f;
-	//mOwner->SetPositionX(posx);
-
+		mOwner->SetPositionX(posx);
+		mOwner->SetPositionY(posy);
 };
 
 

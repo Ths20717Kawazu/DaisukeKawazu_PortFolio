@@ -280,13 +280,9 @@ void Game::gameDraw(void) {
 
 
 void Game::gameProcessInput(void) {
-	float x;
-
-
+	UpdateInput();//“ü—Íˆ—‚ÌXVˆ—
 	for (auto actor : mActors)
 	{
-
-
 		actor->ProcessInput();
 	}
 }

@@ -10,14 +10,22 @@ public:
       Player(Game* game);
       ~Player();
       void DrawPlayer(void);
+      /*int playerState{0};*/
       //void ProcessInput(void);
-      
- 
-    
 
+  //  enum CharaState
+  //  {
+  //      STAND,
+  //      FACE_RIGHT,
+  //      FACE_LEFT,
+  //      RUN_RIGHT,
+  //      RUN_LEFT,
+  //      JUMP,
+  //      FALL,
+  //      LAND,
+  //};
 
 private:
-    
     
 
 };
