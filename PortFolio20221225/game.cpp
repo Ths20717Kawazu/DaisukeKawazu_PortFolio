@@ -52,14 +52,14 @@ void Game::gameInit(void) {
 	a = new Player(this);
 	a->SetBoxHeight(100.0f);
 	a->SetBoxWidth(100.0f);
-	a->SetPositionX(500.0f);
-	a->SetPositionY(300.0f);
+	//a->SetPositionX(500.0f);
+	//a->SetPositionY(300.0f);
 	a->SetRotation(0.0f);
 	a->SetUvpositonU(1.0f);
 	a->SetUvpositonV(1.0f);
 	a->SetUWidth(1.0f);
 	a->SetVHeight(1.0f);
-	
+	a->SetACTOR(500.0f, 300.0f);
 }
 
 
@@ -68,10 +68,10 @@ void Game::gameUninit(void) {
 }
 
 void Game::gameUpdate(void) {
-	//for (auto actor : mActors) 
-	//{
-	//	actor->SetPositionX(actor->GetPositionX() + 1.0f);
-	//}
+	for (auto actor : mActors) 
+	{
+		actor->ActorUpdate();
+	}
 }
 
 void Game::gameRunloop(void) {
@@ -91,6 +91,36 @@ void Game::gameRunloop(void) {
 	//バックバッファ、
 	SwapBuffers();
 }
+
+void Game::gameDraw(void) 
+{
+	for (auto component : mSprites)
+	{
+		component->Draw();
+	}
+};
+
+
+void Game::gameProcessInput(void) {
+	UpdateInput();//入力処理の更新処理
+	for (auto actor : mActors)
+	{
+		actor->ProcessInput();
+	}
+}
+
+
+void Game::AddActor(Actor* actor)
+{
+	//Update中なら、追加をUpdate後に延期する
+	mActors.emplace_back(actor);
+}
+
+void Game::AddSprites(SpriteComponent* sprite) 
+{
+	mSprites.emplace_back(sprite);
+}
+
 //
 //void Game::gameUpdate(void)
 //{
@@ -267,34 +297,3 @@ void Game::gameRunloop(void) {
 //	//		return true;
 //	//}
 //}
-
-void Game::gameDraw(void) {
-
-	//
-	for (auto component : mSprites)
-	{
-		component->Draw();
-	}
-
-};
-
-
-void Game::gameProcessInput(void) {
-	UpdateInput();//入力処理の更新処理
-	for (auto actor : mActors)
-	{
-		actor->ProcessInput();
-	}
-}
-
-
-void Game::AddActor(Actor* actor)
-{
-	//Update中なら、追加をUpdate後に延期する
-	mActors.emplace_back(actor);
-}
-
-void Game::AddSprites(SpriteComponent* sprite) 
-{
-	mSprites.emplace_back(sprite);
-}

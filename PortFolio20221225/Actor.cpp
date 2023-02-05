@@ -33,3 +33,15 @@ void Actor::ProcessInput(void)
 	}
 
 };
+
+void Actor::ActorUpdate(void) 
+{
+	for (auto component : mComponents)
+	{
+		component->Update();
+	}
+
+
+}
+
+

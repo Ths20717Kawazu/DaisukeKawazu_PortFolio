@@ -274,8 +274,8 @@ void SpriteComponent::DrawSpriteColor(float x, float y, float width, float heigh
 //======2023/1/22 Draw関数をオーバーロードにして、DrawSprite等が変化しても機能するようにしたい=======//
 void SpriteComponent::Draw() {
 	//DrawSpriteに渡すのに必用な引数を取得する。
-	float x = mOwner->GetPositionX();
-	float y = mOwner->GetPositionY();
+	float x = mOwner->GetACTOR().pos.x;
+	float y = mOwner->GetACTOR().pos.y;
 	float width = mOwner->GetBoxWidth();
 	float height = mOwner->GetBoxHeight();
 	float u = mOwner->GetUvpositonU();

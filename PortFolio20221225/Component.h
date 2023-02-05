@@ -12,6 +12,7 @@ public:
 	//Component(class Actor* owner, class Player* player);
 	virtual ~Component();
 	virtual void ProcessInput() {};
+	virtual void Update() {};
 protected:
 	class Actor* mOwner;
 	//class Player* mPlayer;

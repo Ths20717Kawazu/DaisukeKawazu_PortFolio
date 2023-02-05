@@ -3,6 +3,8 @@
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
 #include "InputComponent.h"
+#include "CollisionComponent.h"
+
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
@@ -31,6 +33,7 @@ Player::Player(Game* game)
 	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
 	auto SC = new SpriteComponent(this);
 	auto IC = new InputComponent(this);
+	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/enemy.png"));
 	
 }
@@ -42,5 +45,9 @@ void Player::DrawPlayer(void)
 {
 	//キャラクターの描画
 	//テクスチャ識別子のセット
+
+}
+
+void Player::UpdatePlayer(void) {
 
 }

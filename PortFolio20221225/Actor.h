@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-//#include "Component.h"
+#include "main.h"
 
 class Actor
 {
@@ -10,8 +10,14 @@ class Actor
 
 		//GameクラスのPublicにアクセスするためのポインタを取得する	
 		void AddComponent(class Component*);
-
 		void ProcessInput(void);
+		void ActorUpdate(void) ;
+
+		struct ACTOR {
+				D3DXVECTOR2 pos;	//座標
+				//float  rot;			//回転角度
+		};
+
 
 		enum STATE
 		{
@@ -50,9 +56,14 @@ class Actor
 		float GetRotation() { return mRotation; }
 		void SetRotation(float rotation) { mRotation = rotation; }
 
+		ACTOR GetACTOR() { return mActor; }
+		void SetACTOR(float posx, float posy) { mActor.pos.x = posx, mActor.pos.y = posy; }
 		//Gameクラスの公開メンバへのアクセス
 		class Game* GetGame() { return mGame; }
+
 	private:
+		ACTOR mActor;
+		
 		float mPositionX;
 		float mPositionY;
 		float mBoxWidth;

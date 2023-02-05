@@ -10,6 +10,7 @@ public:
       Player(Game* game);
       ~Player();
       void DrawPlayer(void);
+      void UpdatePlayer(void) ;
       /*int playerState{0};*/
       //void ProcessInput(void);
 
@@ -26,6 +27,7 @@ public:
   //};
 
 private:
+
     
 
 };
