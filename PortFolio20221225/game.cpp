@@ -14,6 +14,8 @@
 #include "Component.h"
 #include "MoveComponent.h"
 #include "InputComponent.h"
+#include "Block.h"
+
 
 //========================追加======================//
 
@@ -50,16 +52,19 @@
 void Game::gameInit(void) {
 	Actor* a;
 	a = new Player(this);
-	a->SetBoxHeight(100.0f);
-	a->SetBoxWidth(100.0f);
-	//a->SetPositionX(500.0f);
-	//a->SetPositionY(300.0f);
-	a->SetRotation(0.0f);
-	a->SetUvpositonU(1.0f);
-	a->SetUvpositonV(1.0f);
-	a->SetUWidth(1.0f);
-	a->SetVHeight(1.0f);
-	a->SetACTOR(500.0f, 300.0f);
+	a->SetACTOR(500.0f, 350.0f, 300.0f, 300.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a = new Enemy(this);
+	a->SetACTOR(700.0f, 300.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a = new Enemy(this);
+	a->SetACTOR(800.0f, 100.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a = new Enemy(this);
+	a->SetACTOR(800.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	for (int i = 0; i < 20; i++) {
+		a = new Block(this);
+		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	}
+
+
 }
 
 
@@ -70,7 +75,7 @@ void Game::gameUninit(void) {
 void Game::gameUpdate(void) {
 	for (auto actor : mActors) 
 	{
-		actor->ActorUpdate();
+		actor->UpdateActor();
 	}
 }
 
@@ -84,8 +89,8 @@ void Game::gameRunloop(void) {
 	ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	Clear();
 	//描画実施
-	gameProcessInput();
 	
+	gameProcessInput();
 	gameDraw();
 	gameUpdate();
 	//バックバッファ、
@@ -108,6 +113,7 @@ void Game::gameProcessInput(void) {
 		actor->ProcessInput();
 	}
 }
+
 
 
 void Game::AddActor(Actor* actor)
@@ -147,7 +153,7 @@ void Game::AddSprites(SpriteComponent* sprite)
 //
 ////========================================
 ////	//キャラクターの更新
-////	UpdatePlayer();
+////	UpdateActor();
 ////========================================
 //
 ////	//エネミーの更新

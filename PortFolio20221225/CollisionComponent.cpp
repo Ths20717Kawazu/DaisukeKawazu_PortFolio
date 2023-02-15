@@ -1,7 +1,13 @@
 #include "CollisionComponent.h"
 
+CollisionComponent::CollisionComponent(class Actor* Owner) :Component(Owner)
+{
 
-CollisionComponent::CollisionComponent(class Actor* owner) :Component(owner)
+
+}
+
+
+CollisionComponent::CollisionComponent(class Actor* Owner, class Player* Player):Component(Owner, Player)
 {
 		
 	
@@ -9,7 +15,11 @@ CollisionComponent::CollisionComponent(class Actor* owner) :Component(owner)
 
 void CollisionComponent::Update() 
 {
-	//HitCheckBC(mOwner->GetPositionX(),  )
+
+	//全てのActorを呼び出して、総当たりできるように変更
+
+	//for(auto actor : )
+	//HitCheckBC(mOwner->GetACTOR().pos, 50, m )
 }
 
 
@@ -33,3 +43,7 @@ void CollisionComponent::Update()
 		else
 			return true;
 	}
+
+//移動先の障害物、床との衝突判定　→　衝突判定を総当たりする負荷を低減するために別で用意する。
+//InputComponent での使用を想定する。
+	//bool CheckObstacles(D3DXVECTOR2 posA);

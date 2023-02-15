@@ -16,12 +16,7 @@ public:
 	);
 
 	void gameProcessInput(void);
-	//bool HitCheckBC(D3DXVECTOR2 posA, float rA,
-	//	D3DXVECTOR2 posB, float rB);
-	//bool HitCheckBCSq(D3DXVECTOR2 posA, float rA,
-	//	D3DXVECTOR2 posB, float rB);
 	void gameInit(void);
-	//bool gameInitialize(void);
 	void gameUninit(void);
 	void gameUpdate(void);
 	void gameDraw(void);
@@ -29,10 +24,21 @@ public:
 
 
 	void AddActor(class Actor* actor);
+	void SetPlayer(class Player* player) { mPlayer = player;  }
 	void AddSprites(class SpriteComponent* sprite);
+	std::vector<class Actor*>& GetActors() { return mActors; }
+
+	void addPlayer(Player* player) { mPlayer = player; }
 
 
 private:
 	std::vector<class Actor*>mActors;
 	std::vector<class SpriteComponent*>mSprites;
+	Player* mPlayer;
 };
+
+	//bool gameInitialize(void);
+	//bool HitCheckBC(D3DXVECTOR2 posA, float rA,
+	//	D3DXVECTOR2 posB, float rB);
+	//bool HitCheckBCSq(D3DXVECTOR2 posA, float rA,
+	//	D3DXVECTOR2 posB, float rB);

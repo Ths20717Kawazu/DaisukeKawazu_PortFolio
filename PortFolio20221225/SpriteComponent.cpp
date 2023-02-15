@@ -4,15 +4,19 @@
 #include "renderer.h"
 #include "texture.h"
 
-SpriteComponent::SpriteComponent(class Actor* owner):Component(owner)
+
+SpriteComponent::SpriteComponent(class Actor* Owner, class Player* Player) :Component(Owner, Player)
 {
 	InitSprite();
-
 	mOwner->GetGame()->AddSprites(this);
-	//画像を読み込む
-	//g_TextureNo = LoadTexture((char*)"images/enemy.png");
-	//テクスチャ識別子のセット
-	//SetTexture(g_TextureNo);
+}
+
+
+SpriteComponent::SpriteComponent(class Actor* Owner):Component(Owner)
+{
+	InitSprite();
+	mOwner->GetGame()->AddSprites(this);
+
 }
 
 SpriteComponent::~SpriteComponent() 
@@ -276,11 +280,11 @@ void SpriteComponent::Draw() {
 	//DrawSpriteに渡すのに必用な引数を取得する。
 	float x = mOwner->GetACTOR().pos.x;
 	float y = mOwner->GetACTOR().pos.y;
-	float width = mOwner->GetBoxWidth();
-	float height = mOwner->GetBoxHeight();
-	float u = mOwner->GetUvpositonU();
-	float v = mOwner->GetUvpositonV();
-	float uw = mOwner->GetUWidth();
-    float vh = mOwner->GetVHeight();
+	float width = mOwner->GetACTOR().mBoxWidth;
+	float height = mOwner->GetACTOR().mBoxHeight;
+	float u = mOwner->GetACTOR().mUvpositionU;
+	float v = mOwner->GetACTOR().mUvpositionV;
+	float uw = mOwner->GetACTOR().mUWidth;
+    float vh = mOwner->GetACTOR().mVHeight;
 	DrawSprite(x, y, width, height, u, v, uw, vh );
 }

@@ -8,7 +8,9 @@ class MoveComponent :
     public Component
 {
 public: 	
-    MoveComponent(class Actor* mOwner);
+    MoveComponent(class Actor* Owner, class Player* Player); 
+    MoveComponent(class Actor* Owner);
+
     //virtual void ProcessInput(void);←コメントアウトしないと
     /*重大度レベル	コード	説明	プロジェクト	ファイル	行	抑制状態
     エラー	LNK2001	外部シンボル "public: virtual void __cdecl MoveComponent::ProcessInput(void)" (? ProcessInput@MoveComponent@@UEAAXXZ) は未解決です	PortFolio20221225	C : \Users\akaho\source\repos\PortFolio1225\PortFolio20221225\MoveComponent.obj	1*/

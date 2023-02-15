@@ -5,6 +5,7 @@ class SpriteComponent :
     public Component
 {
     public:
+        SpriteComponent(class Actor* Owner, class Player* Player);
         SpriteComponent(Actor* actor);
         ~SpriteComponent();
         void InitSprite(void);

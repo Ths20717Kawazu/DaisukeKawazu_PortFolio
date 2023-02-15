@@ -2,14 +2,18 @@
 #include "Component.h"
 //#include "Actor.h"
 
-
-
-Component::Component(Actor* owner):mOwner(owner)/*,mPlayer(player*/ //, int updateOrder
-	//mUpdateOrder(updateOrder)
+Component::Component(Actor* Owner) :mOwner(Owner) 
 {
-	//actorのcomponent配列にSpriteComponentを追加する thisのアドレスはSpriteComponentを指す
 	mOwner->AddComponent(this);
+}
+
+Component::Component(Actor* Owner, Player* Player):mOwner(Owner), 
+mPlayer(Player)
+{ 
 	
+    //actorのcomponent配列にSpriteComponentを追加する thisのアドレスはSpriteComponentを指す
+	mOwner->AddComponent(this);	
 }
 
 Component::~Component() {}
+

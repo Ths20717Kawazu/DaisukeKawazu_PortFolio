@@ -15,14 +15,11 @@ Actor::Actor(Game* game)
 
 Actor::~Actor() {};
 
-
-
 void Actor::AddComponent(Component* component) 
 {
 	mComponents.emplace_back(component);
 
 }
-
 
 void Actor::ProcessInput(void)
 {
@@ -34,14 +31,6 @@ void Actor::ProcessInput(void)
 
 };
 
-void Actor::ActorUpdate(void) 
-{
-	for (auto component : mComponents)
-	{
-		component->Update();
-	}
 
-
-}
 
 

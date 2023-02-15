@@ -16,6 +16,7 @@ class InputComponent :
 {
     public:
     InputComponent(class Actor* Owner);
+    InputComponent(class Actor* Owner, class Player* Player);
     ~InputComponent();
 	void ProcessInput(void) override;
 

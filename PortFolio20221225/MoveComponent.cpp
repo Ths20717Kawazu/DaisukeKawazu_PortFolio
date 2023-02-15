@@ -5,7 +5,13 @@
 
 
 MoveComponent::MoveComponent(Actor* Owner) :Component(Owner)
+{
 
+
+
+}
+
+MoveComponent::MoveComponent(Actor* Owner,  Player* Player) :Component(Owner, Player)
 {
 
 
