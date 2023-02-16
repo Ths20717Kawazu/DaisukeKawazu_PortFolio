@@ -56,7 +56,7 @@ private:
     float mSpeed;
     Game* mGame;
     //D3DXVECTOR2 playerPos;
-    bool isInAir;
+    bool isInAir = false;
 
     D3DXVECTOR2 mDir;
     D3DXVECTOR2 mVel;

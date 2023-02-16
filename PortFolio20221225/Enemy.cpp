@@ -10,6 +10,7 @@ Enemy::Enemy(Game* game) :Actor(game)
 	auto SC = new SpriteComponent(this);
 	//auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/enemy.png"));
+	GetGame()->AddEnemy(this);
 }
 
 Enemy::~Enemy(){}

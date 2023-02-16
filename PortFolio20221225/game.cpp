@@ -76,11 +76,7 @@ void Game::gameUpdate(void) {
 	for (auto actor : mActors) 
 	{
 		actor->UpdateActor();
-		for (auto block : mBlocks) 
-		{
-			//各アクターとブロックとの接触を判定する。
-			//actor->hitcheckBB(block);
-		}
+	
 	}
 }
 
@@ -130,7 +126,12 @@ void Game::AddBlock(class Block* block)
 {
 	mBlocks.emplace_back(block);
 }
-	
+//衝突判定用に、敵とブロックを分けて、それぞれ判定する。
+void Game::AddEnemy(class Enemy* enemy) {
+
+	mEnemies.emplace_back(enemy);
+}
+
 
 void Game::AddSprites(SpriteComponent* sprite) 
 {

@@ -39,19 +39,18 @@ void InputComponent::ProcessInput(void)
 				dir.x = 1.0;
 				mPlayer->setDir(dir);
 		}
-		if (GetKeyboardPress(DIK_UP))
+		//if (GetKeyboardPress(DIK_UP) && !mPlayer->getIsInAir())
+		if (GetKeyboardPress(DIK_UP) )
 		{
 				dir.y = -1.0;
-				mPlayer->setDir(dir);	
+				mPlayer->setDir(dir);
+				//mPlayer->setIsInAir(true);
 		}
+		
 		if (GetKeyboardPress(DIK_DOWN))
 		{
 			    dir.y = 1.0;
 				mPlayer->setDir(dir);
-			//’n–Ê‚ÉÚ‚µ‚Ä‚¢‚éŽž
-
-			//‹ó’†‚É‚¢‚é‚Æ‚«
-
 		}
 		mPlayer->setDir(dir);
 

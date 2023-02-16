@@ -27,17 +27,20 @@ public:
 	void addPlayer(class Player* player) { mPlayer = player; }
 	void AddActor(class Actor* actor);
 	void AddBlock(class Block* block);
+	void AddEnemy(class Enemy* enemy);
+
 	void AddSprites(class SpriteComponent* sprite);
 
 	std::vector<class Actor*>& GetActors() { return mActors; }
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
-
+	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
 
 
 private:
 	std::vector<class Actor*>mActors;
-	std::vector<class SpriteComponent*>mSprites;
 	std::vector<class Block*>mBlocks;
+	std::vector<class Enemy*>mEnemies;
+	std::vector<class SpriteComponent*>mSprites;
 	Player* mPlayer;
 };
 
