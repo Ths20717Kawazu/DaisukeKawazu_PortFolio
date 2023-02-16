@@ -38,6 +38,8 @@ public:
       void setIsInAir(bool isinair) { isInAir = isinair; }
       bool getIsInAir() { return isInAir; }
 
+      D3DXVECTOR2 getGravity() { return mGravity; };
+
       D3DXVECTOR2 getDir() { return mDir; }
       void setDir(D3DXVECTOR2 dir) { mDir = dir; }
       D3DXVECTOR2 getVel() { return mVel; }
@@ -60,7 +62,7 @@ private:
     D3DXVECTOR2 mVel;
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 mLastpos;
-    float posx;
-    float posy;
+    D3DXVECTOR2 mGravity;
+   
 
 };
