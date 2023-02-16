@@ -1,4 +1,5 @@
 #include "CollisionComponent.h"
+#include "game.h"
 
 CollisionComponent::CollisionComponent(class Actor* Owner) :Component(Owner)
 {

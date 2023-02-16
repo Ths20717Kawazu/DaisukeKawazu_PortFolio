@@ -22,5 +22,7 @@ private:
 
 };
 
+
+//bool CheckBlocks();
 bool HitCheckBC(D3DXVECTOR2 posA, float rA, D3DXVECTOR2 posB, float rB);
 //bool CheckObstacles(D3DXVECTOR2 posA);

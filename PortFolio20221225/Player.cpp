@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Player.h"
+#include "Block.h"
 #include "texture.h"
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
@@ -29,7 +30,7 @@ static float g_AnimeUV[4] =
 };
 
 Player::Player(Game* game)
-	:Actor(game), mHP(100), mGame(game), mSpeed(10.0f), playerPos(100.0f, 100.0f)
+	:Actor(game), mHP(100), mGame(game), mSpeed(10.0f), mPos(150.0f, 600.0f)
 {
 	//mState = ESTAND;
 	//setState(ESTAND);
@@ -51,25 +52,51 @@ void Player::DrawPlayer(void)
 	//テクスチャ識別子のセット
 
 }
+	
 
 void Player::UpdateActor(void) 
 {
-	D3DXVECTOR2 lastpos;
-	lastpos = GetPos();
-	
+		//現在のプレイヤの位置情報	
+		D3DXVECTOR2 tempPos;
+		D3DXVECTOR2 curPos;
 
-	//Gameクラスが管理する全てのアクターを取り出し、プレイヤーと衝突判定を実施する。
-	for (auto enemy : GetGame()->GetActors()) 
+		curPos = getPos();
+
+		//移動方向をベクトル正規化
+		D3DXVec2Normalize(&mDir, &mDir);
+		mVel = mDir * mSpeed;
+		//入力を受け付けた場合の将来座標
+		tempPos.x = curPos.x + mVel.x;
+		tempPos.y = curPos.y + mVel.y;
+
+	for (auto block : GetGame()->GetBlocks())
 	{
-		if (HitCheckBC(GetPos(), 50, enemy->GetPos(), 50)) {
-			//Damage();
+		//将来座標がブロックと衝突することが分かる場合
+		if (HitCheckBC(tempPos, 100, block->GetPos(), 100)) 
+		{
 
+			mVel.x = 0.0;
+			mVel.y = 0.0;
+			
 		}
-
-		//SetPos(GetACTOR().pos.x, GetACTOR().pos.y);
-
+	
 	}
-	//HitCheckBC()
+		mDir.y = 0.0f;
+		mDir.x = 0.0f;
+		mPos.x += mVel.x;
+		mPos.y += mVel.y;
+		SetPos(mPos.x, mPos.y);
+
+	////Gameクラスが管理する全てのアクターを取り出し、プレイヤーと衝突判定を実施する。
+	//for (auto enemy : GetGame()->GetActors()) 
+	//{
+	//	if (HitCheckBC(GetPos(), 50, enemy->GetPos(), 50)) {
+	//		//Damage();
+	//		SetPos(mLastpos.x, mLastpos.y);
+	//	}
+
+	//	//SetPos(GetACTOR().pos.x, GetACTOR().pos.y);
+	//}
 
 	////ウィンドウの外に出たらDead
 	//VECTOR2 pos = GetPosition();

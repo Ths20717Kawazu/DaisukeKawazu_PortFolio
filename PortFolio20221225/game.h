@@ -23,17 +23,21 @@ public:
 	void gameRunloop(void);
 
 
-	void AddActor(class Actor* actor);
 	void SetPlayer(class Player* player) { mPlayer = player;  }
+	void addPlayer(class Player* player) { mPlayer = player; }
+	void AddActor(class Actor* actor);
+	void AddBlock(class Block* block);
 	void AddSprites(class SpriteComponent* sprite);
-	std::vector<class Actor*>& GetActors() { return mActors; }
 
-	void addPlayer(Player* player) { mPlayer = player; }
+	std::vector<class Actor*>& GetActors() { return mActors; }
+	std::vector<class Block*>& GetBlocks() { return mBlocks; }
+
 
 
 private:
 	std::vector<class Actor*>mActors;
 	std::vector<class SpriteComponent*>mSprites;
+	std::vector<class Block*>mBlocks;
 	Player* mPlayer;
 };
 
