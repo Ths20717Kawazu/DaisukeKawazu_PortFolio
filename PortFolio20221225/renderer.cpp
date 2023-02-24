@@ -476,8 +476,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RegisterClass(&wc);
 
-	int scr_width = 960;
-	int scr_height = 540;
+	int scr_width = 1500;
+	int scr_height = 800;
 
 	// ウィンドウの作成
 	g_hWnd = CreateWindow(CLASS_NAME,

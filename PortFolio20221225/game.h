@@ -25,8 +25,13 @@ public:
 
 	void SetPlayer(class Player* player) { mPlayer = player;  }
 	void addPlayer(class Player* player) { mPlayer = player; }
+	Player* GetPlayer() { return mPlayer; }
 	void AddActor(class Actor* actor);
+	void RemoveActor(class Actor* actor);
+
+	//ブロック専用の配列
 	void AddBlock(class Block* block);
+	//敵専用の配列
 	void AddEnemy(class Enemy* enemy);
 
 	void AddSprites(class SpriteComponent* sprite);
@@ -44,8 +49,3 @@ private:
 	Player* mPlayer;
 };
 
-	//bool gameInitialize(void);
-	//bool HitCheckBC(D3DXVECTOR2 posA, float rA,
-	//	D3DXVECTOR2 posB, float rB);
-	//bool HitCheckBCSq(D3DXVECTOR2 posA, float rA,
-	//	D3DXVECTOR2 posB, float rB);

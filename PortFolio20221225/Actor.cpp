@@ -6,14 +6,17 @@
 
 
 Actor::Actor(Game* game)
-	: mGame(game)
-
+	: mGame(game),mState(EActive)
 {
 	mGame->AddActor(this);
 	
 }
 
-Actor::~Actor() {};
+Actor::~Actor() 
+{
+	mGame->RemoveActor(this);
+
+};
 
 void Actor::AddComponent(Component* component) 
 {

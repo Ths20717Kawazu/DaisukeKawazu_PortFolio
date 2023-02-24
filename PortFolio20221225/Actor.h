@@ -10,6 +10,7 @@ class Actor
 		virtual ~Actor();
 		//GameクラスのPublicにアクセスするためのポインタを取得する	
 		void AddComponent(class Component*);
+		
 		void ProcessInput(void);
 		
 		struct ACTOR {
@@ -32,6 +33,9 @@ class Actor
 			EDead
 		};
 
+
+		void SetState(enum STATE state) { mState = state; }
+		enum STATE GetState() { return mState; }
 		//画像の表示番号
 		int  GetTextureID() { return TextureID; }
 		void SetTextureID(int tID) { TextureID = tID; }
@@ -57,17 +61,21 @@ class Actor
 		class Player* GetPlayer() { return mPlayer;  }
 		//Actor自身の更新　→　衝突判定用他　継承先で具体化する。
 		virtual void UpdateActor() {};
-		
+		bool GetHoldBalloon() { return holdBalloon; }
+		void SetHoldBalloon(bool doesHoldBalloon) { holdBalloon = doesHoldBalloon; }
+
 
 
 	private:
 		ACTOR mActor;
+		enum STATE mState;
 		int TextureID;
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
 		class Game* mGame;
 		class Player* mPlayer;
 		std::vector<class Component*> mComponents;
 		//D3DXVECTOR2 pos;
+		bool holdBalloon = true;
 
 		
 

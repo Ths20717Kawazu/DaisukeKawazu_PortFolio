@@ -2,6 +2,8 @@
 #include "game.h"
 #include "InputComponent.h"
 #include "CollisionComponent.h"
+#include "Balloon.h"
+#include "Player.h"
 #include <stdlib.h>
 #include <iostream>
 
@@ -52,6 +54,33 @@ void InputComponent::ProcessInput(void)
 			    dir.y = 1.0;
 				mPlayer->setDir(dir);
 		}
+		if (mPlayer->getIsInAir()) 
+		{
+			if (GetKeyboardTrigger(DIK_SPACE)) 
+			{
+				dir.y = -1.0;
+				mPlayer->setSpeed(100.0f);
+				mPlayer->setDir(dir);
+			}
+
+		}
+
+		if (!mPlayer->GetHasballoon())
+		{
+			if (GetKeyboardPress(DIK_RETURN)) 
+			{
+				Actor* a;
+				a = new Balloon(mPlayer->GetGame());
+				a->SetACTOR(mPlayer->GetPos().x + 50, mPlayer->GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				mPlayer->SetHasballoon(true);
+			}
+		}
+		/*else
+		{
+			if (GetKeyboardPress(DIK_RETURN)) {
+				
+			}
+		}*/
 		mPlayer->setDir(dir);
 
 

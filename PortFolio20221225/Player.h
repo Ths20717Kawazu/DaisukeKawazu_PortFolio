@@ -24,6 +24,7 @@ public:
       ~Player();
       void DrawPlayer(void);
       void UpdateActor() override;
+
       void Damage();
       void setState( enum Actor::STATE state) { mState = state; }
       enum Actor::STATE getState() { return mState;  }
@@ -35,8 +36,11 @@ public:
       void setSpeed(float speed) { mSpeed = speed; }
       Player* addPlayer() {};
 
-      void setIsInAir(bool isinair) { isInAir = isinair; }
       bool getIsInAir() { return isInAir; }
+      void setIsInAir(bool isinair) { isInAir = isinair; }
+
+      float  getPlayerHeight() { return PlayerHeight; }
+      float  getPlayerWidth() { return PlayerWidth; }
 
       D3DXVECTOR2 getGravity() { return mGravity; };
 
@@ -46,6 +50,9 @@ public:
       void setVel(D3DXVECTOR2 vel) { mVel = vel; }
       D3DXVECTOR2 getPos() { return mPos; }
       void setPos(D3DXVECTOR2 pos) { mPos = pos; }
+
+      bool GetHasballoon(){ return hasBalloon; }
+      void SetHasballoon(bool hasballoon) { hasBalloon = hasballoon; }
 
 
 private:
@@ -57,12 +64,14 @@ private:
     Game* mGame;
     //D3DXVECTOR2 playerPos;
     bool isInAir = false;
-
+    float PlayerHeight;
+    float PlayerWidth;
     D3DXVECTOR2 mDir;
     D3DXVECTOR2 mVel;
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 mLastpos;
     D3DXVECTOR2 mGravity;
+    bool hasBalloon = false;
    
 
 };

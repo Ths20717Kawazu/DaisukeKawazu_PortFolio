@@ -19,7 +19,8 @@
 
 //========================追加======================//
 
-
+#define PLAYER_HEIGHT (300.0f)
+#define PLAYER_WIDTH (300.0f)
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -47,18 +48,22 @@
 
 //*****************************************************************************
 
-
+//********デバッグ用***********************************************************
+//enum Actor::STATE state;
+//bool hit;
+//int count = 0;
+//*****************************************************************************
 
 void Game::gameInit(void) {
 	Actor* a;
 	a = new Player(this);
-	a->SetACTOR(500.0f, 350.0f, 300.0f, 300.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(500.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	a = new Enemy(this);
-	a->SetACTOR(700.0f, 300.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(700.0f, 300.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	a = new Enemy(this);
-	a->SetACTOR(800.0f, 100.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(800.0f, 100.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	a = new Enemy(this);
-	a->SetACTOR(800.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(800.0f, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	for (int i = 0; i < 20; i++) {
 		a = new Block(this);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -70,14 +75,32 @@ void Game::gameInit(void) {
 
 void Game::gameUninit(void) {
 
+	//delete mActors.back();
+
 }
 
 void Game::gameUpdate(void) {
+	////=======デバッグ用========//
+	//for (auto enemy : mEnemies) {
+	//	state = enemy->GetState();
+	//	hit = enemy->hit;
+	//	count = enemy->count;
+	//}
+	//========================//
 	for (auto actor : mActors) 
 	{
-		actor->UpdateActor();
-	
+		if (actor->GetState() == Actor::EActive) 
+		{
+			actor->UpdateActor();
+		}
+
+		if (actor->GetState() == Actor::EDead)
+		{
+			delete actor;
+		}
 	}
+
+
 }
 
 void Game::gameRunloop(void) {
@@ -106,6 +129,14 @@ void Game::gameDraw(void)
 	}
 };
 
+void Game::RemoveActor(class Actor* actor) {
+	auto iter = std::find(mActors.begin(), mActors.end(), actor);
+	if (iter != mActors.end()) {
+		std::iter_swap(iter, mActors.end() - 1);
+		mActors.pop_back();
+	}
+}
+
 
 void Game::gameProcessInput(void) {
 	UpdateInput();//入力処理の更新処理
@@ -113,6 +144,15 @@ void Game::gameProcessInput(void) {
 	{
 		actor->ProcessInput();
 	}
+
+	//消去の確認用
+	/*if (GetKeyboardPress(DIK_SPACE)) {
+		if (!mActors.empty()) {
+			delete mActors.back();
+
+		}
+	}*/
+
 }
 
 void Game::AddActor(Actor* actor)
@@ -126,12 +166,12 @@ void Game::AddBlock(class Block* block)
 {
 	mBlocks.emplace_back(block);
 }
+
 //衝突判定用に、敵とブロックを分けて、それぞれ判定する。
 void Game::AddEnemy(class Enemy* enemy) {
 
 	mEnemies.emplace_back(enemy);
 }
-
 
 void Game::AddSprites(SpriteComponent* sprite) 
 {
