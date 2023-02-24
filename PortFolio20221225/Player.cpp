@@ -49,7 +49,6 @@ void Player::DrawPlayer(void)
 {
 	//キャラクターの描画
 	//テクスチャ識別子のセット
-
 }
 	
 
@@ -65,7 +64,7 @@ void Player::UpdateActor(void)
 		D3DXVec2Normalize(&mDir, &mDir);
 		
 		mVel = mDir * mSpeed;
-		mVel.y += mGravity.y;
+		mVel.y += (mGravity.y + mLift);
 		//入力を受け付けた場合の将来座標
 		tempPos.x = curPos.x + mVel.x;
 		tempPos.y = curPos.y + mVel.y;
@@ -88,7 +87,6 @@ void Player::UpdateActor(void)
 				isInAir = false;
 				setSpeed(10.0f);
 			}
-	
 		}
 		for (auto enemy : GetGame()->GetEnemies()) 
 		{	

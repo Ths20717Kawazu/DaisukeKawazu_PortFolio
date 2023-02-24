@@ -54,6 +54,7 @@ public:
       bool GetHasballoon(){ return hasBalloon; }
       void SetHasballoon(bool hasballoon) { hasBalloon = hasballoon; }
 
+      void SetLift(float lift) { mLift = lift; }
 
 private:
     //enum Player::PlayerState mState {ESTAND};
@@ -70,7 +71,9 @@ private:
     D3DXVECTOR2 mVel;
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 mLastpos;
+
     D3DXVECTOR2 mGravity;
+    float mLift;
     bool hasBalloon = false;
    
 

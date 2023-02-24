@@ -64,7 +64,7 @@ class Actor
 		bool GetHoldBalloon() { return holdBalloon; }
 		void SetHoldBalloon(bool doesHoldBalloon) { holdBalloon = doesHoldBalloon; }
 
-
+		float mtag;
 
 	private:
 		ACTOR mActor;
@@ -76,7 +76,8 @@ class Actor
 		std::vector<class Component*> mComponents;
 		//D3DXVECTOR2 pos;
 		bool holdBalloon = true;
-
+protected:
+		//float mtag;
 		
 
 };

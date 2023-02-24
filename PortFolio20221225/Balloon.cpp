@@ -12,6 +12,7 @@ Balloon::Balloon(Game* game):Actor(game)
 	//auto IC = new InputComponent(this, this);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/balloon.png"));
+	mtag = 100.0f;
 }
 
 void Balloon::UpdateActor() 

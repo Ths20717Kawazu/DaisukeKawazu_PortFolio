@@ -14,6 +14,6 @@ private:
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 Dir;
     float speed;
-
+    float mLift;
 };
 
