@@ -13,6 +13,7 @@ class Component
 		virtual ~Component();
 		virtual void ProcessInput() {};
 		virtual void Update() {};
+
 	protected:
 		class Actor* mOwner;
 		class Player* mPlayer{nullptr};

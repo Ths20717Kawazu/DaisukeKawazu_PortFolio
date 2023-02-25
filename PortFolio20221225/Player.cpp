@@ -32,7 +32,15 @@ static float g_AnimeUV[4] =
 };
 
 Player::Player(Game* game)
-	:Actor(game), mHP(100), mGame(game), mSpeed(10.0f), mPos(150.0f, 500.0f), PlayerHeight(300), PlayerWidth(300), mGravity(0.0f, 5.0f)
+	:Actor(game), 
+	mHP(100), 
+	mGame(game), 
+	mSpeed(10.0f), 
+	mPos(100.0f, 500.0f), 
+	PlayerHeight(300), 
+	PlayerWidth(300), 
+	mGravity(2.0f),
+	mJumpVel(0.0f)
 {
 	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
 	auto SC = new SpriteComponent(this, this);
@@ -64,14 +72,17 @@ void Player::UpdateActor(void)
 		D3DXVec2Normalize(&mDir, &mDir);
 		
 		mVel = mDir * mSpeed;
-		mVel.y += (mGravity.y + mLift);
+		mVel.y += mGravity;
+		mVel.y += mJumpVel + mLift;
+		mJumpVel += mGravity;
+
 		//入力を受け付けた場合の将来座標
 		tempPos.x = curPos.x + mVel.x;
 		tempPos.y = curPos.y + mVel.y;
 		//tempPos.y = curPos.y + mVel.y + mGravity.y;
 
 		//画面外への移動を禁止
-		if (tempPos.x  <= (PlayerWidth / 2) || tempPos.x >= 1500)
+		if (tempPos.x  <= 0 || tempPos.x >= 1500)
 		{
 			mVel.x = 0.0;
 		}
@@ -79,11 +90,12 @@ void Player::UpdateActor(void)
 		for (auto block : GetGame()->GetBlocks())
 		{
 			//将来座標がブロックと衝突することが分かる場合
-			if (HitCheckBC(tempPos, 100, block->GetPos(), 100)) 
+			
+			if (HitCheckBLK(tempPos, block, this) == true)
 			{
-
-				mVel.x = 0.0;
+				//mVel.x = 0.0;
 				mVel.y = 0.0;
+				mPos = curPos;
 				isInAir = false;
 				setSpeed(10.0f);
 			}

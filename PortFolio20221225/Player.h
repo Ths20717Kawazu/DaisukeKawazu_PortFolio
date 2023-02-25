@@ -8,6 +8,7 @@ class Player :
     public Actor
 {
 public: 
+
     enum PlayerState
     {
         EIDLE,
@@ -42,7 +43,7 @@ public:
       float  getPlayerHeight() { return PlayerHeight; }
       float  getPlayerWidth() { return PlayerWidth; }
 
-      D3DXVECTOR2 getGravity() { return mGravity; };
+      float getGravity() { return mGravity; };
 
       D3DXVECTOR2 getDir() { return mDir; }
       void setDir(D3DXVECTOR2 dir) { mDir = dir; }
@@ -56,6 +57,11 @@ public:
 
       void SetLift(float lift) { mLift = lift; }
 
+      float GetJumpVel() { return mJumpVel; }
+      void SetJumpVel(float jumpvel) { mJumpVel = jumpvel; }
+
+    float PlayerHeight = 300.0f;
+    float PlayerWidth = 300.0f;
 private:
     //enum Player::PlayerState mState {ESTAND};
     
@@ -65,14 +71,13 @@ private:
     Game* mGame;
     //D3DXVECTOR2 playerPos;
     bool isInAir = false;
-    float PlayerHeight;
-    float PlayerWidth;
     D3DXVECTOR2 mDir;
     D3DXVECTOR2 mVel;
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 mLastpos;
 
-    D3DXVECTOR2 mGravity;
+    float mGravity;
+    float mJumpVel;
     float mLift;
     bool hasBalloon = false;
    

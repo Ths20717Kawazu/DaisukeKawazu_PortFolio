@@ -16,11 +16,6 @@ CollisionComponent::CollisionComponent(class Actor* Owner, class Player* Player)
 
 void CollisionComponent::Update() 
 {
-
-	//全てのActorを呼び出して、総当たりできるように変更
-
-	//for(auto actor : )
-	//HitCheckBC(mOwner->GetACTOR().pos, 50, m )
 }
 
 
@@ -45,6 +40,66 @@ void CollisionComponent::Update()
 			return true;
 	}
 
+	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* Block, class Player* Player)
+	{
+		//　プレイヤの各頂点座標の取得及び代入
+		D3DXVECTOR2 P_UpperLeft;
+		D3DXVECTOR2 P_UpperRight;
+		D3DXVECTOR2 P_BottomLeft;
+		D3DXVECTOR2 P_BottomRight;
+
+		P_UpperLeft.x   = tempPos.x - Player->PlayerWidth / 2;
+		P_UpperLeft.y   = tempPos.y - Player->PlayerHeight/ 2;
+
+		P_UpperRight.x  = tempPos.x + Player->PlayerWidth/2;
+		P_UpperRight.y  = tempPos.y - Player->PlayerHeight/2;
+
+		P_BottomLeft.x  = tempPos.x - Player->PlayerWidth / 2;
+		P_BottomLeft.y  = tempPos.y + Player->PlayerHeight / 2;
+
+		P_BottomRight.x = tempPos.x + Player->PlayerWidth/2;
+		P_BottomRight.y = tempPos.y + Player->PlayerHeight/2;
+
+		//　ブロックの各頂点座標の取得及び代入
+		D3DXVECTOR2 B_UpperLeft;
+		D3DXVECTOR2 B_UpperRight;
+		D3DXVECTOR2 B_BottomLeft;
+		D3DXVECTOR2 B_BottomRight;
+
+		B_UpperLeft.x   = Block->GetPos().x - Block->BlockWidth  / 2;
+		B_UpperLeft.y   = Block->GetPos().y - Block->BlockHeight / 2;			      
+
+		B_UpperRight.x  = Block->GetPos().x + Block->BlockWidth  / 2;
+		B_UpperRight.y  = Block->GetPos().y - Block->BlockHeight / 2;
+
+		B_BottomLeft.x  = Block->GetPos().x - Block->BlockWidth  / 2;
+		B_BottomLeft.y  = Block->GetPos().y + Block->BlockHeight / 2;
+
+		B_BottomRight.x = Block->GetPos().x + Block->BlockWidth  / 2;
+		B_BottomRight.y = Block->GetPos().y + Block->BlockHeight / 2;
+
+
+		//着地しているかの判定
+		//ブロックの上端のY座標より下にいるか？
+		if (P_BottomLeft.y > B_UpperRight.y || P_BottomRight.y > B_UpperLeft.y)
+		{
+			//ブロックの左上端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
+			if (P_BottomRight.x > B_UpperLeft.x && P_BottomLeft.x < B_UpperRight.x) 
+			{
+				return true;
+			}
+			
+		}
+
+
+
+		//その他の接触判定
+
+
+
+
+
+	}
 //移動先の障害物、床との衝突判定　→　衝突判定を総当たりする負荷を低減するために別で用意する。
 //InputComponent での使用を想定する。
 	//bool CheckObstacles(D3DXVECTOR2 posA);

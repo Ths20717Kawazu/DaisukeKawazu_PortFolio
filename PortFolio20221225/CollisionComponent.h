@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Player.h"
+#include "Block.h"
 #include "main.h"
 
 class CollisionComponent :
@@ -25,4 +26,5 @@ private:
 
 //bool CheckBlocks();
 bool HitCheckBC(D3DXVECTOR2 posA, float rA, D3DXVECTOR2 posB, float rB);
+bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* Block, class Player* Player);
 //bool CheckObstacles(D3DXVECTOR2 posA);

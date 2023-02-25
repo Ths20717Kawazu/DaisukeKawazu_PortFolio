@@ -5,7 +5,8 @@
 #include "texture.h"
 
 
-Block::Block(Game* game) : Actor(game) {
+Block::Block(Game* game) : Actor(game) 
+{
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/Block.png"));

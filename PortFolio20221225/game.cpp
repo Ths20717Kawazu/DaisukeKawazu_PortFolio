@@ -57,7 +57,7 @@
 void Game::gameInit(void) {
 	Actor* a;
 	a = new Player(this);
-	a->SetACTOR(500.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	a = new Enemy(this);
 	a->SetACTOR(700.0f, 300.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	a = new Enemy(this);
