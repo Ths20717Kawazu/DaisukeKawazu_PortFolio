@@ -2,10 +2,20 @@
 #include <vector>
 #include "main.h"
 
+
+//**********************************//
+//タグID
+//プレイヤー　：１
+//風船：１００番台
+//敵：１０００番台
+//ブロック：１００００番台
+//*********************************//
+
+
 class Actor
 {
 	public:
-		Actor(class Game* game);
+		Actor(class Game* game, int tagID);
 		//Actor(class Game* game, class Player* player);
 		virtual ~Actor();
 		//GameクラスのPublicにアクセスするためのポインタを取得する	
@@ -64,7 +74,8 @@ class Actor
 		bool GetHoldBalloon() { return holdBalloon; }
 		void SetHoldBalloon(bool doesHoldBalloon) { holdBalloon = doesHoldBalloon; }
 
-		float mtag;
+		void SetTag(int tag) { mTagID = tag; }
+		int GetTag() { return mTagID; }
 
 	private:
 		ACTOR mActor;
@@ -74,10 +85,11 @@ class Actor
 		class Game* mGame;
 		class Player* mPlayer;
 		std::vector<class Component*> mComponents;
-		//D3DXVECTOR2 pos;
 		bool holdBalloon = true;
+
 protected:
-		//float mtag;
+		int mTagID;
+	
 		
 
 };

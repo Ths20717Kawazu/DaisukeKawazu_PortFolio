@@ -23,9 +23,10 @@ public:
 	void gameRunloop(void);
 
 
-	void SetPlayer(class Player* player) { mPlayer = player;  }
-	void addPlayer(class Player* player) { mPlayer = player; }
-	Player* GetPlayer() { return mPlayer; }
+	//void SetPlayer(class Player* player) { mPlayer = player;  }
+	void AddPlayer(class Player* player) { mPlayer = player; }
+	void AddBalloon(class Balloon* balloon) { mBalloon = balloon; }
+	
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 
@@ -36,6 +37,8 @@ public:
 
 	void AddSprites(class SpriteComponent* sprite);
 
+	Player* GetPlayer() { return mPlayer; }
+	Balloon* GetBalloon() { return mBalloon; }
 	std::vector<class Actor*>& GetActors() { return mActors; }
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
 	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
@@ -46,6 +49,7 @@ private:
 	std::vector<class Block*>mBlocks;
 	std::vector<class Enemy*>mEnemies;
 	std::vector<class SpriteComponent*>mSprites;
+	Balloon* mBalloon;
 	Player* mPlayer;
 };
 

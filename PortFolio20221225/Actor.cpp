@@ -5,8 +5,8 @@
 
 
 
-Actor::Actor(Game* game)
-	: mGame(game),mState(EActive)
+Actor::Actor(Game* game, int tagID)
+	: mGame(game),mState(EActive), mTagID(tagID)
 {
 	mGame->AddActor(this);
 	

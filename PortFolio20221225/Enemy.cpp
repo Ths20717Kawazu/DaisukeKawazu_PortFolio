@@ -5,7 +5,7 @@
 #include "MoveComponent.h"
 #include "CollisionComponent.h"
 
-Enemy::Enemy(Game* game) :Actor(game)
+Enemy::Enemy(Game* game, int tagID) :Actor(game, tagID)
 {
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);
@@ -14,11 +14,9 @@ Enemy::Enemy(Game* game) :Actor(game)
 }
 
 Enemy::~Enemy(){
+
 	
 }
-
-
-
 
 void Enemy::UpdateActor() {
 	float posx;
@@ -30,7 +28,8 @@ void Enemy::UpdateActor() {
 
 	count++;
 	if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) {
-		Actor::SetState(EDead);
+		GetGame()->GetPlayer()->Damage(1.0f);
+		//Actor::SetState(EDead);
 		hit = true;
 	
 	};

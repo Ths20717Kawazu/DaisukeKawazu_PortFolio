@@ -56,17 +56,25 @@
 
 void Game::gameInit(void) {
 	Actor* a;
-	a = new Player(this);
+	a = new Player(this, 1);
 	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	a = new Enemy(this);
-	a->SetACTOR(700.0f, 300.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	a = new Enemy(this);
+
+	for (int i = 0; i < 4; i++) {
+		a = new Enemy(this, (1000 + i));
+		a->SetACTOR(100 * i + 500, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+
+	}
+	/*a = new Enemy(this, 1000);
 	a->SetACTOR(800.0f, 100.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	a = new Enemy(this);
-	a->SetACTOR(800.0f, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a = new Enemy(this, 1000);
+	a->SetACTOR(800.0f, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);*/
 	for (int i = 0; i < 20; i++) {
-		a = new Block(this);
+		a = new Block(this, 10000);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	}
+	for (int i = 0; i < 3; i++) {
+		a = new Block(this, 10000);
+		a->SetACTOR(100.0f * i, 700.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
 
@@ -172,6 +180,7 @@ void Game::AddEnemy(class Enemy* enemy) {
 
 	mEnemies.emplace_back(enemy);
 }
+
 
 void Game::AddSprites(SpriteComponent* sprite) 
 {

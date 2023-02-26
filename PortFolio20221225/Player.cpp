@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "Enemy.h"
+#include "Balloon.h"
 #include "texture.h"
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
@@ -31,8 +32,8 @@ static float g_AnimeUV[4] =
 	0.333333f,
 };
 
-Player::Player(Game* game)
-	:Actor(game), 
+Player::Player(Game* game, int tagID)
+	:Actor(game, tagID), 
 	mHP(100), 
 	mGame(game), 
 	mSpeed(10.0f), 
@@ -40,6 +41,7 @@ Player::Player(Game* game)
 	PlayerHeight(300), 
 	PlayerWidth(300), 
 	mGravity(2.0f),
+	P_mLift(0.0f),
 	mJumpVel(0.0f)
 {
 	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
@@ -47,7 +49,7 @@ Player::Player(Game* game)
 	auto IC = new InputComponent(this, this);
 	auto CC = new CollisionComponent(this, this);
 	SC->SetTextureID(LoadTexture((char*)"images/Player.png"));	
-	GetGame()->addPlayer(this);
+	GetGame()->AddPlayer(this);
 }
 
 Player::~Player() {};
@@ -55,8 +57,7 @@ Player::~Player() {};
 
 void Player::DrawPlayer(void)
 {
-	//キャラクターの描画
-	//テクスチャ識別子のセット
+
 }
 	
 
@@ -65,6 +66,7 @@ void Player::UpdateActor(void)
 		//現在のプレイヤの位置情報	
 		D3DXVECTOR2 tempPos;
 		D3DXVECTOR2 curPos;
+		D3DXVECTOR2 lastPos;
 		//mGravity.y += 0.1f;
 		curPos = getPos();
 
@@ -73,7 +75,11 @@ void Player::UpdateActor(void)
 		
 		mVel = mDir * mSpeed;
 		mVel.y += mGravity;
-		mVel.y += mJumpVel + mLift;
+		//mVel.y += GetLift();
+		//mVel.y += -100.0f;
+
+		mVel.y += mJumpVel;
+		//mVel.y -= mJumpVel - 5.0f;
 		mJumpVel += mGravity;
 
 		//入力を受け付けた場合の将来座標
@@ -89,13 +95,13 @@ void Player::UpdateActor(void)
 
 		for (auto block : GetGame()->GetBlocks())
 		{
-			//将来座標がブロックと衝突することが分かる場合
-			
+			//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
 			if (HitCheckBLK(tempPos, block, this) == true)
 			{
-				//mVel.x = 0.0;
-				mVel.y = 0.0;
-				mPos = curPos;
+				//lastPos = getPos();
+				//mVel.x = 0.0;　
+				mVel.y = 0.0f;
+				mJumpVel = 0.0f;
 				isInAir = false;
 				setSpeed(10.0f);
 			}
@@ -110,39 +116,50 @@ void Player::UpdateActor(void)
 				//Actor::SetState(EDead);
 			}
 		}
+		for (auto enemy : GetGame()->GetEnemies())
+		{
+			//近くに存在する敵の配列を作成する。
+			if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) 
+			{
+				SetClosetoEnemy(true);
+				AddTagIDs(enemy);
+			}
+			else
+			{
+				RemoveTagIDs(enemy);
+				if (mTagIDs.empty()) 
+				{
+					SetClosetoEnemy(false);
+				}
+			}
+
+		}
 		mDir.y = 0.0f;
 		mDir.x = 0.0f;
 		mPos.x += mVel.x;
 		mPos.y += mVel.y;
 		SetPos(mPos.x, mPos.y);
 
-	////Gameクラスが管理する全てのアクターを取り出し、プレイヤーと衝突判定を実施する。
-
-	////ウィンドウの外に出たらDead
-	//VECTOR2 pos = GetPosition();
-	//if (pos.x < -50 || pos.x > width + 50)
-	//{
-	//	SetState(EDead);
-	//}
-	//else
-	//{
-	//	//Shipとの衝突判定
-	//	if (auto ship = GetGame()->GetShip())
-	//	{
-	//		if (Intersect(mRect, ship->GetRect()))
-	//		{
-	//			SetState(EDead);
-	//			ship->Damage();
-	//		}
-	//	}
-	//}
-
 }
-
-void Player::Damage() 
+void Player::Damage(int damage)
 {
-	mHP -= 5;
+	mHP -= damage;
 	if (mHP <= 0) {
-		mState = Actor::EDead;
+		Actor::SetState(EDead);
 	}
 };
+
+
+void Player::AddTagIDs(class Enemy* enemy)
+{
+	mTagIDs.emplace_back(enemy);
+}
+
+void Player::RemoveTagIDs(class Enemy* enemy)
+{
+	auto iter = std::find(mTagIDs.begin(), mTagIDs.end(), enemy);
+	if (iter != mTagIDs.end()) {
+		std::iter_swap(iter, mTagIDs.end() - 1);
+		mTagIDs.pop_back();
+	}
+}

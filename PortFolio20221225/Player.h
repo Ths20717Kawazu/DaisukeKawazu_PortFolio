@@ -21,12 +21,12 @@ public:
         ELAND,
         EDAMAGE,
   };
-      Player(Game* game);
+      Player(Game* game, int tagID);
       ~Player();
       void DrawPlayer(void);
       void UpdateActor() override;
 
-      void Damage();
+      void Damage(int damage);
       void setState( enum Actor::STATE state) { mState = state; }
       enum Actor::STATE getState() { return mState;  }
 
@@ -55,15 +55,25 @@ public:
       bool GetHasballoon(){ return hasBalloon; }
       void SetHasballoon(bool hasballoon) { hasBalloon = hasballoon; }
 
-      void SetLift(float lift) { mLift = lift; }
+      void SetLift(float lift) { P_mLift = lift; }
+      float GetLift() { return P_mLift; }
 
       float GetJumpVel() { return mJumpVel; }
       void SetJumpVel(float jumpvel) { mJumpVel = jumpvel; }
 
+      bool GetCloseToEnemy() { return mCloseToEnemy; }
+      void SetClosetoEnemy(bool closetoenemy) { mCloseToEnemy = closetoenemy; }
+
     float PlayerHeight = 300.0f;
     float PlayerWidth = 300.0f;
+
+    void AddTagIDs(class Enemy*);
+    void RemoveTagIDs(class Enemy*);
+    std::vector<class Enemy*>& GetTagIDs() { return mTagIDs; }
+
 private:
     //enum Player::PlayerState mState {ESTAND};
+    std::vector<class Enemy*>mTagIDs;
     
     enum Actor::STATE mState = Actor::EActive;
     int mHP ;
@@ -78,8 +88,8 @@ private:
 
     float mGravity;
     float mJumpVel;
-    float mLift;
     bool hasBalloon = false;
-   
-
+    float P_mLift;
+    
+    bool mCloseToEnemy = false;
 };

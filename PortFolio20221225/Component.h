@@ -2,8 +2,6 @@
 #include "Actor.h"
 #include "Player.h"
 
-//#include "Player.h"
-//#include "InputComponent.h" 
 
 class Component
 {
@@ -17,5 +15,6 @@ class Component
 	protected:
 		class Actor* mOwner;
 		class Player* mPlayer{nullptr};
+	
 };
 

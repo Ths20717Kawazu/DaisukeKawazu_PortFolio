@@ -4,6 +4,7 @@
 #include "CollisionComponent.h"
 #include "Balloon.h"
 #include "Player.h"
+#include "Enemy.h"
 #include <stdlib.h>
 #include <iostream>
 
@@ -59,25 +60,29 @@ void InputComponent::ProcessInput(void)
 			if (GetKeyboardTrigger(DIK_RETURN)) 
 			{
 				Actor* a;
-				a = new Balloon(mPlayer->GetGame());
+				a = new Balloon(mPlayer->GetGame(), 100);
 				a->SetACTOR(mPlayer->GetPos().x + 50, mPlayer->GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 				mPlayer->SetHasballoon(true);
-				mPlayer->SetLift(-10.0f);
 			}
 		}
-		else
+
+		if (mPlayer->GetHasballoon()) 
 		{
-			if (GetKeyboardTrigger(DIK_RETURN)) 
+			if (mPlayer->GetCloseToEnemy() && !mPlayer->GetTagIDs().empty())
 			{
-				for (auto balloon : mPlayer->GetGame()->GetActors()) 
+				if (GetKeyboardTrigger(DIK_RETURN)) 
 				{
-					if (balloon->mtag == 100) 
+					for (auto tagID : mPlayer->GetTagIDs()) 
 					{
-						balloon->SetState(Actor::EDead);
+						mPlayer->GetGame()->GetBalloon()->SetOwner(tagID);
+						//mPlayer->GetGame()->GetBalloon()->SetPos(tagID->GetPos());
 					}
+
 				}
+
 			}
 		}
+
 		mPlayer->setDir(dir);
 
 	}

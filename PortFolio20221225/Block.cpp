@@ -5,7 +5,7 @@
 #include "texture.h"
 
 
-Block::Block(Game* game) : Actor(game) 
+Block::Block(Game* game, int tagID) : Actor(game, tagID)
 {
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);

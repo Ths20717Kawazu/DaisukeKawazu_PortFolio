@@ -6,12 +6,12 @@ class Block :
 {
 
 public:
-    Block(class Game* game);
+    Block(class Game* game, int tagID);
 
     float BlockWidth = 100.0f;
     float BlockHeight = 100.0f;
 
 private:
-
+   
 };
 
