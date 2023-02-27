@@ -62,22 +62,17 @@ void Game::gameInit(void) {
 	for (int i = 0; i < 4; i++) {
 		a = new Enemy(this, (1000 + i));
 		a->SetACTOR(100 * i + 500, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-
 	}
-	/*a = new Enemy(this, 1000);
-	a->SetACTOR(800.0f, 100.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	a = new Enemy(this, 1000);
-	a->SetACTOR(800.0f, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);*/
+	
 	for (int i = 0; i < 20; i++) {
 		a = new Block(this, 10000);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
-	for (int i = 0; i < 3; i++) {
-		a = new Block(this, 10000);
-		a->SetACTOR(100.0f * i, 700.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	}
 
-
+	//for (int i = 0; i < 3; i++) {
+	//	a = new Block(this, 10000);
+	//	a->SetACTOR(100.0f * i, 200.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	//}
 }
 
 
@@ -95,6 +90,9 @@ void Game::gameUpdate(void) {
 	//	count = enemy->count;
 	//}
 	//========================//
+
+	
+	
 	for (auto actor : mActors) 
 	{
 		if (actor->GetState() == Actor::EActive) 
@@ -111,12 +109,11 @@ void Game::gameUpdate(void) {
 
 }
 
-void Game::gameRunloop(void) {
+void Game::gameRunloop(void) 
+{
 	
-	//========@@@@@@@@while文がはいると2重でループすることになる@@@@@@@@@@@========////
-	/*while (1) 
-	{
-	}*/
+	//StartTime;
+
 	// バックバッファクリア
 	ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	Clear();
@@ -127,8 +124,11 @@ void Game::gameRunloop(void) {
 	gameUpdate();
 	//バックバッファ、
 	SwapBuffers();
+	
+	//EndTime;
 }
 
+//描画は別に用意する
 void Game::gameDraw(void) 
 {
 	for (auto component : mSprites)
@@ -165,7 +165,6 @@ void Game::gameProcessInput(void) {
 
 void Game::AddActor(Actor* actor)
 {
-	//Update中なら、追加をUpdate後に延期する
 	mActors.emplace_back(actor);
 }
 
@@ -180,7 +179,6 @@ void Game::AddEnemy(class Enemy* enemy) {
 
 	mEnemies.emplace_back(enemy);
 }
-
 
 void Game::AddSprites(SpriteComponent* sprite) 
 {

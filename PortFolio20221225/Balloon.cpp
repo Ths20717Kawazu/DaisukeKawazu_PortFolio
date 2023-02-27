@@ -19,9 +19,9 @@ Balloon::Balloon(Game* game, int tagID): Actor(game, tagID), mLift(50.0f)
 	posy -= 10.0f;
 	Actor::SetPos(posx, posy);
 
-	int tag = Actor::GetTag();
+	/*int tag = Actor::GetTag();
 	tag++;
-	Actor::SetTag(tag);
+	Actor::SetTag(tag);*/
 	GetGame()->GetPlayer()->SetLift(-70.0f);
 	GetGame()->AddBalloon(this);
 
@@ -31,9 +31,9 @@ Balloon::~Balloon() {
 	
 	GetGame()->GetPlayer()->SetLift(0.0f);
 	GetGame()->GetPlayer()->SetHasballoon(false);
-	int tag = Actor::GetTag();
-	tag--;
-	Actor::SetTag(tag);
+	//int tag = Actor::GetTag();
+	//tag--;
+	//Actor::SetTag(tag);
 }
 
 void Balloon::SetOwner(class Actor* owner) 
@@ -46,7 +46,7 @@ void Balloon::UpdateActor()
 {
 	float posx;
 	float posy;
-	if (mOwner->GetTag() == 1) 
+	/*if (mOwner->GetTag() == 1) 
 	{
 		posx = GetGame()->GetPlayer()->GetPos().x;
 		posy = GetGame()->GetPlayer()->GetPos().y;
@@ -55,13 +55,13 @@ void Balloon::UpdateActor()
 		Actor::SetPos(posx, posy);
 	}
 	else 
-	{
+	{*/
 		posx = mOwner->GetPos().x;
 		posy = mOwner->GetPos().y;
 		posx += 100.0f;
 		posy -= 10.0f;
 		Actor::SetPos(posx, posy);
-	}
+	//}
 
 
 	for (auto enemy : GetGame()->GetEnemies()) 

@@ -56,17 +56,13 @@ void SpriteComponent::DrawSprite(float x, float y, float width, float height, fl
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
-	GetDeviceContext()->IASetVertexBuffers(0, 1, &g_VertexBuffer, &stride, &offset);
+	GetDeviceContext()->IASetVertexBuffers(0, 1, &g_VertexBuffer, &stride, &offset);//頂点情報（メモリ領域）をシェーダにわたす
 
 	// プリミティブトポロジ設定
 	GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// テクスチャ設定
-	//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Texture));
-
-
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(TextureID));
 	//TextureNoはなにも入っていない場合はー１が返るはず。１枚だけ読み込んでいるなら０でも問題ない
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(TextureID));
 
 	// マテリアル設定
 	MATERIAL material;
@@ -78,9 +74,9 @@ void SpriteComponent::DrawSprite(float x, float y, float width, float height, fl
 	GetDeviceContext()->Map(g_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 	VERTEX_3D* vertex = (VERTEX_3D*)msr.pData;
-
+	//頂点の情報
 	vertex[0].Position = D3DXVECTOR3(x - (width / 2), y - (height / 2), 0.0f);
-	vertex[0].Normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	vertex[0].Normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);//法線情報
 	vertex[0].Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[0].TexCoord = D3DXVECTOR2(u, v);
 
@@ -286,5 +282,6 @@ void SpriteComponent::Draw() {
 	float v = mOwner->GetACTOR().mUvpositionV;
 	float uw = mOwner->GetACTOR().mUWidth;
     float vh = mOwner->GetACTOR().mVHeight;
+	//DrawSprite内にTextureIDが入力されている。
 	DrawSprite(x, y, width, height, u, v, uw, vh );
 }

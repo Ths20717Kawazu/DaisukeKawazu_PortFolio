@@ -16,7 +16,7 @@ class SpriteComponent :
         void DrawSpriteLeftTop(float x, float y, float width, float height, float u, float v, float uw, float vh);
         void DrawSpriteColor(float x, float y, float width, float height, float u, float v, float uw, float vh, float r, float g, float b, float a);
         
-        void Draw(void);
+        virtual void Draw();
         void SetTextureID(int tID) { TextureID = tID; }
     
     private:

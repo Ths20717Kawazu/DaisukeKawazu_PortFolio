@@ -74,8 +74,8 @@ class Actor
 		bool GetHoldBalloon() { return holdBalloon; }
 		void SetHoldBalloon(bool doesHoldBalloon) { holdBalloon = doesHoldBalloon; }
 
-		void SetTag(int tag) { mTagID = tag; }
-		int GetTag() { return mTagID; }
+		//void SetTag(int tag) { mTagID = tag; }
+		//int GetTag() { return mTagID; }
 
 	private:
 		ACTOR mActor;

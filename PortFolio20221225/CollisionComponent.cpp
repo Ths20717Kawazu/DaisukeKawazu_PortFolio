@@ -80,7 +80,7 @@ void CollisionComponent::Update()
 
 
 		//着地しているかの判定
-		//ブロックの上端のY座標より下にいるか？
+		//ブロックの上端のY座標より下にくるか？
 		if (P_BottomLeft.y > B_UpperRight.y || P_BottomRight.y > B_UpperLeft.y)
 		{
 			//ブロックの左上端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
@@ -90,7 +90,15 @@ void CollisionComponent::Update()
 			}
 			
 		}
-
+		////ブロックの下端のY座標より上にくるか？
+		//else if (P_UpperLeft.y < B_BottomRight.y || P_UpperRight.y < B_BottomLeft.y)
+		//{
+		//	//ブロックの左下端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
+		//	if (P_UpperRight.x > B_BottomLeft.x && P_UpperLeft.x < B_BottomRight.x)
+		//	{
+		//		return true;
+		//	}
+		//}
 
 
 		//その他の接触判定

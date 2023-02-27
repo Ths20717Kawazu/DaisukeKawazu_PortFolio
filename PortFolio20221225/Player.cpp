@@ -8,7 +8,7 @@
 #include "MoveComponent.h"
 #include "InputComponent.h"
 #include "CollisionComponent.h"
-
+#include "AnimationComponent.h"
 
 //’è”éŒ¾
 #define BOX_WIDTH	(100.0f) //” ‚Ì•
@@ -48,7 +48,19 @@ Player::Player(Game* game, int tagID)
 	auto SC = new SpriteComponent(this, this);
 	auto IC = new InputComponent(this, this);
 	auto CC = new CollisionComponent(this, this);
-	SC->SetTextureID(LoadTexture((char*)"images/Player.png"));	
+	auto AC = new AnimationComponent(this, this);
+
+	//SC->SetTextureID(LoadTexture((char*)"images/Player.png"));
+	
+	
+	AC->AddImage(LoadTexture((char*)"images/Player.png"));
+	AC->AddImage(LoadTexture((char*)"images/Player.png"));
+	AC->AddImage(LoadTexture((char*)"images/Player.png"));
+	AC->AddImage(LoadTexture((char*)"images/Player_2.png"));
+	AC->AddImage(LoadTexture((char*)"images/Player_3.png"));
+	AC->AddImage(LoadTexture((char*)"images/Player_3.png"));
+	AC->AddImage(LoadTexture((char*)"images/Player_3.png"));
+	
 	GetGame()->AddPlayer(this);
 }
 
@@ -105,6 +117,7 @@ void Player::UpdateActor(void)
 				isInAir = false;
 				setSpeed(10.0f);
 			}
+
 		}
 		for (auto enemy : GetGame()->GetEnemies()) 
 		{	
@@ -115,24 +128,6 @@ void Player::UpdateActor(void)
 				mVel.y = 0.0;
 				//Actor::SetState(EDead);
 			}
-		}
-		for (auto enemy : GetGame()->GetEnemies())
-		{
-			//‹ß‚­‚É‘¶Ý‚·‚é“G‚Ì”z—ñ‚ðì¬‚·‚éB
-			if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) 
-			{
-				SetClosetoEnemy(true);
-				AddTagIDs(enemy);
-			}
-			else
-			{
-				RemoveTagIDs(enemy);
-				if (mTagIDs.empty()) 
-				{
-					SetClosetoEnemy(false);
-				}
-			}
-
 		}
 		mDir.y = 0.0f;
 		mDir.x = 0.0f;
@@ -163,3 +158,22 @@ void Player::RemoveTagIDs(class Enemy* enemy)
 		mTagIDs.pop_back();
 	}
 }
+
+		//for (auto enemy : GetGame()->GetEnemies())
+		//{
+		//	//‹ß‚­‚É‘¶Ý‚·‚é“G‚Ì”z—ñ‚ðì¬‚·‚éB
+		//	if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) 
+		//	{
+		//		SetClosetoEnemy(true);
+		//		AddTagIDs(enemy);
+		//	}
+		//	else
+		//	{
+		//		RemoveTagIDs(enemy);
+		//		if (mTagIDs.empty()) 
+		//		{
+		//			SetClosetoEnemy(false);
+		//		}
+		//	}
+
+		//}

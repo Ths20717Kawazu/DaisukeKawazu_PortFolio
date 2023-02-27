@@ -66,22 +66,22 @@ void InputComponent::ProcessInput(void)
 			}
 		}
 
-		if (mPlayer->GetHasballoon()) 
-		{
-			if (mPlayer->GetCloseToEnemy() && !mPlayer->GetTagIDs().empty())
-			{
-				if (GetKeyboardTrigger(DIK_RETURN)) 
-				{
-					for (auto tagID : mPlayer->GetTagIDs()) 
-					{
-						mPlayer->GetGame()->GetBalloon()->SetOwner(tagID);
-						//mPlayer->GetGame()->GetBalloon()->SetPos(tagID->GetPos());
-					}
+		//if (mPlayer->GetHasballoon()) 
+		//{
+		//	if (mPlayer->GetCloseToEnemy() && !mPlayer->GetTagIDs().empty())
+		//	{
+		//		if (GetKeyboardTrigger(DIK_RETURN)) 
+		//		{
+		//			for (auto tagID : mPlayer->GetTagIDs()) 
+		//			{
+		//				mPlayer->GetGame()->GetBalloon()->SetOwner(tagID);
+		//				//mPlayer->GetGame()->GetBalloon()->SetPos(tagID->GetPos());
+		//			}
 
-				}
+		//		}
 
-			}
-		}
+		//	}
+		//}
 
 		mPlayer->setDir(dir);
 

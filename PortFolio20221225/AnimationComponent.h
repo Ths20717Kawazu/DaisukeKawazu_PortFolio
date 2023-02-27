@@ -1,14 +1,19 @@
 #pragma once
 #include "SpriteComponent.h"
-class Animation :
+class AnimationComponent :
     public SpriteComponent
 {
 public:
-    Animation(class Actor* owner, 0);
+    AnimationComponent(class Actor* Owner, class Player* Player);
     void AddImage(int img);
     void Update() override;
-    void draw()override;
+    void Draw()override;
+
+    void SetIdx(int mcuridx) { mCurIdx = mcuridx; }
+    int GetIdx() { return mCurIdx; }
     void SetInterval(float interval) { mInterval = interval; }
+
+    int idx;
 private:
     std::vector<int>mImages;
     int mCurIdx;
