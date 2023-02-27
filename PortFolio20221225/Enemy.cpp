@@ -7,6 +7,7 @@
 
 Enemy::Enemy(Game* game, int tagID) :Actor(game, tagID)
 {
+	mHP = 100;
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/gorem.png"));
@@ -19,12 +20,9 @@ Enemy::~Enemy(){
 }
 
 void Enemy::UpdateActor() {
-	float posx;
-	float posy;
-	posx = Actor::GetPos().x;
-	posy = Actor::GetPos().y;
-	posx += 1.0f;
-	Actor::SetPos(posx, posy);
+	mPos = Actor::GetPos();
+	mPos.x += 2.0f;
+	Actor::SetPos(mPos.x, mPos.y);
 
 	count++;
 	if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) {
@@ -93,8 +91,13 @@ void Enemy::UpdateActor() {
 	//mPos.x += mVel.x;
 	//mPos.y += mVel.y;
 	//SetPos(mPos.x, mPos.y);
+}
 
-
-
+void Enemy::Damage(int damage) 
+{
+	mHP -= damage;
+	if (mHP <= 0) {
+		Actor::SetState(EDead);
+	}
 
 }

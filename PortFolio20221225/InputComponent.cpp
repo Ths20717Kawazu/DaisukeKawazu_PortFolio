@@ -54,15 +54,23 @@ void InputComponent::ProcessInput(void)
 			mPlayer->setDir(dir);
 			mPlayer->setIsInAir(true);
 		}
-
+		//if if と　if else ifの組み合わせは挙動が異なる
 		if (!mPlayer->GetHasballoon())
 		{
 			if (GetKeyboardTrigger(DIK_RETURN)) 
 			{
 				Actor* a;
 				a = new Balloon(mPlayer->GetGame(), 100);
-				a->SetACTOR(mPlayer->GetPos().x + 50, mPlayer->GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				a->SetACTOR(mPlayer->getPos().x + 50, mPlayer->getPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 				mPlayer->SetHasballoon(true);
+			}
+		}
+		else if (mPlayer->GetHasballoon()) 
+		{
+			//風船をリリース
+			if (GetKeyboardTrigger(DIK_RETURN))
+			{
+				 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
 			}
 		}
 

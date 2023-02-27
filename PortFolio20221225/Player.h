@@ -2,8 +2,6 @@
 #include "Actor.h"
 #include "game.h"
 
-//#include "InputComponent.h" Å©ó]åvÇ»Include
-
 class Player :
     public Actor
 {
@@ -26,7 +24,7 @@ public:
       void DrawPlayer(void);
       void UpdateActor() override;
 
-      void Damage(int damage);
+      void Damage(int damage) override;
       void setState( enum Actor::STATE state) { mState = state; }
       enum Actor::STATE getState() { return mState;  }
 
@@ -67,29 +65,29 @@ public:
     float PlayerHeight = 300.0f;
     float PlayerWidth = 300.0f;
 
-    void AddTagIDs(class Enemy*);
-    void RemoveTagIDs(class Enemy*);
-    std::vector<class Enemy*>& GetTagIDs() { return mTagIDs; }
+    //void AddTagIDs(class Enemy*);
+    //void RemoveTagIDs(class Enemy*);
+    //std::vector<class Enemy*>& GetTagIDs() { return mTagIDs; }
 
 private:
     //enum Player::PlayerState mState {ESTAND};
-    std::vector<class Enemy*>mTagIDs;
+    //std::vector<class Enemy*>mTagIDs;
     
     enum Actor::STATE mState = Actor::EActive;
-    int mHP ;
-    float mSpeed;
     Game* mGame;
     //D3DXVECTOR2 playerPos;
-    bool isInAir = false;
     D3DXVECTOR2 mDir;
     D3DXVECTOR2 mVel;
-    D3DXVECTOR2 mPos;
     D3DXVECTOR2 mLastpos;
 
+    int mHP ;
+
+    float mSpeed;
     float mGravity;
     float mJumpVel;
-    bool hasBalloon = false;
     float P_mLift;
     
+    bool isInAir = false;
+    bool hasBalloon = false;
     bool mCloseToEnemy = false;
 };

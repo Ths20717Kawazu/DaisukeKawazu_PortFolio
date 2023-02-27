@@ -16,11 +16,11 @@ class Actor
 {
 	public:
 		Actor(class Game* game, int tagID);
-		//Actor(class Game* game, class Player* player);
 		virtual ~Actor();
-		//GameクラスのPublicにアクセスするためのポインタを取得する	
+		virtual void Damage(int damage) {};
+		virtual void UpdateActor() {};
+			
 		void AddComponent(class Component*);
-		
 		void ProcessInput(void);
 		
 		struct ACTOR {
@@ -35,15 +35,12 @@ class Actor
 				float mUWidth;
 				float mRotation;
 		};
-
 		enum STATE
 		{
 			EActive,
 			EPause, 
 			EDead
 		};
-
-
 		void SetState(enum STATE state) { mState = state; }
 		enum STATE GetState() { return mState; }
 		//画像の表示番号
@@ -70,26 +67,26 @@ class Actor
 		class Game* GetGame() { return mGame; }
 		class Player* GetPlayer() { return mPlayer;  }
 		//Actor自身の更新　→　衝突判定用他　継承先で具体化する。
-		virtual void UpdateActor() {};
-		bool GetHoldBalloon() { return holdBalloon; }
-		void SetHoldBalloon(bool doesHoldBalloon) { holdBalloon = doesHoldBalloon; }
+		
 
-		//void SetTag(int tag) { mTagID = tag; }
-		//int GetTag() { return mTagID; }
+		void SetTag(int tag) { mTagID = tag; }
+		int GetTag() { return mTagID; }
 
 	private:
 		ACTOR mActor;
+		float mGravity = 2.0f;
+
 		enum STATE mState;
 		int TextureID;
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
 		class Game* mGame;
 		class Player* mPlayer;
 		std::vector<class Component*> mComponents;
-		bool holdBalloon = true;
-
+		
 protected:
+		int mHP;
 		int mTagID;
-	
+		D3DXVECTOR2 mPos;
 		
 
 };

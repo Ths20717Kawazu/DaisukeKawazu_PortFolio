@@ -7,21 +7,12 @@
 Balloon::Balloon(Game* game, int tagID): Actor(game, tagID), mLift(50.0f)
 {
 	auto SC = new SpriteComponent(this);
-	//auto IC = new InputComponent(this, this);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/balloon.png"));
-	
-	float posx;
-	float posy;
-	posx = GetGame()->GetPlayer()->GetPos().x;
-	posy = GetGame()->GetPlayer()->GetPos().y;
-	posx += 100.0f;
-	posy -= 10.0f;
-	Actor::SetPos(posx, posy);
-
-	/*int tag = Actor::GetTag();
-	tag++;
-	Actor::SetTag(tag);*/
+	SetOwner(GetGame()->GetPlayer());
+	int tag = Actor::GetTag();
+	//tag++;
+	Actor::SetTag(tag);
 	GetGame()->GetPlayer()->SetLift(-70.0f);
 	GetGame()->AddBalloon(this);
 
@@ -44,36 +35,37 @@ void Balloon::SetOwner(class Actor* owner)
 
 void Balloon::UpdateActor()
 {
-	float posx;
-	float posy;
-	/*if (mOwner->GetTag() == 1) 
+	if (Actor::GetPos().x > 1500 || Actor::GetPos().y < 0)
 	{
-		posx = GetGame()->GetPlayer()->GetPos().x;
-		posy = GetGame()->GetPlayer()->GetPos().y;
-		posx += 100.0f;
-		posy -= 10.0f;
-		Actor::SetPos(posx, posy);
+		Actor::SetState(EDead);
+	}
+
+	if(mOwner)
+	{
+		if (mOwner->GetTag() == 1) 
+		{
+			mPos = mOwner->GetPos();
+			mPos.x += 100.0f;
+			mPos.y -= 10.0f;
+			Actor::SetPos(mPos.x, mPos.y);
+		}	
 	}
 	else 
-	{*/
-		posx = mOwner->GetPos().x;
-		posy = mOwner->GetPos().y;
-		posx += 100.0f;
-		posy -= 10.0f;
-		Actor::SetPos(posx, posy);
-	//}
-
+	{
+		mPos = Actor::GetPos();
+		mPos.x += 100.0f;
+		mPos.y -= 10.0f;
+		Actor::SetPos(mPos.x, mPos.y);
+	
+	}
 
 	for (auto enemy : GetGame()->GetEnemies()) 
 	{
-		if (HitCheckBC(Balloon::GetPos(), 200, enemy->GetPos(), 200))
+		if (HitCheckBC(Balloon::GetPos(), 100, enemy->GetPos(), 100))
 		{
+			enemy->Damage(mDamage);
 			Actor::SetState(EDead);
 			//hit = true;
-
 		};
-
 	}
-
-
 }

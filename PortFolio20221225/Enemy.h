@@ -9,11 +9,11 @@ public:
     ~Enemy();
     void UpdateActor() override;
     bool hit = false;
-
     int count = 0;
+    void Damage(int damage) override;
 
 private:
-        
+    
 
 };
 

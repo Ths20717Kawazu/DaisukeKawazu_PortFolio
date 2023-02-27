@@ -22,7 +22,7 @@ public:
     /* 将来的にBalloonのステータス変更の可能性あることからイキ
     void SetLift(float lift) { mLift = lift; }*/
 private:
-    D3DXVECTOR2 mPos;
+    int mDamage = 50;
     D3DXVECTOR2 Dir;
     float speed;
     float mLift;

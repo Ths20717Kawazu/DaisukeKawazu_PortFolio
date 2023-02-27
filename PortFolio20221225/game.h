@@ -43,6 +43,7 @@ public:
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
 	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
 
+	
 
 private:
 	std::vector<class Actor*>mActors;

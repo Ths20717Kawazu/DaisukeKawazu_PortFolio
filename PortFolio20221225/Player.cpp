@@ -34,16 +34,18 @@ static float g_AnimeUV[4] =
 
 Player::Player(Game* game, int tagID)
 	:Actor(game, tagID), 
-	mHP(100), 
 	mGame(game), 
 	mSpeed(10.0f), 
-	mPos(100.0f, 500.0f), 
 	PlayerHeight(300), 
 	PlayerWidth(300), 
 	mGravity(2.0f),
 	P_mLift(0.0f),
 	mJumpVel(0.0f)
 {
+	//親クラスであるActorのProtectedのメンバ変数の初期化は↓のように実施する必用がある。
+	mHP = 100;
+	mPos = { 100.0f, 500.0f };
+
 	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
 	auto SC = new SpriteComponent(this, this);
 	auto IC = new InputComponent(this, this);
@@ -144,20 +146,20 @@ void Player::Damage(int damage)
 	}
 };
 
-
-void Player::AddTagIDs(class Enemy* enemy)
-{
-	mTagIDs.emplace_back(enemy);
-}
-
-void Player::RemoveTagIDs(class Enemy* enemy)
-{
-	auto iter = std::find(mTagIDs.begin(), mTagIDs.end(), enemy);
-	if (iter != mTagIDs.end()) {
-		std::iter_swap(iter, mTagIDs.end() - 1);
-		mTagIDs.pop_back();
-	}
-}
+//
+//void Player::AddTagIDs(class Enemy* enemy)
+//{
+//	mTagIDs.emplace_back(enemy);
+//}
+//
+//void Player::RemoveTagIDs(class Enemy* enemy)
+//{
+//	auto iter = std::find(mTagIDs.begin(), mTagIDs.end(), enemy);
+//	if (iter != mTagIDs.end()) {
+//		std::iter_swap(iter, mTagIDs.end() - 1);
+//		mTagIDs.pop_back();
+//	}
+//}
 
 		//for (auto enemy : GetGame()->GetEnemies())
 		//{
