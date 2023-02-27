@@ -21,8 +21,11 @@ public:
     void SetOwner(class Actor*);
     /* 将来的にBalloonのステータス変更の可能性あることからイキ
     void SetLift(float lift) { mLift = lift; }*/
+    void SetDamage(int damage) { mDamage = damage; }
+
+
 private:
-    int mDamage = 50;
+    int mDamage;
     D3DXVECTOR2 Dir;
     float speed;
     float mLift;

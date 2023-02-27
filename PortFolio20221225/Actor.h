@@ -50,15 +50,15 @@ class Actor
 		ACTOR GetACTOR() { return mActor; }
 		void SetACTOR(float posx, float posy, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot) 
 		{
-												mActor.pos.x = posx, 
-												mActor.pos.y = posy, 
-												mActor.mBoxHeight = BoxH,
-												mActor.mBoxWidth = BoxW,
-												mActor.mUvpositionU = UvU,
-												mActor.mUvpositionV = UvV,
-												mActor.mVHeight = VH,
-												mActor.mUWidth = VW,
-												mActor.mRotation = Rot; 
+			mActor.pos.x = posx, 
+			mActor.pos.y = posy, 
+			mActor.mBoxHeight = BoxH,
+			mActor.mBoxWidth = BoxW,
+			mActor.mUvpositionU = UvU,
+			mActor.mUvpositionV = UvV,
+			mActor.mVHeight = VH,
+			mActor.mUWidth = VW,
+			mActor.mRotation = Rot; 
 		}
 		//“®“I‚É•Ï‰»‚·‚éPos‚ÉŠÖ‚µ‚Ä
 		void SetPos(float posx, float posy) { mActor.pos.x = posx, mActor.pos.y = posy; }	

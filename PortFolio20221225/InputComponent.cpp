@@ -67,11 +67,25 @@ void InputComponent::ProcessInput(void)
 		}
 		else if (mPlayer->GetHasballoon()) 
 		{
-			//風船をリリース
-			if (GetKeyboardTrigger(DIK_RETURN))
+			for (auto enemy : mPlayer->GetGame()->GetEnemies())
 			{
-				 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+				if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 200, enemy->GetPos(), 200))
+				{
+					if (GetKeyboardTrigger(DIK_RETURN)) 
+					{
+						mPlayer->GetGame()->GetBalloon()->SetOwner(enemy);
+					}
+				};
 			}
+			////風船をリリース
+			//if (GetKeyboardTrigger(DIK_RETURN))
+			//{
+
+			//	 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+			//}
+
+
+
 		}
 
 		//if (mPlayer->GetHasballoon()) 
