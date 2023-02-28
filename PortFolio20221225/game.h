@@ -45,13 +45,14 @@ public:
 	std::vector<class Actor*>& GetActors() { return mActors; }
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
 	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
-
+	std::vector<class Obstacle*>& GetObstacles() { return mObstacles; }
 	
 
 private:
 	std::vector<class Actor*>mActors;
 	std::vector<class Block*>mBlocks;
 	std::vector<class Enemy*>mEnemies;
+	std::vector<class Obstacle*>mObstacles;
 	std::vector<class SpriteComponent*>mSprites;
 	Balloon* mBalloon;
 	Player* mPlayer;

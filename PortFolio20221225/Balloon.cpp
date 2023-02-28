@@ -6,7 +6,7 @@
 
 Balloon::Balloon(Game* game, int tagID): Actor(game, tagID),
 mLift(20.0f),
-mDamage(20)
+mDamage(40)
 {
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);
@@ -17,7 +17,6 @@ mDamage(20)
 	Actor::SetTag(tag);
 	GetGame()->GetPlayer()->SetLift(-70.0f);
 	GetGame()->AddBalloon(this);
-
 }
 
 Balloon::~Balloon() {
@@ -37,6 +36,7 @@ void Balloon::SetOwner(class Actor* owner)
 
 void Balloon::UpdateActor()
 {
+
 	if (Actor::GetPos().x > 1500 || Actor::GetPos().y < 0)
 	{
 		Actor::SetState(EDead);
@@ -60,29 +60,26 @@ void Balloon::UpdateActor()
 			mPos.y -= 10.0f;
 			Actor::SetPos(mPos.x, mPos.y);
 		}
+		Balloon::mPos = mOwner->GetPos();
+		Balloon::mPos.y -= mLift;
+		mOwner->Actor::SetPos(Balloon::mPos.x, Balloon::mPos.y);
 	}
-	else 
+	//Owner不在でBalloonがリリースされた場合
+	else if(!mOwner)
 	{
 		mPos = Actor::GetPos();
-		mPos.x += 100.0f;
-		mPos.y -= 10.0f;
+		mPos.x += 20.0f;
+		mPos.y -= 20.0f;
 		Actor::SetPos(mPos.x, mPos.y);
-	
+		//風船が直接敵に当たった場合（場合分けしない場合、Obstacleの当たり判定と２重に判定されエラーとなる。
+		for (auto enemy : GetGame()->GetEnemies())
+		{
+			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))
+			{
+				enemy->Damage(mDamage);
+				Actor::SetState(EDead);
+				//hit = true;
+			};
+		}
 	}
-
-	Balloon::mPos = mOwner->GetPos();
-	Balloon::mPos.y -= mLift;
-	mOwner->Actor::SetPos(Balloon::mPos.x, Balloon::mPos.y);
-
-
-
-	//for (auto enemy : GetGame()->GetEnemies()) 
-	//{
-	//	if (HitCheckBC(Balloon::GetPos(), 100, enemy->GetPos(), 100))
-	//	{
-	//		enemy->Damage(mDamage);
-	//		Actor::SetState(EDead);
-	//		//hit = true;
-	//	};
-	//}
 }

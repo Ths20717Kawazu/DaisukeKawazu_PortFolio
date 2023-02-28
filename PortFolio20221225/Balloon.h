@@ -14,14 +14,13 @@ public:
     D3DXVECTOR2 GetPos() { return mPos; }
     void SetPos(D3DXVECTOR2 pos) { mPos = pos; }
 
-
     float GetLift() { return mLift; }
-    void SetPlayerLift(float lift) { GetGame()->GetPlayer()->SetLift(lift); }
-
     void SetOwner(class Actor*);
-    /* 将来的にBalloonのステータス変更の可能性あることからイキ
-    void SetLift(float lift) { mLift = lift; }*/
     void SetDamage(int damage) { mDamage = damage; }
+
+    
+    //void SetLift(float lift) { mLift = lift; }
+    //void SetPlayerLift(float lift) { GetGame()->GetPlayer()->SetLift(lift); }
 
 
 private:

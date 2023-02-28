@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "game.h"
 #include "InputComponent.h"
 #include "CollisionComponent.h"
@@ -20,10 +20,7 @@ InputComponent::InputComponent(Actor* Owner, class Player* Player):MoveComponent
 
 }
 
-
 InputComponent::~InputComponent() {};
-
-
 
 void InputComponent::ProcessInput(void)
 {
@@ -55,7 +52,7 @@ void InputComponent::ProcessInput(void)
 			mPlayer->setDir(dir);
 			mPlayer->setIsInAir(true);
 		}
-		//if if �Ɓ@if else if�̑g�ݍ��킹�͋������قȂ�
+		//if if と　if else ifの組み合わせは挙動が異なる
 		if (!mPlayer->GetHasballoon())
 		{
 			if (GetKeyboardTrigger(DIK_RETURN)) 
@@ -69,7 +66,7 @@ void InputComponent::ProcessInput(void)
 		else if (mPlayer->GetHasballoon()) 
 		{
 
-			
+
 			if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
 			{
 				if (GetKeyboardTrigger(DIK_RETURN))
@@ -77,14 +74,26 @@ void InputComponent::ProcessInput(void)
 					mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetObstacle());
 				}
 			}
-			////���D�������[�X
-			//else if (GetKeyboardTrigger(DIK_RETURN))
-			//{
-			//	 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
-			//}
+			////風船をリリース
+			else if (GetKeyboardTrigger(DIK_RETURN))
+			{
+				 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+			}
 
+			//複数のObstaclesを利用する場合下記コードでは正常に機能いしないので要修正
+			/*for (auto obstacle : mPlayer->GetGame()->GetObstacles()) 
+			{
 
-			//Enemy�Ƀo���[�����Ƃ����B�i���L�̂Ƃ��肾�ƁA�Ώۂ͔͈͓���Enemy�̔z�񏇂̏����������D�悳���j
+				if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, obstacle->GetPos(), 150))
+				{
+					if (GetKeyboardTrigger(DIK_RETURN))
+					{
+						mPlayer->GetGame()->GetBalloon()->SetOwner(obstacle);
+					}
+				}
+			}*/
+
+			//Enemyにバルーンをとりつける。（下記のとおりだと、対象は範囲内のEnemyの配列順の小さい方が優先される→距離を優先するよう修正する）
 			/*for (auto enemy : mPlayer->GetGame()->GetEnemies())
 			{
 				if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 200, enemy->GetPos(), 200))
