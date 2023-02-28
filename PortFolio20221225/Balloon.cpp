@@ -5,7 +5,7 @@
 #include "Enemy.h"
 
 Balloon::Balloon(Game* game, int tagID): Actor(game, tagID),
-mLift(20.0f),
+mLift(5.0f),
 mDamage(40)
 {
 	auto SC = new SpriteComponent(this);
@@ -15,7 +15,7 @@ mDamage(40)
 	int tag = Actor::GetTag();
 	//tag++;
 	Actor::SetTag(tag);
-	GetGame()->GetPlayer()->SetLift(-70.0f);
+	GetGame()->GetPlayer()->SetLift(-20.0f);
 	GetGame()->AddBalloon(this);
 }
 

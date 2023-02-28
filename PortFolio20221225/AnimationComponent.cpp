@@ -14,23 +14,7 @@ void AnimationComponent::AddImage(int img) {
 void AnimationComponent::Update() 
 {
 	
-	//mTimer++;
-	///*if (mTimer >= 10) 
-	//{
-	//	mTimer = 0;
-	//}*/
-	//if (mTimer == mInterval) 
-	//{
-	//	mTimer = 0;
-	//	idx = GetIdx();
-	//	idx++;
-	//	SetIdx(idx);
-	//	
-	//	if (AnimationComponent::GetIdx() == mImages.size())
-	//	{
-	//		SetIdx(0);
-	//	}
-	//}
+	
 }
 
 void AnimationComponent::Draw() 

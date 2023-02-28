@@ -47,8 +47,10 @@ void InputComponent::ProcessInput(void)
 
 		if (!mPlayer->getIsInAir() && GetKeyboardTrigger(DIK_SPACE))
 		{
+			float lift = mPlayer->GetLift();
 			dir.y = -1.0;
-			mPlayer->SetJumpVel(-30.0f);
+			mPlayer->SetJumpVel(-30.0f + lift);
+
 			mPlayer->setDir(dir);
 			mPlayer->setIsInAir(true);
 		}

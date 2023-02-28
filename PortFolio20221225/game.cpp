@@ -22,31 +22,6 @@
 #define PLAYER_HEIGHT (300.0f)
 #define PLAYER_WIDTH (300.0f)
 
-//*****************************************************************************
-// プロトタイプ宣言
-//*****************************************************************************
-//float frand(void);
-//bool HitCheckBB(
-//	D3DXVECTOR2 boxApos,
-//	float boxAwidth,
-//	float boxAheight,
-//	D3DXVECTOR2 boxBpos,
-//	float boxBwidth,
-//	float boxBheight
-//);
-//bool HitCheckBC(D3DXVECTOR2 posA, float rA,
-//	D3DXVECTOR2 posB, float rB);
-//bool HitCheckBCSq(D3DXVECTOR2 posA, float rA,
-//	D3DXVECTOR2 posB, float rB);
-
-
-//*****************************************************************************
-// グローバル変数:
-//*****************************************************************************
-//SCENE g_Scene;
-//SCENE g_NextScene;
-
-//*****************************************************************************
 
 //********デバッグ用***********************************************************
 //enum Actor::STATE state;
@@ -59,9 +34,9 @@ void Game::gameInit(void) {
 	a = new Player(this, 1);
 	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		a = new Enemy(this, (1000 + i));
-		a->SetACTOR(100 * i * 2 + 500, 500.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+		a->SetACTOR(100 * i * 2 + 500, 200.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 	
 	for (int i = 0; i < 20; i++) {
@@ -70,17 +45,17 @@ void Game::gameInit(void) {
 	}
 
 	a = new Obstacle(this, 10000);
-	a->SetACTOR(800.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(1300.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	//for (int i = 0; i < 4; i++) {
 	//	a = new Obstacle(this, (10000 + i + 5));
 	//	a->SetACTOR(i * 150 + 800.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	//}
 
-	//for (int i = 0; i < 3; i++) {
-	//	a = new Block(this, 10000);
-	//	a->SetACTOR(100.0f * i, 200.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	//}
+	for (int i = 0; i < 3; i++) {
+		a = new Block(this, 10000);
+		a->SetACTOR(100.0f * i, 700.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	}
 }
 
 
