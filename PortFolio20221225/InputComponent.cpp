@@ -5,6 +5,7 @@
 #include "Balloon.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Obstacle.h"
 #include <stdlib.h>
 #include <iostream>
 
@@ -67,7 +68,24 @@ void InputComponent::ProcessInput(void)
 		}
 		else if (mPlayer->GetHasballoon()) 
 		{
-			for (auto enemy : mPlayer->GetGame()->GetEnemies())
+
+			
+			if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
+			{
+				if (GetKeyboardTrigger(DIK_RETURN))
+				{
+					mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetObstacle());
+				}
+			}
+			////風船をリリース
+			//else if (GetKeyboardTrigger(DIK_RETURN))
+			//{
+			//	 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+			//}
+
+
+			//Enemyにバルーンをとりつける。（下記のとおりだと、対象は範囲内のEnemyの配列順の小さい方が優先される）
+			/*for (auto enemy : mPlayer->GetGame()->GetEnemies())
 			{
 				if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 200, enemy->GetPos(), 200))
 				{
@@ -76,14 +94,7 @@ void InputComponent::ProcessInput(void)
 						mPlayer->GetGame()->GetBalloon()->SetOwner(enemy);
 					}
 				};
-			}
-			////風船をリリース
-			//if (GetKeyboardTrigger(DIK_RETURN))
-			//{
-
-			//	 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
-			//}
-
+			}*/
 
 
 		}

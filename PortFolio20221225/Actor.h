@@ -74,7 +74,6 @@ class Actor
 
 	private:
 		ACTOR mActor;
-		float mGravity = 2.0f;
 
 		enum STATE mState;
 		int TextureID;
@@ -84,6 +83,7 @@ class Actor
 		std::vector<class Component*> mComponents;
 		
 protected:
+		float mGravity = 2.0f;
 		int mHP;
 		int mTagID;
 		D3DXVECTOR2 mPos;

@@ -5,7 +5,7 @@
 #include "Enemy.h"
 
 Balloon::Balloon(Game* game, int tagID): Actor(game, tagID),
-mLift(50.0f),
+mLift(20.0f),
 mDamage(20)
 {
 	auto SC = new SpriteComponent(this);
@@ -69,6 +69,12 @@ void Balloon::UpdateActor()
 		Actor::SetPos(mPos.x, mPos.y);
 	
 	}
+
+	Balloon::mPos = mOwner->GetPos();
+	Balloon::mPos.y -= mLift;
+	mOwner->Actor::SetPos(Balloon::mPos.x, Balloon::mPos.y);
+
+
 
 	//for (auto enemy : GetGame()->GetEnemies()) 
 	//{

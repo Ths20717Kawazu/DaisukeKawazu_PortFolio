@@ -15,7 +15,7 @@
 #include "MoveComponent.h"
 #include "InputComponent.h"
 #include "Block.h"
-
+#include "Obstacle.h"
 
 //========================追加======================//
 
@@ -68,6 +68,9 @@ void Game::gameInit(void) {
 		a = new Block(this, 10000);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
+
+	a = new Obstacle(this, 10000);
+	a->SetACTOR(800.0f, 800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	//for (int i = 0; i < 3; i++) {
 	//	a = new Block(this, 10000);
@@ -173,6 +176,8 @@ void Game::AddBlock(class Block* block)
 {
 	mBlocks.emplace_back(block);
 }
+
+
 
 //衝突判定用に、敵とブロックを分けて、それぞれ判定する。
 void Game::AddEnemy(class Enemy* enemy) {

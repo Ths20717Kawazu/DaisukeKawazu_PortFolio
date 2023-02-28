@@ -26,6 +26,7 @@ public:
 	//void SetPlayer(class Player* player) { mPlayer = player;  }
 	void AddPlayer(class Player* player) { mPlayer = player; }
 	void AddBalloon(class Balloon* balloon) { mBalloon = balloon; }
+	void AddObstacle(class Obstacle* obstacle) { mObstacle = obstacle; }
 	
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
@@ -35,10 +36,12 @@ public:
 	//ìGêÍópÇÃîzóÒ
 	void AddEnemy(class Enemy* enemy);
 
+
 	void AddSprites(class SpriteComponent* sprite);
 
 	Player* GetPlayer() { return mPlayer; }
 	Balloon* GetBalloon() { return mBalloon; }
+	Obstacle* GetObstacle() { return mObstacle; }
 	std::vector<class Actor*>& GetActors() { return mActors; }
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
 	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
@@ -52,5 +55,6 @@ private:
 	std::vector<class SpriteComponent*>mSprites;
 	Balloon* mBalloon;
 	Player* mPlayer;
+	Obstacle* mObstacle;
 };
 
