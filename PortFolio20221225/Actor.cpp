@@ -3,13 +3,10 @@
 #include "Component.h"
 #include "game.h"
 
-
-
 Actor::Actor(Game* game, int tagID)
 	: mGame(game),mState(EActive), mTagID(tagID)
 {
-	mGame->AddActor(this);
-	
+	mGame->AddActor(this);	
 }
 
 Actor::~Actor() 
@@ -29,7 +26,6 @@ void Actor::ProcessInput(void)
 	//Player‚Í”ò‚Î‚µ‚Ä‚»‚Ì‚Ü‚ÜComponent[„InputComponent‚ÌProcessInput‚ªŒÄ‚Ño‚³‚ê‚é
 	for (auto comp : mComponents) {
 		comp->ProcessInput();
-
 	}
 
 };

@@ -21,7 +21,7 @@ Enemy::~Enemy(){
 
 void Enemy::UpdateActor() {
 	mPos = Actor::GetPos();
-	mPos.x += 1.0f;
+	mPos.x += 0.5f;
 	Actor::SetPos(mPos.x, mPos.y);
 
 	count++;
@@ -29,10 +29,7 @@ void Enemy::UpdateActor() {
 		GetGame()->GetPlayer()->Damage(1.0f);
 		//Actor::SetState(EDead);
 		hit = true;
-	
 	};
-
-	
 }
 
 void Enemy::Damage(int damage) 

@@ -15,7 +15,7 @@ mDamage(40)
 	int tag = Actor::GetTag();
 	//tag++;
 	Actor::SetTag(tag);
-	GetGame()->GetPlayer()->SetLift(-20.0f);
+	GetGame()->GetPlayer()->SetLift(-2.03f);
 	GetGame()->AddBalloon(this);
 }
 
@@ -36,7 +36,6 @@ void Balloon::SetOwner(class Actor* owner)
 
 void Balloon::UpdateActor()
 {
-
 	if (Actor::GetPos().x > 1500 || Actor::GetPos().y < 0)
 	{
 		Actor::SetState(EDead);
@@ -51,6 +50,11 @@ void Balloon::UpdateActor()
 			mPos.x += 100.0f;
 			mPos.y -= 10.0f;
 			Actor::SetPos(mPos.x, mPos.y);
+		}
+		//風船が手元から離れた場合、プレイヤーのP_Liftを０にする。でないと、風船が手元を離れても消滅するまでプレイヤーは浮かんでしまう。
+		if (mOwner->GetTag() != 1) 
+		{
+			GetGame()->GetPlayer()->SetLift(0.0f);
 		}
 		//Ownerが敵の場合
 		if (mOwner->GetTag() >= 1000 || mOwner->GetTag() <= 9999)

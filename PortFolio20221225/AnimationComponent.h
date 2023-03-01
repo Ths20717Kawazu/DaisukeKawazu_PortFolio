@@ -5,7 +5,7 @@ class AnimationComponent :
 {
 public:
     AnimationComponent(class Actor* Owner, class Player* Player);
-    void AddImage(int img);
+    void AddImage(int img, Player::PlayerState state);
     void Update() override;
     void Draw()override;
 
@@ -14,7 +14,9 @@ public:
     void SetInterval(float interval) { mInterval = interval; }
 
     int idx;
+ 
 private:
+    std::vector<int>animIDs;
     std::vector<int>mImages;
     int mCurIdx;
     float mTimer;

@@ -41,6 +41,7 @@ Player::Player(Game* game, int tagID)
 	mGravity(2.0f),
 	P_mLift(0.0f),
 	mJumpVel(0.0f)
+	
 {
 	//親クラスであるActorのProtectedのメンバ変数の初期化は↓のように実施する必用がある。
 	mHP = 100;
@@ -52,17 +53,10 @@ Player::Player(Game* game, int tagID)
 	auto CC = new CollisionComponent(this, this);
 	auto AC = new AnimationComponent(this, this);
 
-	//SC->SetTextureID(LoadTexture((char*)"images/Player.png"));
-	
-	
-	AC->AddImage(LoadTexture((char*)"images/Player.png"));
-	AC->AddImage(LoadTexture((char*)"images/Player.png"));
-	AC->AddImage(LoadTexture((char*)"images/Player.png"));
-	AC->AddImage(LoadTexture((char*)"images/Player_2.png"));
-	AC->AddImage(LoadTexture((char*)"images/Player_3.png"));
-	AC->AddImage(LoadTexture((char*)"images/Player_3.png"));
-	AC->AddImage(LoadTexture((char*)"images/Player_3.png"));
-	
+    AC->AddImage(LoadTexture((char*)"images/Player.png"),EIDLE);
+	AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+
 	GetGame()->AddPlayer(this);
 }
 
@@ -81,45 +75,49 @@ void Player::UpdateActor(void)
 		D3DXVECTOR2 tempPos;
 		D3DXVECTOR2 curPos;
 		D3DXVECTOR2 lastPos;
-		//mGravity.y += 0.1f;
 		curPos = getPos();
-
+		if (!P_mLift == 0)
+		{
+			isInAir = true;
+		}
 		//移動方向をベクトル正規化
 		D3DXVec2Normalize(&mDir, &mDir);
-		
 		mVel = mDir * mSpeed;
-		mVel.y += mGravity;
-		//mVel.y += GetLift();
-		//mVel.y += -100.0f;
-
 		mVel.y += mJumpVel;
-		//mVel.y -= mJumpVel - 5.0f;
-		mJumpVel += mGravity;
+		mJumpVel += mGravity + P_mLift;//重力により減衰
+
 
 		//入力を受け付けた場合の将来座標
 		tempPos.x = curPos.x + mVel.x;
 		tempPos.y = curPos.y + mVel.y;
-		//tempPos.y = curPos.y + mVel.y + mGravity.y;
-
 		//画面外への移動を禁止
 		if (tempPos.x  <= 0 || tempPos.x >= 1500)
 		{
 			mVel.x = 0.0;
 		}
-
 		for (auto block : GetGame()->GetBlocks())
 		{
 			//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
 			if (HitCheckBLK(tempPos, block, this) == true)
 			{
-				//lastPos = getPos();
-				//mVel.x = 0.0;　
 				mVel.y = 0.0f;
 				mJumpVel = 0.0f;
 				isInAir = false;
 				setSpeed(10.0f);
 			}
-
+			else if (HitCheckBLK(getPos(), block, this) == true)
+			{
+				isInAir = false;
+			}
+			//else if (HitCheckBLK(getPos(), block, this) == false)
+			else if (HitCheckBC(tempPos, 10, block->GetPos(), 10)) 
+			{
+				isInAir = true;
+			}
+			/*else if (HitCheckBC(tempPos, 100, block->GetPos(), 100) == false)
+			{
+				isInAir = true;
+			}*/
 		}
 		for (auto enemy : GetGame()->GetEnemies()) 
 		{	
@@ -128,15 +126,11 @@ void Player::UpdateActor(void)
 			if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) {
 				mVel.x = 0.0;
 				mVel.y = 0.0;
-				//Actor::SetState(EDead);
 			}
 		}
-		mDir.y = 0.0f;
-		mDir.x = 0.0f;
-		mPos.x += mVel.x;
-		mPos.y += mVel.y;
+		mDir = { 0.0f, 0.0f };
+		mPos += {mVel.x, mVel.y};
 		SetPos(mPos.x, mPos.y);
-
 }
 void Player::Damage(int damage)
 {
