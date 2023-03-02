@@ -44,7 +44,6 @@ int LoadTexture(char* fileName)
 			return i;
 		}
 	}
-
 	//“Ç‚İ‚İÅ‘å”‚ğ’´‚¦‚Ä‚¢‚½‚ç•‰‚Ì’l‚ğ•Ô‚·
 	if (g_TextureIndex == MAX_TEXTURE_NUM)
 	{

@@ -7,7 +7,7 @@ class Balloon :
     public Actor
 {
 public:
-    Balloon(class Game* game, int tagID);
+    Balloon(class Game* game, enum Actor::Tag tag);
     ~Balloon();
     void UpdateActor() override;
 

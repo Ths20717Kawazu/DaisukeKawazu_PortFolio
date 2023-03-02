@@ -4,7 +4,7 @@ class Obstacle :
     public Actor
 {
 public:
-    Obstacle(class Game* game, int tagID);
+    Obstacle(class Game* game, enum Actor::Tag tag);
     ~Obstacle();
     void UpdateActor() override;
     void SetDamage(int damage) { mDamage = damage; }

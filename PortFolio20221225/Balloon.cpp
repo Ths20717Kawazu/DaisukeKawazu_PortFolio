@@ -4,7 +4,7 @@
 #include "texture.h"
 #include "Enemy.h"
 
-Balloon::Balloon(Game* game, int tagID): Actor(game, tagID),
+Balloon::Balloon(Game* game, enum Actor::Tag tag): Actor(game, tag),
 mLift(5.0f),
 mDamage(40)
 {

@@ -32,8 +32,8 @@ static float g_AnimeUV[4] =
 	0.333333f,
 };
 
-Player::Player(Game* game, int tagID)
-	:Actor(game, tagID), 
+Player::Player(Game* game, enum Actor::Tag tag)
+	:Actor(game, tag), 
 	mGame(game), 
 	mSpeed(10.0f), 
 	PlayerHeight(300), 
@@ -53,9 +53,30 @@ Player::Player(Game* game, int tagID)
 	auto CC = new CollisionComponent(this, this);
 	auto AC = new AnimationComponent(this, this);
 
+	//プレイヤがEIDLE状態の画像
     AC->AddImage(LoadTexture((char*)"images/Player.png"),EIDLE);
 	AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
 	AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+
+	//プレイヤがEWALK状態の画像
+	AC->AddImage(LoadTexture((char*)"images/Player_Walk_1.png"), EWALK);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EWALK);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EWALK);
+
+	//プレイヤがERUN状態の画像
+	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+
+	////プレイヤがEJUMP状態の画像
+	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+
+	////プレイヤがEFALL状態の画像
+	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
 
 	GetGame()->AddPlayer(this);
 }
@@ -84,7 +105,7 @@ void Player::UpdateActor(void)
 		D3DXVec2Normalize(&mDir, &mDir);
 		mVel = mDir * mSpeed;
 		mVel.y += mJumpVel;
-		mJumpVel += mGravity + P_mLift;//重力により減衰
+		//mJumpVel += mGravity + P_mLift;//重力により減衰
 
 
 		//入力を受け付けた場合の将来座標
@@ -123,9 +144,9 @@ void Player::UpdateActor(void)
 		{	
 			//HitCheckBC(tempPos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
 			//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をtempPosにする必用があるのか？
-			if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) {
-				mVel.x = 0.0;
-				mVel.y = 0.0;
+			if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) 
+			{
+				mVel = { 0.0, 0.0 };
 			}
 		}
 		mDir = { 0.0f, 0.0f };

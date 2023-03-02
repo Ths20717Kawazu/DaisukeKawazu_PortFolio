@@ -54,6 +54,7 @@ private:
 	std::vector<class Enemy*>mEnemies;
 	std::vector<class Obstacle*>mObstacles;
 	std::vector<class SpriteComponent*>mSprites;
+	std::vector<class AnimationComponent*>mAnimComponents;
 	Balloon* mBalloon;
 	Player* mPlayer;
 	Obstacle* mObstacle;

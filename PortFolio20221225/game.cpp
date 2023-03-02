@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "game.h"
 #include "SpriteComponent.h"
+#include "AnimationComponent.h"
 #include "Actor.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -31,20 +32,20 @@
 
 void Game::gameInit(void) {
 	Actor* a;
-	a = new Player(this, 1);
+	a = new Player(this, Actor::Player);
 	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	for (int i = 0; i < 5; i++) {
-		a = new Enemy(this, (1000 + i));
+		a = new Enemy(this, Actor::Enemy);
 		a->SetACTOR(100 * i * 2 + 500, 200.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 	
 	for (int i = 0; i < 20; i++) {
-		a = new Block(this, 10000);
+		a = new Block(this, Actor::Block);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
-	a = new Obstacle(this, 10000);
+	a = new Obstacle(this, Actor::Obstacle);
 	a->SetACTOR(1300.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	//for (int i = 0; i < 4; i++) {
@@ -116,8 +117,16 @@ void Game::gameDraw(void)
 {
 	for (auto component : mSprites)
 	{
-		component->Draw();
+		component->Draw2();
 	}
+	//for (auto component : mSprites)
+	//{
+	//	component->DrawEnemy();
+	//}
+	//for (auto component : mAnimComponents)
+	//{
+	//	component->AnimationComponent::Draw();
+	//}
 };
 
 void Game::RemoveActor(class Actor* actor) {

@@ -3,6 +3,7 @@
 #include "texture.h"
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
+#include "AnimationComponent.h"
 #include "CollisionComponent.h"
 
 Enemy::Enemy(Game* game, int tagID) :Actor(game, tagID)
@@ -10,8 +11,10 @@ Enemy::Enemy(Game* game, int tagID) :Actor(game, tagID)
 	mHP = 100;
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);
-	SC->SetTextureID(LoadTexture((char*)"images/gorem.png"));
+	auto AC = new AnimationComponent(this);
+	AC->AddImage(LoadTexture((char*)"images/gorem.png"), Enemy::EEIDLE);
 	GetGame()->AddEnemy(this);
+	//SC->SetTextureID(LoadTexture((char*)"images/gorem.png"));
 }
 
 Enemy::~Enemy(){

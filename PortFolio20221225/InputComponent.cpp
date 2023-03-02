@@ -60,7 +60,7 @@ void InputComponent::ProcessInput(void)
 			if (GetKeyboardTrigger(DIK_RETURN)) 
 			{
 				Actor* a;
-				a = new Balloon(mPlayer->GetGame(), 100);
+				a = new Balloon(mPlayer->GetGame(), Actor::Balloon);
 				a->SetACTOR(mPlayer->getPos().x + 50, mPlayer->getPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 				mPlayer->SetHasballoon(true);
 			}

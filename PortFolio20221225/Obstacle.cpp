@@ -8,7 +8,7 @@
 
 
 
-Obstacle::Obstacle(Game* game, int tagID) :Actor(game, tagID),
+Obstacle::Obstacle(Game* game, enum Actor::Tag tag) :Actor(game, tag),
 mDamage(100)
 {
 	mHP = 100;

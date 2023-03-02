@@ -3,8 +3,7 @@
 #include "Component.h"
 #include "game.h"
 
-Actor::Actor(Game* game, int tagID)
-	: mGame(game),mState(EActive), mTagID(tagID)
+Actor::Actor(Game* game, enum Tag tag): mGame(game),mState(EActive), mTag(tag)
 {
 	mGame->AddActor(this);	
 }

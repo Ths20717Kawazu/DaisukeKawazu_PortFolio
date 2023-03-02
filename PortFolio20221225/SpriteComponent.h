@@ -16,11 +16,15 @@ class SpriteComponent :
         void DrawSpriteLeftTop(float x, float y, float width, float height, float u, float v, float uw, float vh);
         void DrawSpriteColor(float x, float y, float width, float height, float u, float v, float uw, float vh, float r, float g, float b, float a);
         
-        virtual void Draw();
+        void Draw();
         void SetTextureID(int tID) { TextureID = tID; }
     
+        virtual void Draw2() {};
+        virtual void DrawEnemy() {};
+        void AddAnim(class AnimationComponent* animcomp) { mAnimcomp = animcomp; }
     private:
         int TextureID;
+        class AnimationComponent* mAnimcomp;
        
 };
 

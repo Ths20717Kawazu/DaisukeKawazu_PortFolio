@@ -10,16 +10,17 @@ public:
     enum PlayerState
     {
         EIDLE,
-        EFACE_RIGHT,
-        EFACE_LEFT,
-        ERUN_RIGHT,
-        ERUN_LEFT,
+        EWALK,
+        ERUN,
         EJUMP,
         EFALL,
-        ELAND,
         EDAMAGE,
+        EFACE_RIGHT,
+        EFACE_LEFT,
+        ELAND,
+        EStatenums
   };
-      Player(Game* game, int tagID);
+      Player(Game* game, enum Tag tag);
       ~Player();
       void DrawPlayer(void);
       void UpdateActor() override;

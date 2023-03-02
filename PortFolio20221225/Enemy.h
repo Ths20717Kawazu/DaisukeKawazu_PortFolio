@@ -5,12 +5,19 @@ class Enemy :
 {
 
 public:
-    Enemy(class Game* game, int tagID);
+    Enemy(class Game* game, enum Actor::Tag tag);
     ~Enemy();
     void UpdateActor() override;
     bool hit = false;
     int count = 0;
     void Damage(int damage) override;
+
+    enum EnemyState {
+        EEIDLE,
+        EEWALK,
+        EERUN
+
+    };
 
 private:
     

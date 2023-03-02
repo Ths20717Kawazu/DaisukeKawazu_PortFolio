@@ -15,14 +15,6 @@
 class Actor
 {
 	public:
-		Actor(class Game* game, int tagID);
-		virtual ~Actor();
-		virtual void Damage(int damage) {};
-		virtual void UpdateActor() {};
-			
-		void AddComponent(class Component*);
-		void ProcessInput(void);
-		
 		struct ACTOR {
 				D3DXVECTOR2 pos;	//座標
 				float height;
@@ -41,6 +33,26 @@ class Actor
 			EPause, 
 			EDead
 		};
+		enum Tag 
+		{
+			Player,
+			Enemy,
+			Block,
+			Balloon,
+			Obstacle
+		};
+
+		Actor(class Game* game, enum Tag tag);
+		virtual ~Actor();
+		virtual void Damage(int damage) {};
+		virtual void UpdateActor() {};
+			
+		void AddComponent(class Component*);
+		void ProcessInput(void);
+		
+		void SetTag(enum Tag tag) { mTag = tag; }
+		enum Tag GetTag() { return mTag; }
+
 		void SetState(enum STATE state) { mState = state; }
 		enum STATE GetState() { return mState; }
 		//画像の表示番号
@@ -67,15 +79,15 @@ class Actor
 		class Game* GetGame() { return mGame; }
 		class Player* GetPlayer() { return mPlayer;  }
 		//Actor自身の更新　→　衝突判定用他　継承先で具体化する。
+
 		
 
-		void SetTag(int tag) { mTagID = tag; }
-		int GetTag() { return mTagID; }
+
+
 
 	private:
 		ACTOR mActor;
 
-		enum STATE mState;
 		int TextureID;
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
 		class Game* mGame;
@@ -83,9 +95,10 @@ class Actor
 		std::vector<class Component*> mComponents;
 		
 protected:
+		enum Tag mTag;
+		enum STATE mState;
 		float mGravity = 2.0f;
 		int mHP;
-		int mTagID;
 		D3DXVECTOR2 mPos;
 		
 

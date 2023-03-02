@@ -6,7 +6,7 @@ class Block :
 {
 
 public:
-    Block(class Game* game, int tagID);
+    Block(class Game* game, enum Actor::Tag tag);
 
     float BlockWidth = 100.0f;
     float BlockHeight = 100.0f;

@@ -1,4 +1,5 @@
 #include "SpriteComponent.h"
+//#include "AnimationComponent.h"
 #include "Actor.h"
 #include "game.h"
 #include "renderer.h"
@@ -283,5 +284,10 @@ void SpriteComponent::Draw() {
 	float uw = mOwner->GetACTOR().mUWidth;
     float vh = mOwner->GetACTOR().mVHeight;
 	//DrawSprite“à‚ÉTextureID‚ª“ü—Í‚³‚ê‚Ä‚¢‚éB
-	DrawSprite(x, y, width, height, u, v, uw, vh );
+	DrawSprite(x, y, width, height, u, v, uw, vh);
 }
+
+
+
+
+//Spritcomp::Draw2->AnimationComponent::UpdateImage()->SpriteComp::Draw
