@@ -6,16 +6,15 @@
 
 Balloon::Balloon(Game* game, enum Actor::Tag tag): Actor(game, tag),
 mLift(5.0f),
-mDamage(40)
+mDamage(100)
 {
 	auto SC = new SpriteComponent(this);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/balloon.png"));
 	SetOwner(GetGame()->GetPlayer());
-	int tag = Actor::GetTag();
-	//tag++;
+	animate = false;
 	Actor::SetTag(tag);
-	GetGame()->GetPlayer()->SetLift(-2.03f);
+	GetGame()->GetPlayer()->SetLift(-2.03f);//プレイヤに浮力を与える
 	GetGame()->AddBalloon(this);
 }
 
@@ -68,7 +67,7 @@ void Balloon::UpdateActor()
 		Balloon::mPos.y -= mLift;
 		mOwner->Actor::SetPos(Balloon::mPos.x, Balloon::mPos.y);
 	}
-	//Owner不在でBalloonがリリースされた場合
+	//Owner不在でBalloonがリリースされた場合（プレイヤもしくはObstacleに属していないフリーな状態）
 	else if(!mOwner)
 	{
 		mPos = Actor::GetPos();
@@ -80,9 +79,8 @@ void Balloon::UpdateActor()
 		{
 			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))
 			{
-				enemy->Damage(mDamage);
-				Actor::SetState(EDead);
-				//hit = true;
+				enemy->Damage(mDamage);//ヒットした対象にBalloonに設定したダメージを与える
+				Actor::SetState(EDead);//Balloonがヒットしたら消滅する。
 			};
 		}
 	}

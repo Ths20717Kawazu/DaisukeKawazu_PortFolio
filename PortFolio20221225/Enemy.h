@@ -5,21 +5,34 @@ class Enemy :
 {
 
 public:
+    enum EnemyState {
+        IDLE,
+        WALK,
+        RUN
+
+    };
     Enemy(class Game* game, enum Actor::Tag tag);
     ~Enemy();
     void UpdateActor() override;
-    bool hit = false;
-    int count = 0;
     void Damage(int damage) override;
+    void AddImage(int img, Enemy::EnemyState state);
+    void AddAnimOrders(int order, Enemy::EnemyState state);
+    //派生クラスの画像配列を取得する。
+    std::vector<int> GetAnimImages(Enemy::EnemyState state);
+    std::vector<int> GetAnimOrders(Enemy::EnemyState state);
 
-    enum EnemyState {
-        EEIDLE,
-        EEWALK,
-        EERUN
 
-    };
+    enum EnemyState SetState(enum EnemyState state) { mState = state; }
+    enum EnemyState GetState() { return mState; }
+
 
 private:
+    enum EnemyState mState;
+    //画像配列
+    std::vector<int>mIdleImages;
+    std::vector<int>mWalkImages; 
+    //画像表示順序
+    std::vector<int>animIdleOrders;
     
 
 };

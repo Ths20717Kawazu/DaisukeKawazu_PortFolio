@@ -15,7 +15,8 @@
 class Actor
 {
 	public:
-		struct ACTOR {
+		struct ACTOR
+		{
 				D3DXVECTOR2 pos;	//座標
 				float height;
 				float width;
@@ -46,7 +47,9 @@ class Actor
 		virtual ~Actor();
 		virtual void Damage(int damage) {};
 		virtual void UpdateActor() {};
-			
+		virtual void AddImage() {};
+
+
 		void AddComponent(class Component*);
 		void ProcessInput(void);
 		
@@ -55,9 +58,11 @@ class Actor
 
 		void SetState(enum STATE state) { mState = state; }
 		enum STATE GetState() { return mState; }
+
 		//画像の表示番号
 		int  GetTextureID() { return TextureID; }
 		void SetTextureID(int tID) { TextureID = tID; }
+		
 		//描画するために必用な情報の取得及び代入
 		ACTOR GetACTOR() { return mActor; }
 		void SetACTOR(float posx, float posy, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot) 
@@ -80,10 +85,12 @@ class Actor
 		class Player* GetPlayer() { return mPlayer;  }
 		//Actor自身の更新　→　衝突判定用他　継承先で具体化する。
 
-		
+		//virtual std::vector<int> GetAnimImages() {};
 
+		std::vector<int> GetActorAnimImages() { return AnimImages; }
+		std::vector<int> GetActorAnimOrders(){ return AnimOrders; }
 
-
+		bool getAnimate() { return animate;  }
 
 	private:
 		ACTOR mActor;
@@ -99,8 +106,10 @@ protected:
 		enum STATE mState;
 		float mGravity = 2.0f;
 		int mHP;
+		bool animate;
 		D3DXVECTOR2 mPos;
-		
 
+		std::vector<int>AnimImages;//各派生クラス共通の画像⇒各クラスのStateが切り替わる度にこの配列に入力される。
+		std::vector<int>AnimOrders;//各派生クラス共通の表示順序⇒各クラスのStateが切り替わる度にこの配列に入力される。
 };
 

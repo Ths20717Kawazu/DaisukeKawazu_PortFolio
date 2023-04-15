@@ -25,13 +25,13 @@ Obstacle::~Obstacle() {
 
 void Obstacle::UpdateActor() 
 {
-	for (auto enemy : GetGame()->GetEnemies()) 
-	{
-		if (HitCheckBC(Obstacle::GetPos(), 100, enemy->GetPos(), 100))
-		{
-			enemy->Damage(mDamage);
-			Actor::SetState(EDead);
-			//hit = true;
-		};
-	}
+	//for (auto enemy : GetGame()->GetEnemies()) 
+	//{
+	//	if (HitCheckBC(Obstacle::GetPos(), 100, enemy->GetPos(), 100))
+	//	{
+	//		enemy->Damage(mDamage);
+	//		Actor::SetState(EDead);
+	//		//hit = true;
+	//	};
+	//}
 }

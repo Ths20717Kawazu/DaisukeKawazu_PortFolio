@@ -6,6 +6,12 @@ class Block :
 {
 
 public:
+    enum BlockState {
+
+        STABLE,
+        NUMS
+
+    };
     Block(class Game* game, enum Actor::Tag tag);
 
     float BlockWidth = 100.0f;

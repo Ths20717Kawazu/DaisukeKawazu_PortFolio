@@ -589,8 +589,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 // プロシージャ
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg) {
+{	switch (uMsg) {
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) {
 			SendMessage(hWnd, WM_CLOSE, 0, 0);

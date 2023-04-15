@@ -9,25 +9,33 @@ public:
 
     enum PlayerState
     {
-        EIDLE,
-        EWALK,
-        ERUN,
-        EJUMP,
-        EFALL,
-        EDAMAGE,
-        EFACE_RIGHT,
-        EFACE_LEFT,
-        ELAND,
-        EStatenums
+        IDLE,
+        WALK,
+        RUN,
+        JUMP,
+        FALL,
+        DAMAGE,
+        FACE_RIGHT,
+        FACE_LEFT,
+        LAND,
+        Statenums
   };
       Player(Game* game, enum Tag tag);
       ~Player();
       void DrawPlayer(void);
       void UpdateActor() override;
-
       void Damage(int damage) override;
+
+
+      //表示する画像及びその表示順序について入力
+      void AddImage(int img, Player::PlayerState state);
+      void AddAnimOrders(int order, Player::PlayerState state);
+
       void setState( enum Actor::STATE state) { mState = state; }
       enum Actor::STATE getState() { return mState;  }
+
+      void setState(enum Player::PlayerState state) { mPState = state; }
+      enum Player::PlayerState GetState() { return mPState; }
 
       void setHP(int inputNum) { mHP = inputNum; }
       int getHP() { return mHP; }
@@ -66,15 +74,22 @@ public:
     float PlayerHeight = 300.0f;
     float PlayerWidth = 300.0f;
 
-    //void AddTagIDs(class Enemy*);
-    //void RemoveTagIDs(class Enemy*);
-    //std::vector<class Enemy*>& GetTagIDs() { return mTagIDs; }
+    //派生クラスの画像配列を取得する。
+    std::vector<int> GetAnimImages(Player::PlayerState state);
+    std::vector<int> GetAnimOrders(Player::PlayerState state);
 
 private:
-    //enum Player::PlayerState mState {ESTAND};
-    //std::vector<class Enemy*>mTagIDs;
-    
+    //画像配列
+    std::vector<int>mIdleImages;
+    std::vector<int>mWalkImages;
+
+    //画像表示順序
+    std::vector<int>animIdleOrders;
+
     enum Actor::STATE mState = Actor::EActive;
+    enum Player::PlayerState mPState = Player::IDLE;
+
+
     Game* mGame;
     //D3DXVECTOR2 playerPos;
     D3DXVECTOR2 mDir;

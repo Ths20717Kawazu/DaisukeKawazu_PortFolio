@@ -35,6 +35,7 @@ void Game::gameInit(void) {
 	a = new Player(this, Actor::Player);
 	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
+
 	for (int i = 0; i < 5; i++) {
 		a = new Enemy(this, Actor::Enemy);
 		a->SetACTOR(100 * i * 2 + 500, 200.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -54,7 +55,7 @@ void Game::gameInit(void) {
 	//}
 
 	for (int i = 0; i < 3; i++) {
-		a = new Block(this, 10000);
+		a = new Block(this, Actor::Block);
 		a->SetACTOR(100.0f * i, 700.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 }
@@ -62,7 +63,7 @@ void Game::gameInit(void) {
 
 void Game::gameUninit(void) {
 
-	//delete mActors.back();
+	delete mActors.back();
 
 }
 
@@ -74,9 +75,6 @@ void Game::gameUpdate(void) {
 	//	count = enemy->count;
 	//}
 	//========================//
-
-	
-	
 	for (auto actor : mActors) 
 	{
 		if (actor->GetState() == Actor::EActive) 
@@ -115,18 +113,16 @@ void Game::gameRunloop(void)
 //描画は別に用意する
 void Game::gameDraw(void) 
 {
+	//アニメーションを伴うものとそうでないものを分ける必用がある。（アニメーションするキャラクタが２重で描画されるため）
 	for (auto component : mSprites)
 	{
-		component->Draw2();
+		
+		//アニメーションを伴うActorの描画処理
+		component->UpdateDraw();
+		//アニメーションが無いActorの描画処理
+		component->StaticDraw();
+	
 	}
-	//for (auto component : mSprites)
-	//{
-	//	component->DrawEnemy();
-	//}
-	//for (auto component : mAnimComponents)
-	//{
-	//	component->AnimationComponent::Draw();
-	//}
 };
 
 void Game::RemoveActor(class Actor* actor) {
@@ -146,12 +142,12 @@ void Game::gameProcessInput(void) {
 	}
 
 	//消去の確認用
-	/*if (GetKeyboardPress(DIK_SPACE)) {
+	if (GetKeyboardPress(DIK_SPACE)) {
 		if (!mActors.empty()) {
 			delete mActors.back();
 
 		}
-	}*/
+	}
 
 }
 

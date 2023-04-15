@@ -5,12 +5,12 @@
 #include "renderer.h"
 #include "texture.h"
 
-
-SpriteComponent::SpriteComponent(class Actor* Owner, class Player* Player) :Component(Owner, Player)
-{
-	InitSprite();
-	mOwner->GetGame()->AddSprites(this);
-}
+//
+//SpriteComponent::SpriteComponent(class Actor* Owner, class Player* Player) :Component(Owner, Player)
+//{
+//	InitSprite();
+//	mOwner->GetGame()->AddSprites(this);
+//}
 
 
 SpriteComponent::SpriteComponent(class Actor* Owner):Component(Owner)
@@ -289,5 +289,24 @@ void SpriteComponent::Draw() {
 
 
 
+//Animationしないアクターについてはこちらが適用される。
+//どうしてもPlayerだけ２重で描画されてしまうので、不自然であるが関数内で条件分けをして、
+//アニメーションしないアクタの場合に実行されるようにした
+void SpriteComponent::StaticDraw() {
+	float x = mOwner->GetACTOR().pos.x;
+	float y = mOwner->GetACTOR().pos.y;
+	float width = mOwner->GetACTOR().mBoxWidth;
+	float height = mOwner->GetACTOR().mBoxHeight;
+	float u = mOwner->GetACTOR().mUvpositionU;
+	float v = mOwner->GetACTOR().mUvpositionV;
+	float uw = mOwner->GetACTOR().mUWidth;
+	float vh = mOwner->GetACTOR().mVHeight;
+	//DrawSprite内にTextureIDが入力されている。
+	if (mOwner->getAnimate() == false) {
+		DrawSprite(x, y, width, height, u, v, uw, vh);
 
-//Spritcomp::Draw2->AnimationComponent::UpdateImage()->SpriteComp::Draw
+	}
+}
+
+
+//Spritcomp::UpdateDraw->AnimationComponent::UpdateImage()->SpriteComp::Draw

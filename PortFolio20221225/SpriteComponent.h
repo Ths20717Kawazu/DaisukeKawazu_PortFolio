@@ -5,7 +5,7 @@ class SpriteComponent :
     public Component
 {
     public:
-        SpriteComponent(class Actor* Owner, class Player* Player);
+        //SpriteComponent(class Actor* Owner, class Player* Player);
         SpriteComponent(Actor* actor);
         ~SpriteComponent();
         void InitSprite(void);
@@ -17,10 +17,12 @@ class SpriteComponent :
         void DrawSpriteColor(float x, float y, float width, float height, float u, float v, float uw, float vh, float r, float g, float b, float a);
         
         void Draw();
+        void StaticDraw();//UpdateÇ≥ÇÍÇ»Ç¢ï`âÊ
+
         void SetTextureID(int tID) { TextureID = tID; }
     
-        virtual void Draw2() {};
-        virtual void DrawEnemy() {};
+        virtual void UpdateDraw() {};
+       // virtual void DrawEnemy() {}; égópÇµÇƒÇ¢Ç»Ç¢ÇΩÇﬂçÌèúó\íË
         void AddAnim(class AnimationComponent* animcomp) { mAnimcomp = animcomp; }
     private:
         int TextureID;
