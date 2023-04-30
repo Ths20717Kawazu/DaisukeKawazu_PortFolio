@@ -32,6 +32,7 @@
 //*****************************************************************************
 
 void Game::gameInit(void) {
+	//以下、上から
 	Actor* a;
 	a = new BackGround(this, Actor::Background);
 	a->SetACTOR(0.0f, 0.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -45,13 +46,13 @@ void Game::gameInit(void) {
 		a->SetACTOR(100 * i * 2 + 500, 200.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 15; i++) {
 		a = new Block(this, Actor::Block);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
-	//a = new Obstacle(this, Actor::Obstacle);
-	//a->SetACTOR(1300.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a = new Obstacle(this, Actor::Obstacle);
+	a->SetACTOR(1300.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	//for (int i = 0; i < 4; i++) {
 	//	a = new Obstacle(this, (10000 + i + 5));
@@ -135,7 +136,6 @@ void Game::gameDraw(void)
 
 void Game::RemoveActor(class Actor* actor) 
 {
-
 	//このactorがmActorsにあるか探す
 	auto iter = std::find(mActors.begin(), mActors.end(), actor);
 	if (iter != mActors.end())
@@ -149,11 +149,12 @@ void Game::RemoveActor(class Actor* actor)
 
 void Game::gameProcessInput(void) {
 	UpdateInput();//入力処理の更新処理
-	for (auto actor : mActors)
+	/*for (auto actor : mActors)
 	{
-		actor->ProcessInput();
-	}
-
+		if(actor->GetTag() == Actor::Player)
+			actor->ProcessInput();
+	}*/
+	mPlayer->ProcessInput();
 	//消去の確認用
 	//if (GetKeyboardPress(DIK_SPACE)) {
 	//	/*if (!mEnemies.empty()) {
@@ -184,8 +185,8 @@ void Game::RemoveBlock(class Block* block)
 }
 
 //衝突判定用に、敵とブロックを分けて、それぞれ判定する。
-void Game::AddEnemy(class Enemy* enemy) {
-
+void Game::AddEnemy(class Enemy* enemy) 
+{
 	mEnemies.emplace_back(enemy);
 }
 

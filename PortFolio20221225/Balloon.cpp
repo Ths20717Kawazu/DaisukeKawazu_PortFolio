@@ -18,8 +18,8 @@ mDamage(100)
 	GetGame()->AddBalloon(this);
 }
 
-Balloon::~Balloon() {
-	
+Balloon::~Balloon() 
+{	
 	GetGame()->GetPlayer()->SetLift(0.0f);
 	GetGame()->GetPlayer()->SetHasballoon(false);
 	//int tag = Actor::GetTag();
