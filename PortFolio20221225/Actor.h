@@ -40,17 +40,20 @@ class Actor
 			Enemy,
 			Block,
 			Balloon,
-			Obstacle
+			Obstacle,
+			Background
 		};
 
 		Actor(class Game* game, enum Tag tag);
-		virtual ~Actor();
+		virtual ~Actor();//継承先のデストラクタを機能させるためにVirtualは忘れないこと
+
 		virtual void Damage(int damage) {};
 		virtual void UpdateActor() {};
 		virtual void AddImage() {};
 
 
 		void AddComponent(class Component*);
+		void RemoveComponent(Component*);
 		void ProcessInput(void);
 		
 		void SetTag(enum Tag tag) { mTag = tag; }
@@ -99,9 +102,9 @@ class Actor
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
 		class Game* mGame;
 		class Player* mPlayer;
-		std::vector<class Component*> mComponents;
 		
 protected:
+		std::vector<class Component*> mComponents;
 		enum Tag mTag;
 		enum STATE mState;
 		float mGravity = 2.0f;

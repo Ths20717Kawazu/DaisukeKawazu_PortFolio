@@ -48,7 +48,7 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	//auto SC = new SpriteComponent(this, this);
 	auto SC = new SpriteComponent(this);
 	auto IC = new InputComponent(this, this);
-	auto CC = new CollisionComponent(this, this);
+	auto CC = new CollisionComponent(this);
 	//auto AC = new AnimationComponent(this, this);//Playerと他のアニメーションするキャラを別にしていたが、その必用性はない
 	auto AC = new AnimationComponent(this);
 
@@ -97,14 +97,13 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	GetGame()->AddPlayer(this);
 }
 
-Player::~Player() {};
-
-
-void Player::DrawPlayer(void)
+Player::~Player() 
 {
 
-}
-	
+};
+
+
+
 
 void Player::UpdateActor(void) 
 {

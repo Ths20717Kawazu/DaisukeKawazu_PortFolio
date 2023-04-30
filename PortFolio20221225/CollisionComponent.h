@@ -10,8 +10,9 @@ class CollisionComponent :
 {
 public:
     CollisionComponent(class Actor* Owner);
-    CollisionComponent(class Actor* Owner, class Player* Player);
+    ~CollisionComponent();
     void Update()override;
+    //CollisionComponent(class Actor* Owner, class Player* Player);
    /* void SetHalfW(float w) { mHalfW = w; }
     void SetHalfH(float h) { mHalfH = h; }
     float GetHalfW() const { return mHalfW; }

@@ -21,8 +21,9 @@ public:
         Statenums
   };
       Player(Game* game, enum Tag tag);
-      ~Player();
-      void DrawPlayer(void);
+      ~Player();//基底クラスが削除された際に連動してデストラクタが発動する
+
+      //void DrawPlayer(void);
       void UpdateActor() override;
       void Damage(int damage) override;
 
@@ -88,7 +89,8 @@ private:
 
     enum Actor::STATE mState = Actor::EActive;
     enum Player::PlayerState mPState = Player::IDLE;
-
+    SpriteComponent* mSprite;
+    AnimationComponent* mAnimate;
 
     Game* mGame;
     //D3DXVECTOR2 playerPos;

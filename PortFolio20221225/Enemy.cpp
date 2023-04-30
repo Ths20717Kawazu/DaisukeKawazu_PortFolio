@@ -22,7 +22,7 @@ Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
 }
 
 Enemy::~Enemy(){
-
+	GetGame()->RemoveEnemy(this);
 	
 }
 

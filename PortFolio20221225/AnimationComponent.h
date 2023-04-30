@@ -6,6 +6,8 @@ class AnimationComponent :
 public:
     //AnimationComponent(class Actor* Owner, class Player* Player);
     AnimationComponent(class Actor* Owner);
+    ~AnimationComponent();
+
     //void AddImage(int img, Player::PlayerState state);
     //void AddImage(int img, Enemy::EnemyState staet);
     //void Update() override;

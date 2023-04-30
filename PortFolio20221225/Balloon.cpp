@@ -80,7 +80,7 @@ void Balloon::UpdateActor()
 			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))
 			{
 				enemy->Damage(mDamage);//ヒットした対象にBalloonに設定したダメージを与える
-				Actor::SetState(EDead);//Balloonがヒットしたら消滅する。
+				//Actor::SetState(EDead);//Balloonがヒットしたら消滅する。
 			};
 		}
 	}

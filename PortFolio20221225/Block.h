@@ -6,6 +6,8 @@ class Block :
 {
 
 public:
+
+    ~Block();
     enum BlockState {
 
         STABLE,

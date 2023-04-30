@@ -15,6 +15,7 @@ mInterval(10)
 	SpriteComponent::AddAnim(this);
 }
 
+AnimationComponent::~AnimationComponent() {};
 
 
 

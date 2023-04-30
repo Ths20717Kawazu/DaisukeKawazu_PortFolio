@@ -10,10 +10,12 @@ Component::Component(Actor* Owner) :mOwner(Owner)
 Component::Component(Actor* Owner, Player* Player):mOwner(Owner), 
 mPlayer(Player)
 { 
-	
     //actorのcomponent配列にSpriteComponentを追加する thisのアドレスはSpriteComponentを指す
 	mOwner->AddComponent(this);	
 }
 
-Component::~Component() {}
+Component::~Component() 
+{
+	mOwner->RemoveComponent(this);
+}
 

@@ -12,7 +12,7 @@ public:
 
     };
     Enemy(class Game* game, enum Actor::Tag tag);
-    ~Enemy();
+    ~Enemy();//継承先のデストラクタを機能させるためにVirtualは忘れないこと
     void UpdateActor() override;
     void Damage(int damage) override;
     void AddImage(int img, Enemy::EnemyState state);

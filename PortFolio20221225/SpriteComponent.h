@@ -7,7 +7,8 @@ class SpriteComponent :
     public:
         //SpriteComponent(class Actor* Owner, class Player* Player);
         SpriteComponent(Actor* actor);
-        ~SpriteComponent();
+        virtual ~SpriteComponent();
+
         void InitSprite(void);
         void UninitSprite(void);
 

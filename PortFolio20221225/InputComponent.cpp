@@ -55,6 +55,7 @@ void InputComponent::ProcessInput(void)
 			mPlayer->setIsInAir(true);
 		}
 		//if if と　if else ifの組み合わせは挙動が異なる
+
 		if (!mPlayer->GetHasballoon())
 		{
 			if (GetKeyboardTrigger(DIK_RETURN)) 
@@ -69,15 +70,15 @@ void InputComponent::ProcessInput(void)
 		{
 
 
-			if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
+		/*	if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
 			{
 				if (GetKeyboardTrigger(DIK_RETURN))
 				{
 					mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetObstacle());
 				}
-			}
+			}*/
 			////風船をリリース
-			else if (GetKeyboardTrigger(DIK_RETURN))
+			if (GetKeyboardTrigger(DIK_RETURN))
 			{
 				 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
 			}

@@ -8,11 +8,13 @@ CollisionComponent::CollisionComponent(class Actor* Owner) :Component(Owner)
 }
 
 
-CollisionComponent::CollisionComponent(class Actor* Owner, class Player* Player):Component(Owner, Player)
-{
-		
-	
-}
+//CollisionComponent::CollisionComponent(class Actor* Owner, class Player* Player):Component(Owner, Player)
+//{
+//		
+//	
+//}
+
+CollisionComponent::~CollisionComponent() {};
 
 void CollisionComponent::Update() 
 {

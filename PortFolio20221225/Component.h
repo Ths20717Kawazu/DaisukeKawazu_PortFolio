@@ -13,6 +13,7 @@ class Component
 		virtual ~Component();
 		virtual void ProcessInput() {};
 		virtual void Update() {};
+		bool tempCollision{ false };//アクタのデストラクタで各コンポネントを削除する際にCollisionComponentの削除の段階でメモリ読み取りエラーが発生するため
 
 	protected:
 		class Actor* mOwner;

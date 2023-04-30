@@ -33,11 +33,17 @@ public:
 
 	//ブロック専用の配列
 	void AddBlock(class Block* block);
+	void RemoveBlock(class Block* block);
+
+
+
 	//敵専用の配列
 	void AddEnemy(class Enemy* enemy);
-
+	void RemoveEnemy(class Enemy* enemy);
 
 	void AddSprites(class SpriteComponent* sprite);
+	void RemoveSprite(class SpriteComponent* sprite);
+
 
 	Player* GetPlayer() { return mPlayer; }
 	Balloon* GetBalloon() { return mBalloon; }

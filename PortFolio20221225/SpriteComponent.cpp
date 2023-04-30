@@ -20,10 +20,13 @@ SpriteComponent::SpriteComponent(class Actor* Owner):Component(Owner)
 
 }
 
-SpriteComponent::~SpriteComponent() 
+SpriteComponent::~SpriteComponent()
 {
-	UninitSprite();
-};
+	mOwner->GetGame()->RemoveSprite(this);
+	//UninitSprite();
+}
+
+
 
 static ID3D11Buffer* g_VertexBuffer = NULL;	// 頂点情報
 static unsigned int	g_Texture = 0;
@@ -286,8 +289,6 @@ void SpriteComponent::Draw() {
 	//DrawSprite内にTextureIDが入力されている。
 	DrawSprite(x, y, width, height, u, v, uw, vh);
 }
-
-
 
 //Animationしないアクターについてはこちらが適用される。
 //どうしてもPlayerだけ２重で描画されてしまうので、不自然であるが関数内で条件分けをして、

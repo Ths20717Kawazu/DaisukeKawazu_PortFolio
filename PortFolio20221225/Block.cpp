@@ -13,3 +13,8 @@ Block::Block(Game* game, enum Actor::Tag tag) : Actor(game, tag)
 	SC->SetTextureID(LoadTexture((char*)"images/Block.png"));
 	GetGame()->AddBlock(this);
 }
+
+Block::~Block() 
+{
+	GetGame()->RemoveBlock(this);
+}
