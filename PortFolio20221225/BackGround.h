@@ -6,7 +6,8 @@ class BackGround :
 public:
     BackGround(Game* game, enum Tag tag);
     ~BackGround();
+    void UpdateActor() override;
 private:
-
+    D3DXVECTOR2 mPlayerPos;
 };
 

@@ -123,11 +123,11 @@ void UpdateInput(void)
 	// キーボードの更新
 	UpdateKeyboard();
 
-	// マウスの更新
-	UpdateMouse();
+	//// マウスの更新
+	//UpdateMouse();
 
-	// パッドの更新
-	UpdatePad();
+	//// パッドの更新
+	//UpdatePad();
 
 }
 

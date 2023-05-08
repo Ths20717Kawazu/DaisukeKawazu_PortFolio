@@ -51,12 +51,13 @@ void Balloon::UpdateActor()
 			Actor::SetPos(mPos.x, mPos.y);
 		}
 		//風船が手元から離れた場合、プレイヤーのP_Liftを０にする。でないと、風船が手元を離れても消滅するまでプレイヤーは浮かんでしまう。
-		if (mOwner->GetTag() != 1) 
+		if (mOwner->GetTag() != Actor::Player) 
 		{
 			GetGame()->GetPlayer()->SetLift(0.0f);
 		}
 		//Ownerが敵の場合
-		if (mOwner->GetTag() >= 1000 || mOwner->GetTag() <= 9999)
+		//if (mOwner->GetTag() >= 1000 || mOwner->GetTag() <= 9999)
+		if(mOwner->GetTag() == Actor::Enemy)
 		{
 			mPos = mOwner->GetPos();
 			mPos.x += 100.0f;

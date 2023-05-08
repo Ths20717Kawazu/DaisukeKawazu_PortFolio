@@ -9,6 +9,7 @@
 #include "InputComponent.h"
 #include "CollisionComponent.h"
 #include "AnimationComponent.h"
+#include "CameraComponent.h"
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
@@ -51,6 +52,7 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	auto CC = new CollisionComponent(this);
 	//auto AC = new AnimationComponent(this, this);//Playerと他のアニメーションするキャラを別にしていたが、その必用性はない
 	auto AC = new AnimationComponent(this);
+	auto CaC = new CameraComponent(this);
 
 	//==================各State毎に使用する画像をそれぞれ配列にいれていく======================//
 
@@ -130,15 +132,16 @@ void Player::UpdateActor(void)
 		mVel.y += mJumpVel;
 		mJumpVel += mGravity + P_mLift;//重力により減衰
 
-
 		//入力を受け付けた場合の将来座標
 		tempPos.x = curPos.x + mVel.x;
 		tempPos.y = curPos.y + mVel.y;
+
 		//画面外への移動を禁止
 		if (tempPos.x  <= 0 || tempPos.x >= 1500)
 		{
 			mVel.x = 0.0;
 		}
+		
 		for (auto block : GetGame()->GetBlocks())
 		{
 			//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）

@@ -70,13 +70,13 @@ void InputComponent::ProcessInput(void)
 		{
 
 
-		/*	if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
+			if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
 			{
 				if (GetKeyboardTrigger(DIK_RETURN))
 				{
 					mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetObstacle());
 				}
-			}*/
+			}
 			////風船をリリース
 			if (GetKeyboardTrigger(DIK_RETURN))
 			{

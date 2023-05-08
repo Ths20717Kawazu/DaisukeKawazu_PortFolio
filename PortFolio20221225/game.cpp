@@ -35,7 +35,7 @@ void Game::gameInit(void) {
 	//以下、上から
 	Actor* a;
 	a = new BackGround(this, Actor::Background);
-	a->SetACTOR(0.0f, 0.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	a = new Player(this, Actor::Player);
 	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -127,10 +127,7 @@ void Game::gameDraw(void)
 					component->UpdateDraw();
 					//アニメーションが無いActorの描画処理
 					component->StaticDraw();
-
 			}
-		
-
 	}
 };
 
@@ -148,13 +145,8 @@ void Game::RemoveActor(class Actor* actor)
 
 
 void Game::gameProcessInput(void) {
-	UpdateInput();//入力処理の更新処理
-	/*for (auto actor : mActors)
-	{
-		if(actor->GetTag() == Actor::Player)
-			actor->ProcessInput();
-	}*/
-	mPlayer->ProcessInput();
+	UpdateInput();//入力処理の更新処理　input.cpp
+	mPlayer->ProcessInput();//プレイヤの入力の更新
 	//消去の確認用
 	//if (GetKeyboardPress(DIK_SPACE)) {
 	//	/*if (!mEnemies.empty()) {
