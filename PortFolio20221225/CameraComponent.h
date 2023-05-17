@@ -7,7 +7,9 @@ class CameraComponent :
 {   
     public:
       CameraComponent(class Actor*);
+
     private:
+
 };
 
 static Actor* mCameraOwner;

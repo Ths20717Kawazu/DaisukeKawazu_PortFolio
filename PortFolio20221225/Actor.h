@@ -96,7 +96,6 @@ class Actor
 		bool getAnimate() { return animate;  }
 
 	private:
-		ACTOR mActor;
 
 		int TextureID;
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
@@ -104,11 +103,13 @@ class Actor
 		class Player* mPlayer;
 		
 protected:
+		ACTOR mActor;
 		std::vector<class Component*> mComponents;
 		enum Tag mTag;
 		enum STATE mState;
 		float mGravity = 2.0f;
 		int mHP;
+
 		bool animate;
 		D3DXVECTOR2 mPos;
 

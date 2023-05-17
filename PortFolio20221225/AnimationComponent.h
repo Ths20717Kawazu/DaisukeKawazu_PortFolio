@@ -5,7 +5,7 @@ class AnimationComponent :
 {
 public:
     //AnimationComponent(class Actor* Owner, class Player* Player);
-    AnimationComponent(class Actor* Owner);
+    AnimationComponent(class Actor* Owner, int drawOrder);
     ~AnimationComponent();
 
     //void AddImage(int img, Player::PlayerState state);

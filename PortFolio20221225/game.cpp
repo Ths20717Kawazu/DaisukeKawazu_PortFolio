@@ -24,7 +24,6 @@
 #define PLAYER_HEIGHT (300.0f)
 #define PLAYER_WIDTH (300.0f)
 
-
 //********デバッグ用***********************************************************
 //enum Actor::STATE state;
 //bool hit;
@@ -34,25 +33,28 @@
 void Game::gameInit(void) {
 	//以下、上から
 	Actor* a;
+
 	a = new BackGround(this, Actor::Background);
 	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	a = new Player(this, Actor::Player);
 	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
-
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++) 
+	{
 		a = new Enemy(this, Actor::Enemy);
 		a->SetACTOR(100 * i * 2 + 500, 200.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 50; i++) 
+	{
 		a = new Block(this, Actor::Block);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
 	a = new Obstacle(this, Actor::Obstacle);
 	a->SetACTOR(1300.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+
 
 	//for (int i = 0; i < 4; i++) {
 	//	a = new Obstacle(this, (10000 + i + 5));
@@ -192,7 +194,18 @@ void Game::RemoveEnemy(class Enemy* enemy)
 
 void Game::AddSprites(SpriteComponent* sprite) 
 {
-	mSprites.emplace_back(sprite);
+	int curDrawOrder = sprite->GetDrawOrder();
+	auto iter = mSprites.begin();//Sprite配列の先頭アドレスを代入
+	//自分より描画優先度が大きいspriteを探し、その手前にInsertする。
+	for (; iter < mSprites.end(); iter++) 
+	{
+		if (curDrawOrder < (*iter)->GetDrawOrder()) 
+		{
+			break;
+		}
+	}
+	//自分より大きい描画優先度を見つけた時点でSprite配列にInsertする。
+	mSprites.insert(iter, sprite);
 }
 
 void Game::RemoveSprite(SpriteComponent* sprite)

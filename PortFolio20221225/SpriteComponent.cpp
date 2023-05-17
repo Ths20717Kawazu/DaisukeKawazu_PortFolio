@@ -13,9 +13,10 @@
 //}
 
 
-SpriteComponent::SpriteComponent(class Actor* Owner):Component(Owner)
+SpriteComponent::SpriteComponent(class Actor* Owner, int draworder):Component(Owner)
 {
 	InitSprite();
+	mDrawOrder = draworder;
 	mOwner->GetGame()->AddSprites(this);
 
 }

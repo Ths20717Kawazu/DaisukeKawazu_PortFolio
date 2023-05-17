@@ -15,9 +15,12 @@ public:
 
     };
     Block(class Game* game, enum Actor::Tag tag);
+    void UpdateActor() override;
 
     float BlockWidth = 100.0f;
     float BlockHeight = 100.0f;
+
+
 
 private:
    

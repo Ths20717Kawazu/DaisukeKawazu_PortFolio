@@ -47,11 +47,11 @@ Player::Player(Game* game, enum Actor::Tag tag)
 
 	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
 	//auto SC = new SpriteComponent(this, this);
-	auto SC = new SpriteComponent(this);
+	auto SC = new SpriteComponent(this, 600);
 	auto IC = new InputComponent(this, this);
 	auto CC = new CollisionComponent(this);
 	//auto AC = new AnimationComponent(this, this);//Playerと他のアニメーションするキャラを別にしていたが、その必用性はない
-	auto AC = new AnimationComponent(this);
+	auto AC = new AnimationComponent(this, 600);
 	auto CaC = new CameraComponent(this);
 
 	//==================各State毎に使用する画像をそれぞれ配列にいれていく======================//

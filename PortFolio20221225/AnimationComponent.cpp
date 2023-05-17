@@ -8,9 +8,10 @@
 //}
 
 
-AnimationComponent::AnimationComponent(class Actor* Owner): SpriteComponent(Owner),
+AnimationComponent::AnimationComponent(class Actor* Owner, int drawOrder): SpriteComponent(Owner, drawOrder),
 mInterval(10)
 {
+	
 	mOwner = Owner;
 	SpriteComponent::AddAnim(this);
 }

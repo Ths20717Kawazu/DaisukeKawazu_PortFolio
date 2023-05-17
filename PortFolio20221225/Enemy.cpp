@@ -10,9 +10,9 @@ Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
 {
 	mHP = 100;
 	animate = true;
-	auto SC = new SpriteComponent(this);
+	auto SC = new SpriteComponent(this, 300);
 	auto CC = new CollisionComponent(this);
-	auto AC = new AnimationComponent(this);
+	auto AC = new AnimationComponent(this, 300);
 	//**********************Enemyの各State毎に画像配列を初期化************************//
 	AddImage(LoadTexture((char*)"images/gorem.png"), Enemy::IDLE);
 	Actor::AnimImages = Enemy::GetAnimImages(Enemy::GetState());
@@ -26,8 +26,9 @@ Enemy::~Enemy(){
 	
 }
 
-void Enemy::UpdateActor() {
-	//プレイヤのState
+void Enemy::UpdateActor() 
+{		
+	//エネミーのState
 	enum Enemy::EnemyState curstate = Enemy::GetState();
 	if (curstate != Enemy::GetState())//Stateが切り替わったのなら、新たな画像配列を基底クラスが有する画像配列等に入力する。
 	{
@@ -35,10 +36,31 @@ void Enemy::UpdateActor() {
 		Actor::AnimOrders = GetAnimOrders(Enemy::GetState());//基底クラスの画像順番配列にState毎の配列を入力し、AnimationComponent。
 	}
 
-	mPos = Actor::GetPos();
-	mPos.x += 0.5f;
-	Actor::SetPos(mPos.x, mPos.y);
-	if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) {
+	//***************************************************************************************************************************//
+	//プレイヤの速度を取得してエネミーの移動に反映
+	//=======================================//
+		D3DXVECTOR2 Pvel;
+		Pvel = GetGame()->GetPlayer()->getVel();
+		//=======================================//
+
+		//エネミーの移動速度
+		//====================//
+		mActor.pos = Actor::GetPos();
+		mActor.pos.x += 5.0f;
+		//====================//
+
+		//エネミーの移動に上で取得したプレイヤの移動速度を反映
+		//====================//
+		mActor.pos -= Pvel;
+		//====================//
+
+		//上でエネミーに反映すべき移動速度を処理して最終的に反映
+		Actor::SetPos(mActor.pos.x, mActor.pos.y);
+	//***************************************************************************************************************************//
+
+
+	if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) 
+	{
 		GetGame()->GetPlayer()->Damage(1.0f);;
 	};
 
