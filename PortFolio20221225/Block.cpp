@@ -29,6 +29,5 @@ void Block::UpdateActor()
 
 	SetPos(mActor.pos.x, mActor.pos.y);
 	//=================================================//
-
 }
 

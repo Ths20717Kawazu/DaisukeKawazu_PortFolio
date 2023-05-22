@@ -151,6 +151,7 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -105,8 +105,76 @@ void CollisionComponent::Update()
 
 		//その他の接触判定
 
+	}
 
 
+	//Enemy用のブロックとの衝突判定用
+	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* Block, class Enemy* enemy)
+	{
+		//　プレイヤの各頂点座標の取得及び代入
+		D3DXVECTOR2 P_UpperLeft;
+		D3DXVECTOR2 P_UpperRight;
+		D3DXVECTOR2 P_BottomLeft;
+		D3DXVECTOR2 P_BottomRight;
 
+		P_UpperLeft.x = tempPos.x - enemy->EnemyWidth / 2;
+		P_UpperLeft.y = tempPos.y - enemy->EnemyHeight / 2;
+
+		P_UpperRight.x = tempPos.x + enemy->EnemyWidth / 2;
+		P_UpperRight.y = tempPos.y - enemy->EnemyHeight / 2;
+
+		P_BottomLeft.x = tempPos.x - enemy->EnemyWidth / 2;
+		P_BottomLeft.y = tempPos.y + enemy->EnemyHeight / 2;
+
+		P_BottomRight.x = tempPos.x + enemy->EnemyWidth / 2;
+		P_BottomRight.y = tempPos.y + enemy->EnemyHeight / 2;
+
+		//　ブロックの各頂点座標の取得及び代入
+		D3DXVECTOR2 B_UpperLeft;
+		D3DXVECTOR2 B_UpperRight;
+		D3DXVECTOR2 B_BottomLeft;
+		D3DXVECTOR2 B_BottomRight;
+
+		B_UpperLeft.x = Block->GetPos().x - Block->BlockWidth / 2;
+		B_UpperLeft.y = Block->GetPos().y - Block->BlockHeight / 2;
+
+		B_UpperRight.x = Block->GetPos().x + Block->BlockWidth / 2;
+		B_UpperRight.y = Block->GetPos().y - Block->BlockHeight / 2;
+
+		B_BottomLeft.x = Block->GetPos().x - Block->BlockWidth / 2;
+		B_BottomLeft.y = Block->GetPos().y + Block->BlockHeight / 2;
+
+		B_BottomRight.x = Block->GetPos().x + Block->BlockWidth / 2;
+		B_BottomRight.y = Block->GetPos().y + Block->BlockHeight / 2;
+
+
+		//着地しているかの判定
+		//ブロックの上端のY座標より下にくるか？
+		if (P_BottomLeft.y > B_UpperRight.y || P_BottomRight.y > B_UpperLeft.y)
+		{
+			//ブロックの左上端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
+			if (P_BottomRight.x > B_UpperLeft.x && P_BottomLeft.x < B_UpperRight.x)
+			{
+				return true;
+			}
+
+		}
 
 	}
+		////ブロックの下端のY座標より上にくるか？
+		//else if (P_UpperLeft.y < B_BottomRight.y || P_UpperRight.y < B_BottomLeft.y)
+		//{
+		//	//ブロックの左下端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
+		//	if (P_UpperRight.x > B_BottomLeft.x && P_UpperLeft.x < B_BottomRight.x)
+		//	{
+		//		return true;
+		//	}
+		//}
+
+
+		//その他の接触判定
+
+
+
+
+

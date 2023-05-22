@@ -9,6 +9,7 @@
 Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
 {
 	mHP = 100;
+	SetVel(5.0f, 0.0f);
 	animate = true;
 	auto SC = new SpriteComponent(this, 300);
 	auto CC = new CollisionComponent(this);
@@ -28,12 +29,38 @@ Enemy::~Enemy(){
 
 void Enemy::UpdateActor() 
 {		
+
+	D3DXVECTOR2 tempPos;
+	D3DXVECTOR2 curPos;
+	D3DXVECTOR2 lastPos;
+
+	curPos = Actor::GetPos();
+
+	//将来座標
+	tempPos.x = curPos.x + mVel.x;
+	mVel.y += Actor::mGravity;
+	tempPos.y = curPos.y + mVel.y + ( EnemyHeight / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
+
 	//エネミーのState
 	enum Enemy::EnemyState curstate = Enemy::GetState();
 	if (curstate != Enemy::GetState())//Stateが切り替わったのなら、新たな画像配列を基底クラスが有する画像配列等に入力する。
 	{
 		Actor::AnimImages = GetAnimImages(Enemy::GetState());//基底クラスの画像配列にState毎の画像を入力し、AnimationComponentで呼び出す。
 		Actor::AnimOrders = GetAnimOrders(Enemy::GetState());//基底クラスの画像順番配列にState毎の配列を入力し、AnimationComponent。
+	}
+
+	//ブロックとの衝突判定
+	for (auto block : GetGame()->GetBlocks())
+	{
+		//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
+		for (auto block : GetGame()->GetBlocks())
+		{
+			//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
+			if (HitCheckBLK(tempPos, block, this) == true)
+			{
+				mVel.y = 0.0f;
+			}
+		}
 	}
 
 	//***************************************************************************************************************************//
@@ -46,7 +73,8 @@ void Enemy::UpdateActor()
 		//エネミーの移動速度
 		//====================//
 		mActor.pos = Actor::GetPos();
-		mActor.pos.x += 5.0f;
+		mActor.pos.x += mVel.x;
+		mActor.pos.y += mVel.y;
 		//====================//
 
 		//エネミーの移動に上で取得したプレイヤの移動速度を反映

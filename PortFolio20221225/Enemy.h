@@ -25,8 +25,13 @@ public:
     enum EnemyState SetState(enum EnemyState state) { mState = state; }
     enum EnemyState GetState() { return mState; }
 
+    int EnemyWidth = 100;
+    int EnemyHeight = 100;
+    void SetVel(float x, float y) { mVel.x = x, mVel.y = y;  }
+
 
 private:
+    D3DXVECTOR2 mVel{0.0f, 0.0f};
     enum EnemyState mState;
     //‰æ‘œ”z—ñ
     std::vector<int>mIdleImages;

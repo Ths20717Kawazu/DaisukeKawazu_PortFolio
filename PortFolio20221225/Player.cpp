@@ -130,7 +130,7 @@ void Player::UpdateActor(void)
 		D3DXVec2Normalize(&mDir, &mDir);
 		mVel = mDir * mSpeed;
 		mVel.y += mJumpVel;
-		mJumpVel += mGravity + P_mLift;//重力により減衰
+		mJumpVel += Actor::mGravity + P_mLift;//重力により減衰
 
 		//入力を受け付けた場合の将来座標
 		tempPos.x = curPos.x + mVel.x;
