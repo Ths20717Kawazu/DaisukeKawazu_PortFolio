@@ -41,7 +41,8 @@ class Actor
 			Block,
 			Balloon,
 			Obstacle,
-			Background
+			Background,
+			UI
 		};
 
 		Actor(class Game* game, enum Tag tag);

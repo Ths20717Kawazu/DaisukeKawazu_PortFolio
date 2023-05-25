@@ -117,17 +117,17 @@ void CollisionComponent::Update()
 		D3DXVECTOR2 P_BottomLeft;
 		D3DXVECTOR2 P_BottomRight;
 
-		P_UpperLeft.x = tempPos.x - enemy->EnemyWidth / 2;
-		P_UpperLeft.y = tempPos.y - enemy->EnemyHeight / 2;
+		P_UpperLeft.x = tempPos.x - enemy->getWidth() / 2;
+		P_UpperLeft.y = tempPos.y - enemy->getHeight() / 2;
 
-		P_UpperRight.x = tempPos.x + enemy->EnemyWidth / 2;
-		P_UpperRight.y = tempPos.y - enemy->EnemyHeight / 2;
+		P_UpperRight.x = tempPos.x + enemy->getWidth() / 2;
+		P_UpperRight.y = tempPos.y - enemy->getHeight() / 2;
 
-		P_BottomLeft.x = tempPos.x - enemy->EnemyWidth / 2;
-		P_BottomLeft.y = tempPos.y + enemy->EnemyHeight / 2;
+		P_BottomLeft.x = tempPos.x - enemy->getWidth() / 2;
+		P_BottomLeft.y = tempPos.y + enemy->getHeight() / 2;
 
-		P_BottomRight.x = tempPos.x + enemy->EnemyWidth / 2;
-		P_BottomRight.y = tempPos.y + enemy->EnemyHeight / 2;
+		P_BottomRight.x = tempPos.x + enemy->getWidth() / 2;
+		P_BottomRight.y = tempPos.y + enemy->getHeight() / 2;
 
 		//　ブロックの各頂点座標の取得及び代入
 		D3DXVECTOR2 B_UpperLeft;

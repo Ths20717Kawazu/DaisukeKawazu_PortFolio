@@ -2,7 +2,6 @@
 #include "Game.h"
 #include "texture.h"
 #include "SpriteComponent.h"
-#include "AnimationComponent.h"
 #include "CameraComponent.h"
 
 

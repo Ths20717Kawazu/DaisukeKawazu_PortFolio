@@ -18,6 +18,8 @@
 #include "Block.h"
 #include "Obstacle.h"
 #include "BackGround.h"
+#include "UserInterface.h"
+#include <stdio.h>
 
 //========================’Ç‰Á======================//
 
@@ -29,10 +31,12 @@
 //bool hit;
 //int count = 0;
 //*****************************************************************************
-
 void Game::gameInit(void) {
 	//ˆÈ‰ºAã‚©‚ç
 	Actor* a;
+
+	a = new UserInterface(this, Actor::Background);
+	a->SetACTOR(950.0f, 800.0f, 500.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	a = new BackGround(this, Actor::Background);
 	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -107,7 +111,7 @@ void Game::gameRunloop(void)
 	ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	Clear();
 	//•`‰æŽÀŽ{
-
+	printf("Hello");
 	gameProcessInput();
 	gameDraw();
 	gameUpdate();

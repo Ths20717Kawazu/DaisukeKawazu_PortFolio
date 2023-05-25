@@ -1,6 +1,5 @@
 #pragma once
 #include "Actor.h"
-#include "game.h"
 
 class UserInterface :
     public Actor
@@ -10,6 +9,7 @@ class UserInterface :
         ~UserInterface();
         void UpdateActor() override;
     private:
+        D3DXVECTOR2 mPlayerPos;
 
 };
 

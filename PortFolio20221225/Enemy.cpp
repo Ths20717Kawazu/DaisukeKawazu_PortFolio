@@ -39,7 +39,7 @@ void Enemy::UpdateActor()
 	//将来座標
 	tempPos.x = curPos.x + mVel.x;
 	mVel.y += Actor::mGravity;
-	tempPos.y = curPos.y + mVel.y + ( EnemyHeight / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
+	tempPos.y = curPos.y + mVel.y + ( getHeight() / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
 
 	//エネミーのState
 	enum Enemy::EnemyState curstate = Enemy::GetState();
