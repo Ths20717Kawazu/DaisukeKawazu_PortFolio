@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "Enemy.h"
+#include "Life.h"
 #include "Balloon.h"
 #include "texture.h"
 #include "SpriteComponent.h"
@@ -27,18 +28,19 @@ static float g_AnimeUV[4] =
 	0.0f,
 	0.333333f,
 	0.666666f,
-	0.333333f,
+	0.333333f
 };
 
 Player::Player(Game* game, enum Actor::Tag tag)
-	:Actor(game, tag), 
-	mGame(game), 
-	mSpeed(10.0f), 
-	PlayerHeight(300), 
-	PlayerWidth(300), 
+	:Actor(game, tag),
+	mGame(game),
+	mSpeed(10.0f),
+	PlayerHeight(300),
+	PlayerWidth(300),
 	mGravity(2.0f),
 	P_mLift(0.0f),
-	mJumpVel(0.0f)
+	mJumpVel(0.0f),
+	mRemainLives(5)
 {
 	//親クラスであるActorのProtectedのメンバ変数の初期化は↓のように実施する必用がある。
 	mHP = 100;
@@ -109,6 +111,7 @@ Player::~Player()
 
 void Player::UpdateActor(void) 
 {
+	
 		//プレイヤのState
 	enum Player::PlayerState curstate = Player::GetState();
 	if (curstate != Player::GetState())//Stateが切り替わった場合
@@ -156,7 +159,6 @@ void Player::UpdateActor(void)
 			{
 				isInAir = false;
 			}
-			//else if (HitCheckBLK(getPos(), block, this) == false)
 			else if (HitCheckBC(tempPos, 10, block->GetPos(), 10)) 
 			{
 				isInAir = true;
@@ -166,15 +168,27 @@ void Player::UpdateActor(void)
 				isInAir = true;
 			}*/
 		}
-		//for (auto enemy : GetGame()->GetEnemies()) 
-		//{	
-		//	//HitCheckBC(tempPos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
-		//	//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をtempPosにする必用があるのか？
-		//	if (HitCheckBC(tempPos, 10, enemy->GetPos(), 10)) 
-		//	{
-		//		mVel = { 0.0, 0.0 };
-		//	}
-		//}
+		/*if (deltatime == 10) 
+		{*/
+		for (auto enemy : GetGame()->GetEnemies()) 
+		{	
+			//HitCheckBC(tempPos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
+			//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をtempPosにする必用があるのか？
+			if (HitCheckBC(tempPos, 50, enemy->GetPos(), 50))
+			{
+				//mVel = { 0.0, 0.0 };
+				Damage(0);
+			}
+
+			/*if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50))
+			{
+				GetGame()->GetPlayer()->Damage(100.0f);;
+			};*/
+		}
+	/*		deltatime = 0;
+		}*/
+		//deltatime++;
+		//Damage(1);
 		mDir = { 0.0f, 0.0f };
 		mPos += {mVel.x, mVel.y};
 		SetPos(mPos.x, mPos.y);
@@ -183,8 +197,16 @@ void Player::UpdateActor(void)
 void Player::Damage(int damage)
 {
 	mHP -= damage;
-	if (mHP <= 0) {
+	std::vector<class Life*> mLives = GetGame()->GetLives();
+	if (!mLives.empty()) 
+	{
+		Life* life = mLives[0];//mLivesはVector配列のため、動的にサイズが変更されている
+		life->Actor::SetState(Actor::EDead);//、よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
+	}
+	else if (mLives.empty())
+	{
 		Actor::SetState(EDead);
+
 	}
 };
 

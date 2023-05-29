@@ -19,6 +19,7 @@
 #include "Obstacle.h"
 #include "BackGround.h"
 #include "UserInterface.h"
+#include "Life.h"
 #include <stdio.h>
 
 //========================追加======================//
@@ -35,6 +36,12 @@ void Game::gameInit(void) {
 	//以下、上から
 	Actor* a;
 
+	for (int i = 0; i < 5; i++) 
+	{
+		a = new Life(this, Actor::Background);
+		a->SetACTOR(950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	}
+
 	a = new UserInterface(this, Actor::Background);
 	a->SetACTOR(950.0f, 800.0f, 500.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
@@ -47,10 +54,10 @@ void Game::gameInit(void) {
 	for (int i = 0; i < 2; i++) 
 	{
 		a = new Enemy(this, Actor::Enemy);
-		a->SetACTOR(100 * i * 2 + 500, 200.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+		a->SetACTOR(100 * i * 2 + 500, 700.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
-	for (int i = 0; i < 50; i++) 
+	for (int i = 0; i < 10; i++) 
 	{
 		a = new Block(this, Actor::Block);
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -111,7 +118,7 @@ void Game::gameRunloop(void)
 	ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	Clear();
 	//描画実施
-	printf("Hello");
+	
 	gameProcessInput();
 	gameDraw();
 	gameUpdate();
@@ -154,12 +161,16 @@ void Game::gameProcessInput(void) {
 	UpdateInput();//入力処理の更新処理　input.cpp
 	mPlayer->ProcessInput();//プレイヤの入力の更新
 	//消去の確認用
-	//if (GetKeyboardPress(DIK_SPACE)) {
+	//Life* life;
+	//if (GetKeyboardPress(DIK_SPACE))
+	//{
 	//	/*if (!mEnemies.empty()) {
 	//		delete mEnemies.back();
 
 	//	}*/
-	//    delete mPlayer;
+	//    //delete mPlayer;
+	//	life = GetLives();
+	//	life->Actor::SetState(Actor::EDead);
 	//}
 
 }
@@ -194,6 +205,20 @@ void Game::RemoveEnemy(class Enemy* enemy)
 	auto iter = std::find(mEnemies.begin(), mEnemies.end(), enemy);
 	mEnemies.erase(iter);
 }
+
+
+void Game::AddLife(class Life* life) 
+{
+	mLives.emplace_back(life);
+}
+void Game::RemoveLife(class Life* life)
+{
+	// swapしてpop_backできない。swapしてしまうと順番が崩れるため
+	auto iter = std::find(mLives.begin(), mLives.end(), life);
+	mLives.erase(iter);
+}
+
+
 
 
 void Game::AddSprites(SpriteComponent* sprite) 

@@ -19,9 +19,11 @@ void BackGround::UpdateActor()
 	//プレイヤの移動速度を入手して、逆方向へ移動させる
 	//=================================================//
 	D3DXVECTOR2 Pvel;
-	Pvel = GetGame()->GetPlayer()->getVel();
-	mActor.pos -= Pvel;
-
+	if (GetGame()->GetPlayer()->GetState() == Actor::EActive) 
+	{
+		Pvel = GetGame()->GetPlayer()->getVel();
+		mActor.pos -= Pvel;
+	}
 	SetPos(mActor.pos.x, mActor.pos.y);
 	//=================================================//
 

@@ -9,7 +9,8 @@
 Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
 {
 	mHP = 100;
-	SetVel(5.0f, 0.0f);
+	mEscore = 200;
+	SetVel(2.0f, 0.0f);
 	animate = true;
 	auto SC = new SpriteComponent(this, 300);
 	auto CC = new CollisionComponent(this);
@@ -65,42 +66,53 @@ void Enemy::UpdateActor()
 
 	//***************************************************************************************************************************//
 	//プレイヤの速度を取得してエネミーの移動に反映
+	//if()
 	//=======================================//
 		D3DXVECTOR2 Pvel;
-		Pvel = GetGame()->GetPlayer()->getVel();
-		//=======================================//
+		if (GetGame()->GetPlayer()->GetState() == Actor::EActive) 
+		{
+			Pvel = GetGame()->GetPlayer()->getVel();
+			//=======================================//
 
-		//エネミーの移動速度
-		//====================//
-		mActor.pos = Actor::GetPos();
-		mActor.pos.x += mVel.x;
-		mActor.pos.y += mVel.y;
-		//====================//
+			//エネミーの移動速度
+			//====================//
+			mActor.pos = Actor::GetPos();
+			mActor.pos.x += mVel.x;
+			mActor.pos.y += mVel.y;
+			//====================//
 
-		//エネミーの移動に上で取得したプレイヤの移動速度を反映
-		//====================//
-		mActor.pos -= Pvel;
-		//====================//
-
+			//エネミーの移動に上で取得したプレイヤの移動速度を反映
+			//====================//
+			mActor.pos -= Pvel;
+			//====================//
+		}
 		//上でエネミーに反映すべき移動速度を処理して最終的に反映
 		Actor::SetPos(mActor.pos.x, mActor.pos.y);
 	//***************************************************************************************************************************//
 
 
-	if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) 
+	/*if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) 
 	{
-		GetGame()->GetPlayer()->Damage(1.0f);;
-	};
+		GetGame()->GetPlayer()->Damage(100.0f);;
+	};*/
 
 }
 
 void Enemy::Damage(int damage) 
 {
+	int score;
 	mHP -= damage;
 
 	if (mHP <= 0)
 	{
+		
 		Actor::SetState(EDead);
+		
+		score = GetGame()->GetPlayer()->GetScore();
+		score += GetEScore();
+		GetGame()->GetPlayer()->SetScore(score);
+
+
 	}
 
 }

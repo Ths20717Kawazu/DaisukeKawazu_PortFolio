@@ -25,6 +25,9 @@ public:
 
 	//void SetPlayer(class Player* player) { mPlayer = player;  }
 	void AddPlayer(class Player* player) { mPlayer = player; }
+	
+
+
 	void AddBalloon(class Balloon* balloon) { mBalloon = balloon; }
 	void AddObstacle(class Obstacle* obstacle) { mObstacle = obstacle; }
 	
@@ -35,11 +38,13 @@ public:
 	void AddBlock(class Block* block);
 	void RemoveBlock(class Block* block);
 
-
-
 	//敵専用の配列
 	void AddEnemy(class Enemy* enemy);
 	void RemoveEnemy(class Enemy* enemy);
+
+	//ライフの配列
+	void AddLife(class Life* life);
+	void RemoveLife(class Life* life);
 
 	void AddSprites(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
@@ -48,21 +53,25 @@ public:
 	Player* GetPlayer() { return mPlayer; }
 	Balloon* GetBalloon() { return mBalloon; }
 	Obstacle* GetObstacle() { return mObstacle; }
+
+	std::vector<class Life*>& GetLives() { return mLives;}
 	std::vector<class Actor*>& GetActors() { return mActors; }
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
 	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
-	std::vector<class Obstacle*>& GetObstacles() { return mObstacles; }
+	std::vector<class Obstacle*>& GetObstacles() { return mObstacles; }	
 	
 
 private:
 	std::vector<class Actor*>mActors;
 	std::vector<class Block*>mBlocks;
 	std::vector<class Enemy*>mEnemies;
+	std::vector<class Life*> mLives;
 	std::vector<class Obstacle*>mObstacles;
 	std::vector<class SpriteComponent*>mSprites;
 	std::vector<class AnimationComponent*>mAnimComponents;
 	Balloon* mBalloon;
 	Player* mPlayer;
 	Obstacle* mObstacle;
+	
 };
 

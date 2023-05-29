@@ -6,6 +6,7 @@ class Player :
     public Actor
 {
 public: 
+    int deltatime = 0;
 
     enum PlayerState
     {
@@ -72,12 +73,22 @@ public:
       bool GetCloseToEnemy() { return mCloseToEnemy; }
       void SetClosetoEnemy(bool closetoenemy) { mCloseToEnemy = closetoenemy; }
 
+      //ライフの残存数をプレイヤ側で管理    
+      void SetLives(int lives) { mRemainLives = lives; }
+      int GetLives() { return mRemainLives; }
+
     float PlayerHeight = 300.0f;
     float PlayerWidth = 300.0f;
 
     //派生クラスの画像配列を取得する。
     std::vector<int> GetAnimImages(Player::PlayerState state);
     std::vector<int> GetAnimOrders(Player::PlayerState state);
+
+    int GetScore() { return mScore; }
+    void SetScore(int score) { mScore = score; }
+
+
+    int mcount = 0;
 
 private:
     //画像配列
@@ -108,4 +119,9 @@ private:
     bool isInAir = false;
     bool hasBalloon = false;
     bool mCloseToEnemy = false;
+
+    int mScore;
+
+    int mRemainLives;
+
 };

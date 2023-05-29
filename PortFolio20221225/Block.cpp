@@ -21,13 +21,21 @@ Block::~Block()
 
 void Block::UpdateActor()
 {
-	//プレイヤの移動速度を入手して、逆方向へ移動させる
+	//GetGame()->GetPlayer() == NULL ||
+		//プレイヤの移動速度を入手して、逆方向へ移動させる
 	//=================================================//
-	D3DXVECTOR2 Pvel;
-	Pvel = GetGame()->GetPlayer()->getVel();
-	mActor.pos -= Pvel;
+		D3DXVECTOR2 Pvel;
+	if ( GetGame()->GetPlayer()->GetState() == Actor::EActive)
+	{
+		Pvel = GetGame()->GetPlayer()->getVel();
+		mActor.pos -= Pvel;
+	}
+		SetPos(mActor.pos.x, mActor.pos.y);
+	//=================================================//
+	//else if(GetGame()->GetPlayer() == NULL)
+	//{
+	//	SetPos(100, 500);
 
-	SetPos(mActor.pos.x, mActor.pos.y);
-	//=================================================//
+	//}
 }
 

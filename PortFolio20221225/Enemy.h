@@ -30,7 +30,7 @@ public:
 
     void SetVel(float x, float y) { mVel.x = x, mVel.y = y;  }
 
-
+    int GetEScore() { return mEscore; }
 private:
     int EnemyWidth = 100;
     int EnemyHeight = 100;
@@ -41,7 +41,7 @@ private:
     std::vector<int>mWalkImages; 
     //‰æ‘œ•\¦‡˜
     std::vector<int>animIdleOrders;
-    
+    int mEscore;
 
 };
 
