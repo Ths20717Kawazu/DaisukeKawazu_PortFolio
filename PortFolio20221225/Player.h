@@ -124,4 +124,6 @@ private:
 
     int mRemainLives;
 
+    int damageableTime = 0;//別で定める時間を超えるとダメージを受ける。
+    bool damageable = false;
 };

@@ -141,6 +141,8 @@
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GameStart.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="main.cpp" />
@@ -164,6 +166,8 @@
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="GameStart.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="Life.h" />

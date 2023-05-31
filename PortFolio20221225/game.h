@@ -49,6 +49,7 @@ public:
 	void AddSprites(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
+	void checkGameClear();
 
 	Player* GetPlayer() { return mPlayer; }
 	Balloon* GetBalloon() { return mBalloon; }
@@ -72,6 +73,24 @@ private:
 	Balloon* mBalloon;
 	Player* mPlayer;
 	Obstacle* mObstacle;
-	
+	bool GameClear = false;
+
+
+	int maps[10][10]{
+		 { 1,0,0,0,0,0,0,2,2,0 },
+		 { 1,0,0,0,0,0,0,0,0,0 },
+
+		 { 0,0,0,0,0,0,0,0,0,0 },
+		 { 0,0,0,0,0,0,0,0,0,1 },
+
+		 { 0,0,0,0,0,0,0,0,0,1 },
+		 { 0,0,0,0,0,0,0,0,0,0 },
+
+		 { 0,0,0,0,0,0,0,0,0,0 },
+		 { 0,0,0,0,0,0,0,0,0,0 },
+
+		 { 0,0,0,0,0,0,0,0,0,0 },
+		 { 0,0,0,0,0,0,0,0,0,0 }
+	};
 };
 

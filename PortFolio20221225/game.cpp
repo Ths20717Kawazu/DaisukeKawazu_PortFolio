@@ -19,6 +19,8 @@
 #include "Obstacle.h"
 #include "BackGround.h"
 #include "UserInterface.h"
+#include "GameOver.h"
+#include "GameStart.h"
 #include "Life.h"
 #include <stdio.h>
 
@@ -36,7 +38,10 @@ void Game::gameInit(void) {
 	//以下、上から
 	Actor* a;
 
-	for (int i = 0; i < 5; i++) 
+	a = new GameStart(this, Actor::Background);
+	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+
+	for (int i = 0; i < 5; i++)
 	{
 		a = new Life(this, Actor::Background);
 		a->SetACTOR(950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -49,7 +54,25 @@ void Game::gameInit(void) {
 	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	a = new Player(this, Actor::Player);
-	a->SetACTOR(100.0f, 350.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(100.0f, 500.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+
+	for (int Y = 0; Y < 10; Y++) //行
+	{
+		for (int X = 0; X < 10; X++)//列 
+		{
+			if (maps[Y][X] == 1) 
+			{
+				a = new Block(this, Actor::Block);
+				a->SetACTOR(100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			}
+			if (maps[Y][X] == 2)
+			{
+				a = new Obstacle(this, Actor::Obstacle);
+				a->SetACTOR(100.0f * X,  100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			}
+		}
+	}
+
 
 	for (int i = 0; i < 2; i++) 
 	{
@@ -63,8 +86,6 @@ void Game::gameInit(void) {
 		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
-	a = new Obstacle(this, Actor::Obstacle);
-	a->SetACTOR(1300.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 
 	//for (int i = 0; i < 4; i++) {
@@ -93,6 +114,9 @@ void Game::gameUpdate(void) {
 	//	count = enemy->count;
 	//}
 	//========================//
+	Actor* a;
+	
+
 	for (auto actor : mActors)
 	{
 		if (actor->GetState() == Actor::EActive)
@@ -102,11 +126,12 @@ void Game::gameUpdate(void) {
 
 		if (actor->GetState() == Actor::EDead)
 		{
+
 			delete actor;
 		}
 	}
 
-
+	checkGameClear();
 }
 
 void Game::gameRunloop(void)
@@ -242,4 +267,16 @@ void Game::RemoveSprite(SpriteComponent* sprite)
 	// swapしてpop_backできない。swapしてしまうと順番が崩れるため
 	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
 	mSprites.erase(iter);
+}
+
+
+//ゲームクリアかを判定
+void Game::checkGameClear() 
+{
+	if (mPlayer->GetPos().x > 400) 
+	{
+		Actor* a;
+		a = new GameOver(this, Actor::Background);
+		a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	}
 }

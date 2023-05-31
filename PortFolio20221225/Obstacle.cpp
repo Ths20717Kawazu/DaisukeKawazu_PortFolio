@@ -28,6 +28,8 @@ void Obstacle::UpdateActor()
 	//プレイヤの移動速度を入手して、逆方向へ移動させる
 //=================================================//
 	D3DXVECTOR2 Pvel;
+	//Playerが消滅した際に、UpdateActorが更新されなくなる不具合を下記の条件文を入れて解消する。
+	//Playerの位置情報を取得し続ける部分については、この条件式が不可欠
 	if (GetGame()->GetPlayer()->GetState() == Actor::EActive) 
 	{
 		Pvel = GetGame()->GetPlayer()->getVel();

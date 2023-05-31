@@ -11,6 +11,7 @@
 #include "CollisionComponent.h"
 #include "AnimationComponent.h"
 #include "CameraComponent.h"
+#include "GameOver.h"
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
@@ -68,7 +69,23 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	AddAnimOrders(0, IDLE);
 	AddAnimOrders(0, IDLE);
 	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
+	AddAnimOrders(0, IDLE);
 	AddAnimOrders(1, IDLE);
+	AddAnimOrders(1, IDLE);
+	AddAnimOrders(1, IDLE);
+	AddAnimOrders(2, IDLE);
+	AddAnimOrders(2, IDLE);
 	AddAnimOrders(2, IDLE);
 	AddAnimOrders(2, IDLE);
 	Actor::AnimOrders = GetAnimOrders(Player::GetState());//基底クラスの画像順序配列を初期化する。
@@ -79,9 +96,18 @@ Player::Player(Game* game, enum Actor::Tag tag)
 
 
 	//プレイヤがEWALK状態の画像
-	//AddImage(LoadTexture((char*)"images/Player_Walk_1.png"), WALK);
-	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EWALK);
-	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EWALK);
+	AddImage(LoadTexture((char*)"images/Player_Walk_1.png"), WALK);
+	/*AddImage(LoadTexture((char*)"images/Player_2.png"), WALK);
+	AddImage(LoadTexture((char*)"images/Player_3.png"), WALK);*/
+	AddAnimOrders(0, WALK);
+	AddAnimOrders(0, WALK);
+	AddAnimOrders(0, WALK);
+	AddAnimOrders(0, WALK);
+	AddAnimOrders(1, WALK);
+	AddAnimOrders(2, WALK);
+	AddAnimOrders(2, WALK);
+
+
 
 	//プレイヤがERUN状態の画像
 	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
@@ -103,6 +129,10 @@ Player::Player(Game* game, enum Actor::Tag tag)
 
 Player::~Player() 
 {
+	Actor* a;
+	a = new GameOver(mGame, Actor::Background);
+	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	
 
 };
 
@@ -111,8 +141,15 @@ Player::~Player()
 
 void Player::UpdateActor(void) 
 {
+	//========================無敵時間の処理============================//
+	damageableTime++;
+	if (damageableTime > 100) {
+		damageable = true;
+	}
+	//*************************無敵時間の処理オワリ*************************//
 	
-		//プレイヤのState
+
+	//プレイヤのState
 	enum Player::PlayerState curstate = Player::GetState();
 	if (curstate != Player::GetState())//Stateが切り替わった場合
 	{
@@ -120,65 +157,86 @@ void Player::UpdateActor(void)
 	   Actor::AnimOrders = GetAnimOrders(Player::GetState());
 	}
 
-		//現在のプレイヤの位置情報	
-		D3DXVECTOR2 tempPos;
-		D3DXVECTOR2 curPos;
-		D3DXVECTOR2 lastPos;
-		curPos = getPos();
-		if (!P_mLift == 0)
+
+	//========================移動に関する処理============================//
+
+	//現在のプレイヤの位置情報	
+	D3DXVECTOR2 tempPos;
+	D3DXVECTOR2 curPos;
+	D3DXVECTOR2 lastPos;
+	curPos = getPos();
+	if (!P_mLift == 0)
+	{
+		isInAir = true;
+	}
+	
+	//移動方向をベクトル正規化
+	D3DXVec2Normalize(&mDir, &mDir);
+	mVel = mDir * mSpeed;
+	mVel.y += mJumpVel;
+	mJumpVel += Actor::mGravity + P_mLift;//重力により減衰
+
+	//入力を受け付けた場合の将来座標
+	tempPos.x = curPos.x + mVel.x;
+	tempPos.y = curPos.y + mVel.y;
+
+	//画面外への移動を禁止
+	if (tempPos.x  <= 0 || tempPos.x >= 1500)
+	{
+		mVel.x = 0.0;
+	}
+	//画面外の上下限界まで行くと死亡判定	
+	if (tempPos.y >= 1000 || tempPos.y <= 0)
+	{
+		mVel.x = 0.0;
+		Actor::SetState(EDead);
+	}
+	//*************************移動に関する処理オワリ*************************//
+
+
+
+	//=======================接触判定処理==========================//
+	for (auto block : GetGame()->GetBlocks())
+	{
+		//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
+		if (HitCheckBLK(tempPos, block, this) == true)
+		{
+			mVel.y = 0.0f;
+			mJumpVel = 0.0f;
+			isInAir = false;
+			setSpeed(10.0f);
+		}
+		else if (HitCheckBLK(getPos(), block, this) == true)
+		{
+			isInAir = false;
+		}
+		else if (HitCheckBC(tempPos, 10, block->GetPos(), 10)) 
 		{
 			isInAir = true;
 		}
-		//移動方向をベクトル正規化
-		D3DXVec2Normalize(&mDir, &mDir);
-		mVel = mDir * mSpeed;
-		mVel.y += mJumpVel;
-		mJumpVel += Actor::mGravity + P_mLift;//重力により減衰
-
-		//入力を受け付けた場合の将来座標
-		tempPos.x = curPos.x + mVel.x;
-		tempPos.y = curPos.y + mVel.y;
-
-		//画面外への移動を禁止
-		if (tempPos.x  <= 0 || tempPos.x >= 1500)
+		/*else if (HitCheckBC(tempPos, 100, block->GetPos(), 100) == false)
 		{
-			mVel.x = 0.0;
-		}
-		
-		for (auto block : GetGame()->GetBlocks())
+			isInAir = true;
+		}*/
+	}
+	/*if (deltatime == 10) 
+	{*/
+	for (auto enemy : GetGame()->GetEnemies()) 
+	{	
+		//HitCheckBC(tempPos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
+		//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をtempPosにする必用があるのか？
+		if (HitCheckBC(tempPos, 50, enemy->GetPos(), 50))
 		{
-			//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
-			if (HitCheckBLK(tempPos, block, this) == true)
+
+			mVel = { 0.0, 0.0 };
+			if (damageable)
 			{
-				mVel.y = 0.0f;
-				mJumpVel = 0.0f;
-				isInAir = false;
-				setSpeed(10.0f);
-			}
-			else if (HitCheckBLK(getPos(), block, this) == true)
-			{
-				isInAir = false;
-			}
-			else if (HitCheckBC(tempPos, 10, block->GetPos(), 10)) 
-			{
-				isInAir = true;
-			}
-			/*else if (HitCheckBC(tempPos, 100, block->GetPos(), 100) == false)
-			{
-				isInAir = true;
-			}*/
-		}
-		/*if (deltatime == 10) 
-		{*/
-		for (auto enemy : GetGame()->GetEnemies()) 
-		{	
-			//HitCheckBC(tempPos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
-			//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をtempPosにする必用があるのか？
-			if (HitCheckBC(tempPos, 50, enemy->GetPos(), 50))
-			{
-				//mVel = { 0.0, 0.0 };
 				Damage(0);
+				damageableTime = 0;
+				damageable = false;
 			}
+		}
+		//*************************接触判定処理オワリ*************************//
 
 			/*if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50))
 			{
@@ -201,7 +259,7 @@ void Player::Damage(int damage)
 	if (!mLives.empty()) 
 	{
 		Life* life = mLives[0];//mLivesはVector配列のため、動的にサイズが変更されている
-		life->Actor::SetState(Actor::EDead);//、よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
+		life->Actor::SetState(Actor::EDead);//よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
 	}
 	else if (mLives.empty())
 	{
