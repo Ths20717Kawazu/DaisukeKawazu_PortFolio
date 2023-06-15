@@ -77,15 +77,15 @@ public:
       void SetLives(int lives) { mRemainLives = lives; }
       int GetLives() { return mRemainLives; }
 
-    float PlayerHeight = 300.0f;
-    float PlayerWidth = 300.0f;
-
     //派生クラスの画像配列を取得する。
     std::vector<int> GetAnimImages(Player::PlayerState state);
     std::vector<int> GetAnimOrders(Player::PlayerState state);
 
     int GetScore() { return mScore; }
     void SetScore(int score) { mScore = score; }
+
+    float PlayerHeight = 300.0f;
+    float PlayerWidth = 300.0f;
 
 
     int mcount = 0;

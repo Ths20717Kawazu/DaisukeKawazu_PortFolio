@@ -18,6 +18,7 @@ CollisionComponent::~CollisionComponent() {};
 
 void CollisionComponent::Update() 
 {
+
 }
 
 
@@ -42,7 +43,9 @@ void CollisionComponent::Update()
 			return true;
 	}
 
-	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* Block, class Player* Player)
+	//接触判定を基底クラスであるActorをダウンキャストして継承先クラス毎に接触判定を変えようと思ったがうまくいかなかったため、
+	//引数のBlockクラスをActorクラスに変更した。それに伴い、BlockクラスのBlockWidthとBlockHeightはActor.hに移した。
+	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Actor* Block, class Player* Player)
 	{
 		//　プレイヤの各頂点座標の取得及び代入
 		D3DXVECTOR2 P_UpperLeft;
@@ -108,8 +111,8 @@ void CollisionComponent::Update()
 	}
 
 
-	//Enemy用のブロックとの衝突判定用
-	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* Block, class Enemy* enemy)
+	//Enemy用のブロックとの衝突判定用※こちらも上のHitcheckBLKと同様の理由で同じ箇所を変更している。
+	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Actor* Block, class Enemy* enemy)
 	{
 		//　プレイヤの各頂点座標の取得及び代入
 		D3DXVECTOR2 P_UpperLeft;

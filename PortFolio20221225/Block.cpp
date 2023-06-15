@@ -12,6 +12,10 @@ Block::Block(Game* game, enum Actor::Tag tag) : Actor(game, tag)
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/Block.png"));
 	GetGame()->AddBlock(this);
+
+	//Grid‚Ö‚Ì“o˜^
+	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	mMygrid->addMembersIngrid(this);
 }
 
 Block::~Block() 

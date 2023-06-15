@@ -12,6 +12,7 @@
 #include "AnimationComponent.h"
 #include "CameraComponent.h"
 #include "GameOver.h"
+#include "Grid.h"
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
@@ -48,6 +49,10 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	mPos = { 100.0f, 500.0f };
 	animate = true;
 
+	//Gridへの登録
+	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	mMygrid->addMembersIngrid(this);
+	
 	//下記コンポネントがnewされると、各コンポーネント配下ではPlayer（Owner）を呼び出せる
 	//auto SC = new SpriteComponent(this, this);
 	auto SC = new SpriteComponent(this, 600);
@@ -99,69 +104,79 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	AddImage(LoadTexture((char*)"images/Player_Walk_1.png"), WALK);
 	/*AddImage(LoadTexture((char*)"images/Player_2.png"), WALK);
 	AddImage(LoadTexture((char*)"images/Player_3.png"), WALK);*/
-	AddAnimOrders(0, WALK);
-	AddAnimOrders(0, WALK);
-	AddAnimOrders(0, WALK);
-	AddAnimOrders(0, WALK);
-	AddAnimOrders(1, WALK);
-	AddAnimOrders(2, WALK);
-	AddAnimOrders(2, WALK);
+AddAnimOrders(0, WALK);
+AddAnimOrders(0, WALK);
+AddAnimOrders(0, WALK);
+AddAnimOrders(0, WALK);
+AddAnimOrders(1, WALK);
+AddAnimOrders(2, WALK);
+AddAnimOrders(2, WALK);
 
 
 
-	//プレイヤがERUN状態の画像
-	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+//プレイヤがERUN状態の画像
+//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
 
-	////プレイヤがEJUMP状態の画像
-	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+////プレイヤがEJUMP状態の画像
+//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
 
-	////プレイヤがEFALL状態の画像
-	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+////プレイヤがEFALL状態の画像
+//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
 
-	GetGame()->AddPlayer(this);
+GetGame()->AddPlayer(this);
 }
 
-Player::~Player() 
+Player::~Player()
 {
 	Actor* a;
 	a = new GameOver(mGame, Actor::Background);
 	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	
+
 
 };
 
 
 
 
-void Player::UpdateActor(void) 
+void Player::UpdateActor(void)
 {
+	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+
+	if (mMygrid != newMygrid)
+	{
+		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
+		mMygrid = newMygrid;//新たなグリッドを代入
+		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
+	}
+
+
 	//========================無敵時間の処理============================//
 	damageableTime++;
 	if (damageableTime > 100) {
 		damageable = true;
 	}
 	//*************************無敵時間の処理オワリ*************************//
-	
+
 
 	//プレイヤのState
 	enum Player::PlayerState curstate = Player::GetState();
 	if (curstate != Player::GetState())//Stateが切り替わった場合
 	{
-	   Actor::AnimImages = GetAnimImages(Player::GetState());//基盤クラスの画像配列にState毎の画像を入力し、AnimationComponent。
-	   Actor::AnimOrders = GetAnimOrders(Player::GetState());
+		Actor::AnimImages = GetAnimImages(Player::GetState());//基盤クラスの画像配列にState毎の画像を入力し、AnimationComponent。
+		Actor::AnimOrders = GetAnimOrders(Player::GetState());
 	}
 
 
 	//========================移動に関する処理============================//
 
 	//現在のプレイヤの位置情報	
-	D3DXVECTOR2 tempPos;
+	D3DXVECTOR2 futurePos;
 	D3DXVECTOR2 curPos;
 	D3DXVECTOR2 lastPos;
 	curPos = getPos();
@@ -169,7 +184,7 @@ void Player::UpdateActor(void)
 	{
 		isInAir = true;
 	}
-	
+
 	//移動方向をベクトル正規化
 	D3DXVec2Normalize(&mDir, &mDir);
 	mVel = mDir * mSpeed;
@@ -177,16 +192,16 @@ void Player::UpdateActor(void)
 	mJumpVel += Actor::mGravity + P_mLift;//重力により減衰
 
 	//入力を受け付けた場合の将来座標
-	tempPos.x = curPos.x + mVel.x;
-	tempPos.y = curPos.y + mVel.y;
+	futurePos.x = curPos.x + mVel.x;
+	futurePos.y = curPos.y + mVel.y;
 
 	//画面外への移動を禁止
-	if (tempPos.x  <= 0 || tempPos.x >= 1500)
+	/*if (futurePos.x <= 0 || futurePos.x >= 1500)
 	{
 		mVel.x = 0.0;
-	}
+	}*/
 	//画面外の上下限界まで行くと死亡判定	
-	if (tempPos.y >= 1000 || tempPos.y <= 0)
+	if (futurePos.y >= 1000 || futurePos.y <= 0)
 	{
 		mVel.x = 0.0;
 		Actor::SetState(EDead);
@@ -196,10 +211,41 @@ void Player::UpdateActor(void)
 
 
 	//=======================接触判定処理==========================//
+	for (auto actor : mMygrid->GetGridMembers())
+	{
+		if (actor->GetTag() == Actor::Block)
+		{
+			if (HitCheckBLK(futurePos, actor, this) == true)
+			{
+				mVel.y = 0.0f;
+				mJumpVel = 0.0f;
+				isInAir = false;
+				setSpeed(10.0f);
+			}
+		}
+
+		else if (actor->GetTag() == Actor::Enemy) 
+		{
+			//HitCheckBC(futurePos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
+			//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をfuturePosにする必用があるのか？
+			if (HitCheckBC(futurePos, 50, actor->GetPos(), 50))
+			{
+				mVel = { 0.0, 0.0 };
+				if (damageable)
+				{
+					Damage(0);
+					damageableTime = 0;
+					damageable = false;
+				}
+			}
+		}
+	}
+
+
 	for (auto block : GetGame()->GetBlocks())
 	{
 		//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
-		if (HitCheckBLK(tempPos, block, this) == true)
+		if (HitCheckBLK(futurePos, block, this) == true)
 		{
 			mVel.y = 0.0f;
 			mJumpVel = 0.0f;
@@ -210,46 +256,19 @@ void Player::UpdateActor(void)
 		{
 			isInAir = false;
 		}
-		else if (HitCheckBC(tempPos, 10, block->GetPos(), 10)) 
+		else if (HitCheckBC(futurePos, 10, block->GetPos(), 10)) 
 		{
 			isInAir = true;
 		}
-		/*else if (HitCheckBC(tempPos, 100, block->GetPos(), 100) == false)
+		/*else if (HitCheckBC(futurePos, 100, block->GetPos(), 100) == false)
 		{
 			isInAir = true;
 		}*/
 	}
-	/*if (deltatime == 10) 
-	{*/
-	for (auto enemy : GetGame()->GetEnemies()) 
-	{	
-		//HitCheckBC(tempPos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
-		//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をtempPosにする必用があるのか？
-		if (HitCheckBC(tempPos, 50, enemy->GetPos(), 50))
-		{
-
-			mVel = { 0.0, 0.0 };
-			if (damageable)
-			{
-				Damage(0);
-				damageableTime = 0;
-				damageable = false;
-			}
-		}
-		//*************************接触判定処理オワリ*************************//
-
-			/*if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50))
-			{
-				GetGame()->GetPlayer()->Damage(100.0f);;
-			};*/
-		}
-	/*		deltatime = 0;
-		}*/
-		//deltatime++;
-		//Damage(1);
-		mDir = { 0.0f, 0.0f };
-		mPos += {mVel.x, mVel.y};
-		SetPos(mPos.x, mPos.y);
+	//*************************接触判定処理オワリ*************************//
+	mDir = { 0.0f, 0.0f };
+	mPos += {mVel.x, mVel.y};
+	SetPos(mPos.x, mPos.y);
 }
 
 void Player::Damage(int damage)

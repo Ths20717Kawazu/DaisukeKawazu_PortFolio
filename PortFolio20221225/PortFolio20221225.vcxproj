@@ -143,6 +143,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameStart.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="main.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameStart.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="Life.h" />

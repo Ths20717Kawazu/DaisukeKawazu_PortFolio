@@ -22,6 +22,7 @@
 #include "GameOver.h"
 #include "GameStart.h"
 #include "Life.h"
+#include "Grid.h"
 #include <stdio.h>
 
 //========================í«â¡======================//
@@ -37,6 +38,18 @@
 void Game::gameInit(void) {
 	//à»â∫ÅAè„Ç©ÇÁ
 	Actor* a;
+
+	Grid* grid;
+
+	for (int j = 0; j < Game::GridRow; j++)
+	{
+		for (int i = 0; i < Game::GridColumn; i++)
+		{
+			grid = new Grid();
+			mGrids[j][i] = grid;
+		}
+
+	}
 
 	a = new GameStart(this, Actor::Background);
 	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -58,7 +71,7 @@ void Game::gameInit(void) {
 
 	for (int Y = 0; Y < 10; Y++) //çs
 	{
-		for (int X = 0; X < 10; X++)//óÒ 
+		for (int X = 0; X < 100; X++)//óÒ 
 		{
 			if (maps[Y][X] == 1) 
 			{
@@ -70,33 +83,14 @@ void Game::gameInit(void) {
 				a = new Obstacle(this, Actor::Obstacle);
 				a->SetACTOR(100.0f * X,  100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 			}
+			if (maps[Y][X] == 3)
+			{
+				a = new Enemy(this, Actor::Enemy);
+				a->SetACTOR(100 * X * 2 + 500, 700.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			}
 		}
 	}
 
-
-	for (int i = 0; i < 2; i++) 
-	{
-		a = new Enemy(this, Actor::Enemy);
-		a->SetACTOR(100 * i * 2 + 500, 700.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	}
-
-	for (int i = 0; i < 10; i++) 
-	{
-		a = new Block(this, Actor::Block);
-		a->SetACTOR(100.0f * i, 900.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	}
-
-
-
-	//for (int i = 0; i < 4; i++) {
-	//	a = new Obstacle(this, (10000 + i + 5));
-	//	a->SetACTOR(i * 150 + 800.0f,  800.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	//}
-
-	/*for (int i = 0; i < 3; i++) {
-		a = new Block(this, Actor::Block);
-		a->SetACTOR(100.0f * i, 700.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	}*/
 }
 
 
@@ -131,7 +125,7 @@ void Game::gameUpdate(void) {
 		}
 	}
 
-	checkGameClear();
+	//checkGameClear();
 }
 
 void Game::gameRunloop(void)
@@ -171,7 +165,6 @@ void Game::gameDraw(void)
 
 void Game::RemoveActor(class Actor* actor) 
 {
-	//Ç±ÇÃactorÇ™mActorsÇ…Ç†ÇÈÇ©íTÇ∑
 	auto iter = std::find(mActors.begin(), mActors.end(), actor);
 	if (iter != mActors.end())
 	{
@@ -279,4 +272,11 @@ void Game::checkGameClear()
 		a = new GameOver(this, Actor::Background);
 		a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
+}
+
+Grid* Game::getGrid(int posX, int posY) 
+{ 
+	int row = posY / Grid::GridHeight;
+	int column = posX / Grid::GridWidth;
+	return mGrids[row][column];
 }

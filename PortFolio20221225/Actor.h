@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "main.h"
-
+#include "Grid.h"
 
 //**********************************//
 //タグID
@@ -95,6 +95,8 @@ class Actor
 		std::vector<int> GetActorAnimOrders(){ return AnimOrders; }
 
 		bool getAnimate() { return animate;  }
+		float BlockWidth = 100.0f;
+		float BlockHeight = 100.0f;
 
 	private:
 
@@ -110,9 +112,11 @@ protected:
 		enum STATE mState;
 		float mGravity = 2.0f;
 		int mHP;
-
+		Grid* mMygrid;
 		bool animate;
 		D3DXVECTOR2 mPos;
+
+
 
 		std::vector<int>AnimImages;//各派生クラス共通の画像⇒各クラスのStateが切り替わる度にこの配列に入力される。
 		std::vector<int>AnimOrders;//各派生クラス共通の表示順序⇒各クラスのStateが切り替わる度にこの配列に入力される。

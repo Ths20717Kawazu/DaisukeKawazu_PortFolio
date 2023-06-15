@@ -21,6 +21,10 @@ Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
 	AddAnimOrders(0, IDLE);
 	Actor::AnimOrders = GetAnimOrders(Enemy::GetState());//基底クラスの画像順序配列を初期化する。
 	GetGame()->AddEnemy(this);
+	//Gridへの登録
+	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	mMygrid->addMembersIngrid(this);
+
 }
 
 Enemy::~Enemy(){
@@ -31,16 +35,28 @@ Enemy::~Enemy(){
 void Enemy::UpdateActor() 
 {		
 
-	D3DXVECTOR2 tempPos;
+	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+
+	if (mMygrid != newMygrid)
+	{
+		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
+		mMygrid = newMygrid;//新たなグリッドを代入
+		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
+	}
+
+
+
+
+	D3DXVECTOR2 futurePos;
 	D3DXVECTOR2 curPos;
 	D3DXVECTOR2 lastPos;
 
 	curPos = Actor::GetPos();
 
 	//将来座標
-	tempPos.x = curPos.x + mVel.x;
+	futurePos.x = curPos.x + mVel.x;
 	mVel.y += Actor::mGravity;
-	tempPos.y = curPos.y + mVel.y + ( getHeight() / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
+	futurePos.y = curPos.y + mVel.y + ( getHeight() / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
 
 	//エネミーのState
 	enum Enemy::EnemyState curstate = Enemy::GetState();
@@ -51,15 +67,13 @@ void Enemy::UpdateActor()
 	}
 
 	//ブロックとの衝突判定
-	for (auto block : GetGame()->GetBlocks())
+	for (auto actor : mMygrid->GetGridMembers())
 	{
-		//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
-		for (auto block : GetGame()->GetBlocks())
+		if (actor->GetTag() == Actor::Block)
 		{
-			//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
-			if (HitCheckBLK(tempPos, block, this) == true)
+			if (HitCheckBLK(futurePos, actor, this) == true)
 			{
-				mVel.y = 0.0f;
+				mVel.y = 0.0f;;
 			}
 		}
 	}

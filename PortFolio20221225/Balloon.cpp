@@ -16,6 +16,11 @@ mDamage(100)
 	Actor::SetTag(tag);
 	GetGame()->GetPlayer()->SetLift(-2.03f);//ƒvƒŒƒCƒ„‚É•‚—Í‚ð—^‚¦‚é
 	GetGame()->AddBalloon(this);
+
+	//Grid‚Ö‚Ì“o˜^
+	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	mMygrid->addMembersIngrid(this);
+
 }
 
 Balloon::~Balloon() 

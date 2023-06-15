@@ -27,6 +27,6 @@ private:
 
 //bool CheckBlocks();
 bool HitCheckBC(D3DXVECTOR2 posA, float rA, D3DXVECTOR2 posB, float rB);
-bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* , class Player*);
-bool HitCheckBLK(D3DXVECTOR2 tempPos, class Block* , class Enemy*);
+bool HitCheckBLK(D3DXVECTOR2 tempPos, class Actor* , class Player*);
+bool HitCheckBLK(D3DXVECTOR2 tempPos, class Actor* , class Enemy*);
 //bool CheckObstacles(D3DXVECTOR2 posA);
