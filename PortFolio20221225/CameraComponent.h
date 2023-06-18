@@ -6,11 +6,23 @@ class CameraComponent :
     public Component
 {   
     public:
-      CameraComponent(class Actor*);
+        void InitCamera(void);
+		void UninitCamera(void);
+		void UpdateCamera(void);
+		void DrawCamera(void);
+		static void SetCamera(float x, float y);
+		static void GetBasePos(float* px, float* py);
+
+        //CameraComponent(class Actor*);
 
     private:
 
 };
+
+
+
+
+
 
 static Actor* mCameraOwner;
 

@@ -1,9 +1,12 @@
 #include "SpriteComponent.h"
-//#include "AnimationComponent.h"
 #include "Actor.h"
 #include "game.h"
 #include "renderer.h"
 #include "texture.h"
+#include "CameraComponent.h"
+//#include "AnimationComponent.h"
+
+
 
 //
 //SpriteComponent::SpriteComponent(class Actor* Owner, class Player* Player) :Component(Owner, Player)
@@ -75,27 +78,31 @@ void SpriteComponent::DrawSprite(float x, float y, float width, float height, fl
 	material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	SetMaterial(material);
 
+	//äÓèÄç¿ïWÇéÛÇØéÊÇÈ
+	float baseX, baseY;
+	CameraComponent::GetBasePos(&baseX, &baseY);
+
 	D3D11_MAPPED_SUBRESOURCE msr;
 	GetDeviceContext()->Map(g_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 	VERTEX_3D* vertex = (VERTEX_3D*)msr.pData;
 	//í∏ì_ÇÃèÓïÒ
-	vertex[0].Position = D3DXVECTOR3(x - (width / 2), y - (height / 2), 0.0f);
+	vertex[0].Position = D3DXVECTOR3(baseX + x - (width / 2), baseY + y - (height / 2), 0.0f);
 	vertex[0].Normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);//ñ@ê¸èÓïÒ
 	vertex[0].Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[0].TexCoord = D3DXVECTOR2(u, v);
 
-	vertex[1].Position = D3DXVECTOR3(x + (width / 2), y - (height / 2), 0.0f);
+	vertex[1].Position = D3DXVECTOR3(baseX + x + (width / 2), baseY + y - (height / 2), 0.0f);
 	vertex[1].Normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	vertex[1].Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[1].TexCoord = D3DXVECTOR2(u + uw, v);
 
-	vertex[2].Position = D3DXVECTOR3(x - (width / 2), y + (height / 2), 0.0f);
+	vertex[2].Position = D3DXVECTOR3(baseX + x - (width / 2), baseY + y + (height / 2), 0.0f);
 	vertex[2].Normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	vertex[2].Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[2].TexCoord = D3DXVECTOR2(u, v + vh);
 
-	vertex[3].Position = D3DXVECTOR3(x + (width / 2), y + (height / 2), 0.0f);
+	vertex[3].Position = D3DXVECTOR3(baseX + x + (width / 2), baseY + y + (height / 2), 0.0f);
 	vertex[3].Normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	vertex[3].Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[3].TexCoord = D3DXVECTOR2(u + uw, v + vh);

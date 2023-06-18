@@ -13,10 +13,15 @@
 #include "CameraComponent.h"
 #include "GameOver.h"
 #include "Grid.h"
+#include "CameraComponent.h"
 
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
 #define BOX_HEIGHT	(100.0f) //箱の高さ
+#define DISP_POS_X	(960.0f)	//プレイヤー表示座標X
+#define DISP_POS_Y	(540.0f)	//プレイヤー表示座標Y
+
+
 
 //static PLAYER g_Player;
 static int g_TextureChara;
@@ -62,7 +67,6 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	auto CC = new CollisionComponent(this);
 	//auto AC = new AnimationComponent(this, this);//Playerと他のアニメーションするキャラを別にしていたが、その必用性はない
 	auto AC = new AnimationComponent(this, 600);
-	auto CaC = new CameraComponent(this);
 
 	//==================各State毎に使用する画像をそれぞれ配列にいれていく======================//
 
@@ -240,6 +244,21 @@ void Player::UpdateActor(void)
 	mPos += {mVel.x, mVel.y};
 	//mActor.pos += {mVel.x, mVel.y};
 	Actor::SetPos(mPos.x, mPos.y);
+
+	//カメラ座標の更新
+	float camera_x, camera_y;
+	camera_x = Actor::GetPos().x - DISP_POS_X;
+	camera_y = 0.0f;
+
+	if (camera_x < 0)
+		camera_x = 0;
+	if (camera_y < 0)
+		camera_y = 0;
+	if (camera_x > 1920)
+		camera_x = 1920;
+	if (camera_y > 1080)
+		camera_y = 1080;
+	CameraComponent::SetCamera(camera_x, camera_y);
 }
 
 void Player::Damage(int damage)
