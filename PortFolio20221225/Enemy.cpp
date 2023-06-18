@@ -6,7 +6,7 @@
 #include "AnimationComponent.h"
 #include "CollisionComponent.h"
 
-Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
+Enemy::Enemy(Game* game, enum Actor::Tag tagID, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot):Actor(game, tagID)
 {
 	mHP = 100;
 	mEscore = 200;
@@ -21,8 +21,10 @@ Enemy::Enemy(Game* game, enum Actor::Tag tagID):Actor(game, tagID)
 	AddAnimOrders(0, IDLE);
 	Actor::AnimOrders = GetAnimOrders(Enemy::GetState());//基底クラスの画像順序配列を初期化する。
 	GetGame()->AddEnemy(this);
+
+	SetACTOR(posX, posY, BoxH, BoxW, UvU, UvV, VH, VW, Rot);
 	//Gridへの登録
-	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	mMygrid = GetGame()->getGrid(posX, posY);
 	mMygrid->addMembersIngrid(this);
 
 }
@@ -55,6 +57,7 @@ void Enemy::UpdateActor()
 
 	//将来座標
 	futurePos.x = curPos.x + mVel.x;
+
 	mVel.y += Actor::mGravity;
 	futurePos.y = curPos.y + mVel.y + ( getHeight() / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
 

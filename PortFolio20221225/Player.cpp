@@ -33,12 +33,12 @@ static float g_AnimeUV[4] =
 	0.333333f
 };
 
-Player::Player(Game* game, enum Actor::Tag tag)
+Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot)
 	:Actor(game, tag),
 	mGame(game),
 	mSpeed(10.0f),
-	PlayerHeight(300),
-	PlayerWidth(300),
+	//PlayerHeight(300),
+	//PlayerWidth(300),
 	mGravity(2.0f),
 	P_mLift(0.0f),
 	mJumpVel(0.0f),
@@ -46,9 +46,11 @@ Player::Player(Game* game, enum Actor::Tag tag)
 {
 	//親クラスであるActorのProtectedのメンバ変数の初期化は↓のように実施する必用がある。
 	mHP = 100;
-	mPos = { 100.0f, 500.0f };
+	//mPos = { 100.0f, 200.0f };
 	animate = true;
-
+	SetACTOR(posX, posY, BoxH, BoxW, UvU, UvV, VH, VW, Rot);
+	mPos = { posX, posY };
+	
 	//Gridへの登録
 	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 	mMygrid->addMembersIngrid(this);
@@ -71,26 +73,9 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	Actor::AnimImages = GetAnimImages(Player::GetState());//基底クラスの画像配列を初期化する。
 
 	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
-	AddAnimOrders(0, IDLE);
+	
 	AddAnimOrders(0, IDLE);
 	AddAnimOrders(1, IDLE);
-	AddAnimOrders(1, IDLE);
-	AddAnimOrders(1, IDLE);
-	AddAnimOrders(2, IDLE);
-	AddAnimOrders(2, IDLE);
 	AddAnimOrders(2, IDLE);
 	AddAnimOrders(2, IDLE);
 	Actor::AnimOrders = GetAnimOrders(Player::GetState());//基底クラスの画像順序配列を初期化する。
@@ -104,45 +89,40 @@ Player::Player(Game* game, enum Actor::Tag tag)
 	AddImage(LoadTexture((char*)"images/Player_Walk_1.png"), WALK);
 	/*AddImage(LoadTexture((char*)"images/Player_2.png"), WALK);
 	AddImage(LoadTexture((char*)"images/Player_3.png"), WALK);*/
-AddAnimOrders(0, WALK);
-AddAnimOrders(0, WALK);
-AddAnimOrders(0, WALK);
-AddAnimOrders(0, WALK);
-AddAnimOrders(1, WALK);
-AddAnimOrders(2, WALK);
-AddAnimOrders(2, WALK);
+	AddAnimOrders(0, WALK);
+	AddAnimOrders(0, WALK);
+	AddAnimOrders(1, WALK);
+	AddAnimOrders(2, WALK);
+	AddAnimOrders(2, WALK);
 
 
 
-//プレイヤがERUN状態の画像
-//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
-
-////プレイヤがEJUMP状態の画像
-//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
-
-////プレイヤがEFALL状態の画像
-//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+	//プレイヤがERUN状態の画像
+	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+	
+	////プレイヤがEJUMP状態の画像
+	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
+	
+	////プレイヤがEFALL状態の画像
+	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
+	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
 
 GetGame()->AddPlayer(this);
 }
 
 Player::~Player()
 {
-	Actor* a;
+	/*Actor* a;
 	a = new GameOver(mGame, Actor::Background);
-	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);*/
 
 
 };
-
-
-
 
 void Player::UpdateActor(void)
 {
@@ -158,7 +138,8 @@ void Player::UpdateActor(void)
 
 	//========================無敵時間の処理============================//
 	damageableTime++;
-	if (damageableTime > 100) {
+	if (damageableTime > 100) 
+	{
 		damageable = true;
 	}
 	//*************************無敵時間の処理オワリ*************************//
@@ -178,54 +159,66 @@ void Player::UpdateActor(void)
 	//現在のプレイヤの位置情報	
 	D3DXVECTOR2 futurePos;
 	D3DXVECTOR2 curPos;
-	D3DXVECTOR2 lastPos;
-	curPos = getPos();
-	if (!P_mLift == 0)
-	{
-		isInAir = true;
-	}
+	//D3DXVECTOR2 lastPos;
+	curPos = Actor::GetPos();
+	
+	//if (!P_mLift == 0)
+	//{
+	//	isInAir = true;
+	//}
 
-	//移動方向をベクトル正規化
+	////移動方向をベクトル正規化
 	D3DXVec2Normalize(&mDir, &mDir);
 	mVel = mDir * mSpeed;
+	mJumpVel += Actor::mGravity;//重力により減衰
 	mVel.y += mJumpVel;
-	mJumpVel += Actor::mGravity + P_mLift;//重力により減衰
 
-	//入力を受け付けた場合の将来座標
+
+	////入力を受け付けた場合の将来座標
 	futurePos.x = curPos.x + mVel.x;
 	futurePos.y = curPos.y + mVel.y;
 
-	//画面外への移動を禁止
-	/*if (futurePos.x <= 0 || futurePos.x >= 1500)
-	{
-		mVel.x = 0.0;
-	}*/
-	//画面外の上下限界まで行くと死亡判定	
-	if (futurePos.y >= 1000 || futurePos.y <= 0)
-	{
-		mVel.x = 0.0;
-		Actor::SetState(EDead);
-	}
-	//*************************移動に関する処理オワリ*************************//
+	////画面外への移動を禁止
+	///*if (futurePos.x <= 0 || futurePos.x >= 1500)
+	//{
+	//	mVel.x = 0.0;
+	//}*/
+	////画面外の上下限界まで行くと死亡判定	
+	////if (futurePos.y >= 1000 || futurePos.y <= 0)
+	////{
+	////	mVel.x = 0.0;
+	////	//Actor::SetState(EDead);
+	////}
+	////*************************移動に関する処理オワリ*************************//
 
 
 
-	//=======================接触判定処理==========================//
+	////=======================接触判定処理==========================//
 	for (auto actor : mMygrid->GetGridMembers())
 	{
 		if (actor->GetTag() == Actor::Block)
 		{
 			if (HitCheckBLK(futurePos, actor, this) == true)
 			{
-				mVel.y = 0.0f;
-				mJumpVel = 0.0f;
-				isInAir = false;
-				setSpeed(10.0f);
+				   //isInAir = false;
+				   mVel.y = 0.0f;
+				   mJumpVel = 0.0f;
+				   //setSpeed(10.0f);
 			}
-		}
+			//if(HitGroundCheck(futurePos, actor, this) == true)
+			//{
 
-		else if (actor->GetTag() == Actor::Enemy) 
-		{
+			//	isInAir = false;
+			//	if (mVel.y > 0) 
+			//	{
+			//		//mVel.y = 0.0f;
+			//		mJumpVel = 0.0f;
+			//	}
+			//    //setSpeed(10.0f);
+			//}
+		}
+	    else if (actor->GetTag() == Actor::Enemy) 
+	    {
 			//HitCheckBC(futurePos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
 			//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をfuturePosにする必用があるのか？
 			if (HitCheckBC(futurePos, 50, actor->GetPos(), 50))
@@ -242,33 +235,11 @@ void Player::UpdateActor(void)
 	}
 
 
-	for (auto block : GetGame()->GetBlocks())
-	{
-		//将来座標がブロックと衝突することが分かる場合（現段階では上からの接触のみ対応となっている）
-		if (HitCheckBLK(futurePos, block, this) == true)
-		{
-			mVel.y = 0.0f;
-			mJumpVel = 0.0f;
-			isInAir = false;
-			setSpeed(10.0f);
-		}
-		else if (HitCheckBLK(getPos(), block, this) == true)
-		{
-			isInAir = false;
-		}
-		else if (HitCheckBC(futurePos, 10, block->GetPos(), 10)) 
-		{
-			isInAir = true;
-		}
-		/*else if (HitCheckBC(futurePos, 100, block->GetPos(), 100) == false)
-		{
-			isInAir = true;
-		}*/
-	}
-	//*************************接触判定処理オワリ*************************//
+	////*************************接触判定処理オワリ*************************//
 	mDir = { 0.0f, 0.0f };
 	mPos += {mVel.x, mVel.y};
-	SetPos(mPos.x, mPos.y);
+	//mActor.pos += {mVel.x, mVel.y};
+	Actor::SetPos(mPos.x, mPos.y);
 }
 
 void Player::Damage(int damage)
@@ -278,8 +249,8 @@ void Player::Damage(int damage)
 	if (!mLives.empty()) 
 	{
 		Life* life = mLives[0];//mLivesはVector配列のため、動的にサイズが変更されている
-		life->Actor::SetState(Actor::EDead);//よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
-	}
+			life->Actor::SetState(Actor::EDead);//よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
+		}
 	else if (mLives.empty())
 	{
 		Actor::SetState(EDead);

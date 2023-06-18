@@ -11,7 +11,7 @@ mDamage(100)
 	auto SC = new SpriteComponent(this, 500);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/balloon.png"));
-	SetOwner(GetGame()->GetPlayer());
+	SetOwner(GetGame()->GetPlayer());//最初のオーナーをプレイヤーに設定
 	animate = false;
 	Actor::SetTag(tag);
 	GetGame()->GetPlayer()->SetLift(-2.03f);//プレイヤに浮力を与える
@@ -40,6 +40,17 @@ void Balloon::SetOwner(class Actor* owner)
 
 void Balloon::UpdateActor()
 {
+
+	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+
+	if (mMygrid != newMygrid)
+	{
+		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
+		mMygrid = newMygrid;//新たなグリッドを代入
+		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
+	}
+
+
 	if (Actor::GetPos().x > 1500 || Actor::GetPos().y < 0)
 	{
 		Actor::SetState(EDead);
@@ -48,7 +59,7 @@ void Balloon::UpdateActor()
 	if(mOwner)
 	{
 		//Ownerがプレイヤーの場合
-		if (mOwner->GetTag() == 1) 
+		if (mOwner->GetTag() == Actor::Player) 
 		{
 			mActor.pos = mOwner->GetPos();
 			mActor.pos.x += 100.0f;
@@ -69,9 +80,11 @@ void Balloon::UpdateActor()
 			mActor.pos.y -= 10.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		}
-		Balloon::mActor.pos = mOwner->GetPos();
-		Balloon::mActor.pos.y -= mLift;
-		mOwner->Actor::SetPos(Balloon::mActor.pos.x, Balloon::mActor.pos.y);
+
+		//Balloon::mActor.pos = mOwner->GetPos();
+		//Balloon::mActor.pos.y -= mLift;
+		//mOwner->Actor::SetPos(Balloon::mActor.pos.x, Balloon::mActor.pos.y);
+
 	}
 	//Owner不在でBalloonがリリースされた場合（プレイヤもしくはObstacleに属していないフリーな状態）
 	else if(!mOwner)
@@ -102,6 +115,9 @@ void Balloon::UpdateActor()
 
 
 		//風船が直接敵に当たった場合（場合分けしない場合、Obstacleの当たり判定と２重に判定されエラーとなる。
+
+
+
 		for (auto enemy : GetGame()->GetEnemies())
 		{
 			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))

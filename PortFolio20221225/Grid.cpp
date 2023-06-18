@@ -1,10 +1,6 @@
 #include "game.h"
 #include "Grid.h"
 
-
-
-
-
 void Grid::addMembersIngrid(class Actor* actor) 
 {
 	mGridMembers.emplace_back(actor);
@@ -21,6 +17,3 @@ void Grid::removeMembersIngrid(class Actor* actor)
 		mGridMembers.pop_back();
 	}
 };
-
-
-

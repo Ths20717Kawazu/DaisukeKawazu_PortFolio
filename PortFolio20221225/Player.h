@@ -21,7 +21,7 @@ public:
         LAND,
         Statenums
   };
-      Player(Game* game, enum Tag tag);
+      Player(Game* game, enum Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot);
       ~Player();//基底クラスが削除された際に連動してデストラクタが発動する
 
       //void DrawPlayer(void);
@@ -58,8 +58,8 @@ public:
       void setDir(D3DXVECTOR2 dir) { mDir = dir; }
       D3DXVECTOR2 getVel() { return mVel; }
       void setVel(D3DXVECTOR2 vel) { mVel = vel; }
-      D3DXVECTOR2 getPos() { return mPos; }
-      void setPos(D3DXVECTOR2 pos) { mPos = pos; }
+     /* D3DXVECTOR2 getPos() { return mPos; }
+      void setPos(D3DXVECTOR2 pos) { mPos = pos; }*/
 
       bool GetHasballoon(){ return hasBalloon; }
       void SetHasballoon(bool hasballoon) { hasBalloon = hasballoon; }
@@ -86,8 +86,6 @@ public:
 
     float PlayerHeight = 300.0f;
     float PlayerWidth = 300.0f;
-
-
     int mcount = 0;
 
 private:
@@ -105,24 +103,24 @@ private:
 
     Game* mGame;
     //D3DXVECTOR2 playerPos;
-    D3DXVECTOR2 mDir;
-    D3DXVECTOR2 mVel;
-    D3DXVECTOR2 mLastpos;
+    D3DXVECTOR2 mDir {0, 0};
+    D3DXVECTOR2 mVel{ 0, 0 };
+    D3DXVECTOR2 mLastpos{ 0, 0 };
 
     int mHP ;
 
-    float mSpeed;
-    float mGravity;
-    float mJumpVel;
-    float P_mLift;
+    float mSpeed = 0;
+    float mGravity= 0;
+    float mJumpVel= 0;
+    float P_mLift = 0;
     
     bool isInAir = false;
     bool hasBalloon = false;
     bool mCloseToEnemy = false;
 
-    int mScore;
+    int mScore = 0 ;
 
-    int mRemainLives;
+    int mRemainLives = 0;
 
     int damageableTime = 0;//別で定める時間を超えるとダメージを受ける。
     bool damageable = false;

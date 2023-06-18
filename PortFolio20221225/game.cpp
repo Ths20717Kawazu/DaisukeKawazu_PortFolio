@@ -27,8 +27,8 @@
 
 //========================追加======================//
 
-#define PLAYER_HEIGHT (300.0f)
-#define PLAYER_WIDTH (300.0f)
+#define PLAYER_HEIGHT (200.0f)
+#define PLAYER_WIDTH (200.0f)
 
 //********デバッグ用***********************************************************
 //enum Actor::STATE state;
@@ -66,8 +66,8 @@ void Game::gameInit(void) {
 	a = new BackGround(this, Actor::Background);
 	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
-	a = new Player(this, Actor::Player);
-	a->SetACTOR(100.0f, 500.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	//a = new Player(this, Actor::Player, 200.0f, 400, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	//a->SetACTOR(100.0f, 0.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	for (int Y = 0; Y < 10; Y++) //行
 	{
@@ -75,8 +75,9 @@ void Game::gameInit(void) {
 		{
 			if (maps[Y][X] == 1) 
 			{
-				a = new Block(this, Actor::Block);
-				a->SetACTOR(100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				//a->SetACTOR(100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				//getGrid(a->GetPos().x, a->GetPos().y)->addMembersIngrid(a);
 			}
 			if (maps[Y][X] == 2)
 			{
@@ -85,9 +86,21 @@ void Game::gameInit(void) {
 			}
 			if (maps[Y][X] == 3)
 			{
-				a = new Enemy(this, Actor::Enemy);
-				a->SetACTOR(100 * X * 2 + 500, 700.0f, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				a = new Enemy(this, Actor::Enemy, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				//a->SetACTOR(100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 			}
+			if (maps[Y][X] == 4)
+			{
+				a = new Player(this, Actor::Player, 100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				//a->SetACTOR(100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			}
+			if (maps[Y][X] == 5)
+			{
+				a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				//a->SetACTOR(100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				//getGrid(a->GetPos().x, a->GetPos().y)->addMembersIngrid(a);
+			}
+
 		}
 	}
 
@@ -120,7 +133,6 @@ void Game::gameUpdate(void) {
 
 		if (actor->GetState() == Actor::EDead)
 		{
-
 			delete actor;
 		}
 	}
@@ -275,8 +287,10 @@ void Game::checkGameClear()
 }
 
 Grid* Game::getGrid(int posX, int posY) 
-{ 
-	int row = posY / Grid::GridHeight;
+{
 	int column = posX / Grid::GridWidth;
-	return mGrids[row][column];
+	int row = posY / Grid::GridHeight;
+	//xutilityにて例外が発生、おそらく用意したGridの範囲を逸脱しているために発生すると推察、
+	//応急的にrow（行）に+２（数字は適当、ただし負数にすると直ぐに同様の例外処理が発生する。）して対処する。
+	return mGrids[row + 2][column];
 }

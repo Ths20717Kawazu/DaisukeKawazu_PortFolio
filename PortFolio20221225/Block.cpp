@@ -5,17 +5,19 @@
 #include "texture.h"
 
 
-Block::Block(Game* game, enum Actor::Tag tag) : Actor(game, tag)
+Block::Block(Game* game, enum Actor::Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot) : Actor(game, tag)
 {
 	animate = false;
 	auto SC = new SpriteComponent(this,200);
 	auto CC = new CollisionComponent(this);
 	SC->SetTextureID(LoadTexture((char*)"images/Block.png"));
 	GetGame()->AddBlock(this);
-
+	SetACTOR(posX, posY, BoxH, BoxW, UvU, UvV, VH, VW, Rot);
 	//Gridへの登録
-	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
-	mMygrid->addMembersIngrid(this);
+	//インスタンス化した段階であると、全てのブロックの当初の場所が同じであることから、登録されるＧｒｉｄがすべて同じになってしまう。
+	//原因究明にいたらなかったが、Updateの段階でGridに登録しないと正常に登録されない
+	/*GetGame()->getGrid(posX, posY)->addMembersIngrid(this);
+	mMygrid = GetGame()->getGrid(posX, posY);*/
 }
 
 Block::~Block() 
@@ -25,6 +27,9 @@ Block::~Block()
 
 void Block::UpdateActor()
 {
+	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	mMygrid->addMembersIngrid(this);
+
 	//GetGame()->GetPlayer() == NULL ||
 		//プレイヤの移動速度を入手して、逆方向へ移動させる
 	//=================================================//

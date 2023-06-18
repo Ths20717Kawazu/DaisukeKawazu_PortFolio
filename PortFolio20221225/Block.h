@@ -7,21 +7,15 @@ class Block :
 
 public:
 
-    ~Block();
     enum BlockState {
 
         STABLE,
         NUMS
 
     };
-    Block(class Game* game, enum Actor::Tag tag);
+    Block(class Game* game, enum Actor::Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot);
+    ~Block();
     void UpdateActor() override;
-
-    /*float BlockWidth = 100.0f;
-    float BlockHeight = 100.0f;*/
-
-
-
 private:
    
 };

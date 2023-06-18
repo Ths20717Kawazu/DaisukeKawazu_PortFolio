@@ -45,7 +45,8 @@ void InputComponent::ProcessInput(void)
 			mPlayer->setDir(dir);
 		}
 
-		if (!mPlayer->getIsInAir() && GetKeyboardTrigger(DIK_SPACE))
+		//if (!mPlayer->getIsInAir() && GetKeyboardTrigger(DIK_SPACE))
+		if (GetKeyboardTrigger(DIK_SPACE))
 		{
 			float lift = mPlayer->GetLift();
 			dir.y = -1.0;
@@ -62,7 +63,7 @@ void InputComponent::ProcessInput(void)
 			{
 				Actor* a;
 				a = new Balloon(mPlayer->GetGame(), Actor::Balloon);
-				a->SetACTOR(mPlayer->getPos().x + 50, mPlayer->getPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+				a->SetACTOR(mPlayer->Actor::GetPos().x + 50, mPlayer->Actor::GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 				mPlayer->SetHasballoon(true);
 			}
 		}

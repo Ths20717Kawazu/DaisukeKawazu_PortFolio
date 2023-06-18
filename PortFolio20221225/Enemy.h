@@ -11,7 +11,7 @@ public:
         RUN
 
     };
-    Enemy(class Game* game, enum Actor::Tag tag);
+    Enemy(class Game* game, enum Actor::Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot);
     ~Enemy();//継承先のデストラクタを機能させるためにVirtualは忘れないこと
     void UpdateActor() override;
     void Damage(int damage) override;

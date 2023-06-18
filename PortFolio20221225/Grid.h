@@ -4,8 +4,11 @@
 class Grid 
 {
 	public:
-		static const int GridWidth = 250;
-		static const int GridHeight = 250;
+		//Grid関連ファイル grid.cpp,game.cpp
+		//Gridの幅と高さを中途半端な数字にすると、接触判定の際に誤差がうまれ、対象をすり抜けた後に判定される事象が発生する
+		//キリの良い値に設定すること
+		static const int GridWidth = 1000;
+		static const int GridHeight = 1000;
 
 		Grid() {};
 		~Grid() {};
