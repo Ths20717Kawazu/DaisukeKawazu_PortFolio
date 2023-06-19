@@ -18,13 +18,13 @@ void BackGround::UpdateActor()
 {
 	//プレイヤの移動速度を入手して、逆方向へ移動させる
 	//=================================================//
-	D3DXVECTOR2 Pvel;
+	/*D3DXVECTOR2 Pvel;
 	if (GetGame()->GetPlayer()->GetState() == Actor::EActive) 
 	{
 		Pvel = GetGame()->GetPlayer()->getVel();
 		mActor.pos -= Pvel;
 	}
-	SetPos(mActor.pos.x, mActor.pos.y);
+	SetPos(mActor.pos.x, mActor.pos.y);*/
 	//=================================================//
 
 //初期化の際に、Playerのコンストラクタが呼び出される前にBackgroundのコンストラクタが呼び出されるため

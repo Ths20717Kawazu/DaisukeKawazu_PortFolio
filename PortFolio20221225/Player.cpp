@@ -20,6 +20,8 @@
 #define BOX_HEIGHT	(100.0f) //箱の高さ
 #define DISP_POS_X	(960.0f)	//プレイヤー表示座標X
 #define DISP_POS_Y	(540.0f)	//プレイヤー表示座標Y
+#define MAP_WIDTH_MAX	(2500.0f) //MAPの右限界
+#define MAP_HEIGHT_MAX	(2000.0f) //MAPの高さ限界
 
 
 
@@ -247,18 +249,19 @@ void Player::UpdateActor(void)
 
 	//カメラ座標の更新
 	float camera_x, camera_y;
-	camera_x = Actor::GetPos().x - DISP_POS_X;
+	camera_x = Actor::GetPos().x - DISP_POS_X;//
 	camera_y = 0.0f;
 
-	if (camera_x < 0)
+	if (camera_x < 0)//カメラが移動する左限界。プレイヤーがDISP_POS_Xより左に位置している場合はカメラは移動しない。
 		camera_x = 0;
 	if (camera_y < 0)
 		camera_y = 0;
-	if (camera_x > 1920)
-		camera_x = 1920;
-	if (camera_y > 1080)
-		camera_y = 1080;
-	CameraComponent::SetCamera(camera_x, camera_y);
+	if (camera_x > MAP_WIDTH_MAX)//カメラが移動する右限界即ちＭＡＰの表示限界である。これ以上プレイヤーが進んでもカメラは追随しない。
+		camera_x = MAP_WIDTH_MAX;
+	if (camera_y > MAP_HEIGHT_MAX)
+		camera_y = MAP_HEIGHT_MAX;
+	CameraComponent::SetCameraPos(camera_x, camera_y);
+
 }
 
 void Player::Damage(int damage)

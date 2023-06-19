@@ -2,6 +2,7 @@
 #pragma once
 
 #include "main.h"
+#include "CameraComponent.h"
 #include "input.h"
 #include "renderer.h"
 #include "texture.h"
@@ -35,12 +36,12 @@
 //bool hit;
 //int count = 0;
 //*****************************************************************************
-void Game::gameInit(void) {
-	//à»â∫ÅAè„Ç©ÇÁ
-	Actor* a;
+void Game::gameInit(void) 
+{
+	mCameraComponent = new CameraComponent();
+
 
 	Grid* grid;
-
 	for (int j = 0; j < Game::GridRow; j++)
 	{
 		for (int i = 0; i < Game::GridColumn; i++)
@@ -48,59 +49,33 @@ void Game::gameInit(void) {
 			grid = new Grid();
 			mGrids[j][i] = grid;
 		}
-
 	}
 
+	Actor* a;
 	a = new GameStart(this, Actor::Background);
 	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	for (int i = 0; i < 5; i++)
 	{
-		a = new Life(this, Actor::Background);
-		a->SetACTOR(950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+		a = new Life(this, Actor::Background, 950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, i);
+		//a->SetACTOR(950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
 	a = new UserInterface(this, Actor::Background);
-	a->SetACTOR(950.0f, 800.0f, 500.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	a->SetACTOR(950.0f, 400.0f, 500.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	a = new BackGround(this, Actor::Background);
 	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-
-	//a = new Player(this, Actor::Player, 200.0f, 400, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	//a->SetACTOR(100.0f, 0.0f, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	for (int Y = 0; Y < 10; Y++) //çs
 	{
 		for (int X = 0; X < 100; X++)//óÒ 
 		{
-			if (maps[Y][X] == 1) 
-			{
-				a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-				//a->SetACTOR(100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-				//getGrid(a->GetPos().x, a->GetPos().y)->addMembersIngrid(a);
-			}
-			if (maps[Y][X] == 2)
-			{
-				a = new Obstacle(this, Actor::Obstacle);
-				a->SetACTOR(100.0f * X,  100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			}
-			if (maps[Y][X] == 3)
-			{
-				a = new Enemy(this, Actor::Enemy, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-				//a->SetACTOR(100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			}
-			if (maps[Y][X] == 4)
-			{
-				a = new Player(this, Actor::Player, 100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-				//a->SetACTOR(100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			}
-			if (maps[Y][X] == 5)
-			{
-				a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-				//a->SetACTOR(100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-				//getGrid(a->GetPos().x, a->GetPos().y)->addMembersIngrid(a);
-			}
-
+			if (maps[Y][X] == 1) a = new Block(this,    Actor::Block,    100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 2) a = new Obstacle(this, Actor::Obstacle, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 3) a = new Enemy(this,    Actor::Enemy,    100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 4) a = new Player(this,   Actor::Player,   100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 5) a = new Block(this,    Actor::Block,    100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 		}
 	}
 

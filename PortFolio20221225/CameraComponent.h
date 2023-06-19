@@ -2,21 +2,19 @@
 #include "Component.h"
 //#include "Player.h"
 
-class CameraComponent :
-    public Component
+class CameraComponent
 {   
     public:
-        void InitCamera(void);
-		void UninitCamera(void);
+		CameraComponent();
+		~CameraComponent();
+
 		void UpdateCamera(void);
 		void DrawCamera(void);
-		static void SetCamera(float x, float y);
 		static void GetBasePos(float* px, float* py);
-
-        //CameraComponent(class Actor*);
-
+		static void SetCameraPos(float x, float y);
+		static D3DXVECTOR2 GetCameraPos() { return CameraPos; }
     private:
-
+		static D3DXVECTOR2 CameraPos;
 };
 
 
