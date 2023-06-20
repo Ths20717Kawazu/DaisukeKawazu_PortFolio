@@ -123,10 +123,19 @@ void CollisionComponent::Update()
 		B_Right = Block->GetPos().x + Block->BlockWidth / 2;
 		B_Left = Block->GetPos().x - Block->BlockWidth / 2;
 		
-		if ( P_Bottom > B_Upper && P_Upper < B_Bottom)
+
+		//着地しているかの判定
+		//ブロックの上端のY座標より下にくるか？
+		if (P_BottomLeft.y > B_UpperRight.y || P_BottomRight.y > B_UpperLeft.y)
 		{
-			return true;
+			//ブロックの左上端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
+			if (P_BottomRight.x > B_UpperLeft.x && P_BottomLeft.x < B_UpperRight.x)
+			{
+				return true;
+			}
+
 		}
+
 		return false;
 	}
 

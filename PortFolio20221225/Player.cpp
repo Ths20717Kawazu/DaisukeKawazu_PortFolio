@@ -204,24 +204,20 @@ void Player::UpdateActor(void)
 	{
 		if (actor->GetTag() == Actor::Block)
 		{
-			if (HitCheckBLK(futurePos, actor, this) == true)
+			if(HitGroundCheck(futurePos, actor, this) == true)
 			{
-				   //isInAir = false;
-				   mVel.y = 0.0f;
-				   mJumpVel = 0.0f;
-				   //setSpeed(10.0f);
-			}
-			//if(HitGroundCheck(futurePos, actor, this) == true)
-			//{
 
-			//	isInAir = false;
-			//	if (mVel.y > 0) 
-			//	{
-			//		//mVel.y = 0.0f;
-			//		mJumpVel = 0.0f;
-			//	}
-			//    //setSpeed(10.0f);
-			//}
+				isInAir = false;
+				mVel.y = 0.0f;
+				
+				if (HitCheckBLK(futurePos, actor, this) == true)
+				{
+					   //isInAir = false;
+					   //mVel.y = 0.0f;
+					   mJumpVel = 0.0f;
+					   //setSpeed(10.0f);
+				}
+			}
 		}
 	    else if (actor->GetTag() == Actor::Enemy) 
 	    {
