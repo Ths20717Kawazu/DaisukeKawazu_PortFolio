@@ -88,33 +88,6 @@ void Game::gameUninit(void) {
 
 }
 
-void Game::gameUpdate(void) {
-	////=======デバッグ用========//
-	//for (auto enemy : mEnemies) {
-	//	state = enemy->GetState();
-	//	hit = enemy->hit;
-	//	count = enemy->count;
-	//}
-	//========================//
-	Actor* a;
-	
-
-	for (auto actor : mActors)
-	{
-		if (actor->GetState() == Actor::EActive)
-		{
-			actor->UpdateActor();
-		}
-
-		if (actor->GetState() == Actor::EDead)
-		{
-			delete actor;
-		}
-	}
-
-	//checkGameClear();
-}
-
 void Game::gameRunloop(void)
 {
 
@@ -128,26 +101,79 @@ void Game::gameRunloop(void)
 	gameProcessInput();
 	gameDraw();
 	gameUpdate();
+	
+	
+	
 	//バックバッファ、
 	SwapBuffers();
 
 	//EndTime;
 }
 
+void Game::gameUpdate(void) {
+	////=======デバッグ用========//
+	//for (auto enemy : mEnemies) {
+	//	state = enemy->GetState();
+	//	hit = enemy->hit;
+	//	count = enemy->count;
+	//}
+	//========================//
+	Actor* a;
+	
+	//switch(int scene)
+    //case 1:   
+	//break;
+	//case 2:
+	//
+	for (auto actor : mActors)
+	{
+		if (actor->GetState() == Actor::EActive)
+		{
+			actor->UpdateActor();
+		}
+
+		if (actor->GetState() == Actor::EDead)
+		{
+			delete actor;
+		}
+	}
+
+	//case 3:
+	// for(auto actor :mActors){
+	// if(!mActors.end)
+	// delete actor;
+	// }
+	// 
+	//break;
+	//checkGameClear();
+}
+
+
 //描画は別に用意する
 void Game::gameDraw(void)
 {
-	for (auto actor : mActors)
+
+	//switch(int scene)
+	//case 1:   
+		//アニメーションを伴うものとそうでないものを分ける必用がある。（アニメーションするキャラクタが２重で描画されるため）
+		for (auto component : mSprites)
+		{
+				//アニメーションを伴うActorの描画処理
+				component->UpdateDraw();
+				//アニメーションが無いActorの描画処理
+				component->StaticDraw();
+		}
+	//break
+	//case 2;
+	//mStartSprite->StaticDraw
+    //break
+    //case 3
+	//mEndSprite->StaticDraw
+
+
+	/*for (auto actor : mActors)
 	{
-			//アニメーションを伴うものとそうでないものを分ける必用がある。（アニメーションするキャラクタが２重で描画されるため）
-			for (auto component : mSprites)
-			{
-					//アニメーションを伴うActorの描画処理
-					component->UpdateDraw();
-					//アニメーションが無いActorの描画処理
-					component->StaticDraw();
-			}
-	}
+	}*/
 };
 
 void Game::RemoveActor(class Actor* actor) 

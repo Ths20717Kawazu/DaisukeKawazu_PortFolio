@@ -73,7 +73,7 @@ void Enemy::UpdateActor()
 		{
 			if (HitCheckBLK(futurePos, actor, this) == true)
 			{
-				mVel.y = 0.0f;;
+				mVel.y = 0.0f;
 			}
 		}
 	}

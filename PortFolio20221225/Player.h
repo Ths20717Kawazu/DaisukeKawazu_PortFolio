@@ -84,8 +84,8 @@ public:
     int GetScore() { return mScore; }
     void SetScore(int score) { mScore = score; }
 
-    float PlayerHeight = 300.0f;
-    float PlayerWidth = 300.0f;
+    float PlayerHeight = 200.0f;
+    float PlayerWidth = 200.0f;
     int mcount = 0;
 
 private:

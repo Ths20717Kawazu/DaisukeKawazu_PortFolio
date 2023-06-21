@@ -95,8 +95,8 @@ class Actor
 		std::vector<int> GetActorAnimOrders(){ return AnimOrders; }
 
 		bool getAnimate() { return animate;  }
-		float BlockWidth = 100.0f;
-		float BlockHeight = 100.0f;
+		float BlockWidth = 200.0f;
+		float BlockHeight = 200.0f;
 
 	private:
 

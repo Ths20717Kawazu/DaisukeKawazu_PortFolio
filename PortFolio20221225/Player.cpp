@@ -204,21 +204,42 @@ void Player::UpdateActor(void)
 	{
 		if (actor->GetTag() == Actor::Block)
 		{
-			if(HitGroundCheck(futurePos, actor, this) == true)
+			if (HitCheckBC(futurePos, 100, actor->GetPos(), 100))
 			{
-
-				isInAir = false;
+				//mVel = { 0.0, 0.0 };
 				mVel.y = 0.0f;
+				isInAir = false;
 				
-				if (HitCheckBLK(futurePos, actor, this) == true)
-				{
-					   //isInAir = false;
-					   //mVel.y = 0.0f;
-					   mJumpVel = 0.0f;
-					   //setSpeed(10.0f);
-				}
 			}
+			//if (HitCheckBLK2(actor, this) == true)
+			//{
+			//	//isInAir = false;
+			//	//mVel.y = 0.0f;
+			//	//setSpeed(10.0f);
+			//	mJumpVel = 0.0f;
+			//	if (HitGroundCheck(actor, this) == true)
+			//	{
+			//		isInAir = false;
+			//		mVel.y = -0.0f;
+			//		//SetPos(GetPos().x, GetPos().y - 50);
+			//	}
+			//}
+			//if (HitCheckBLK(futurePos, actor, this) == true)
+			//{
+			//	isInAir = false;
+			//	/*mVel.y = 0.0f;
+			//	mVel.x = -1.0;*/
+			//	mVel *= -1.0;
+			//	mJumpVel = 0.0f;
+			//	/*if(HitGroundCheck(actor, this) == true)
+			//	{
+			//		isInAir = false;
+			//		mVel.y = 0.0f;
+			//	
+			//	}*/	
+			//}
 		}
+
 	    else if (actor->GetTag() == Actor::Enemy) 
 	    {
 			//HitCheckBC(futurePos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない

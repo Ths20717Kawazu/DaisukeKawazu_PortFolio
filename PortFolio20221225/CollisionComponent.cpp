@@ -89,53 +89,99 @@ void CollisionComponent::Update()
 	}
 
 
-	bool HitGroundCheck(D3DXVECTOR2 tempPos, class Actor* Block, class Player* Player)
+	//=================================================================================
+	bool HitCheckBLK2(class Actor* Block, class Player* Player)
 	{
 		//　プレイヤの各頂点座標の取得及び代入
-		D3DXVECTOR2 P_UpperLeft;
-		D3DXVECTOR2 P_UpperRight;
-		D3DXVECTOR2 P_BottomLeft;
-		D3DXVECTOR2 P_BottomRight;
-		float P_Bottom;
-		float P_Upper;
-		float P_Left;
-		float P_Right;
 
-		P_Upper = tempPos.y - Player->PlayerHeight / 2;
-		P_Bottom = tempPos.y + Player->PlayerHeight / 2;
-		P_Left = tempPos.x - Player->PlayerWidth / 2;
-		P_Right = tempPos.x + Player->PlayerWidth / 2;
-
+		float P_Left	= Player->GetPos().x - (Player->PlayerWidth / 2);//左辺
+		float P_Right	= Player->GetPos().x + (Player->PlayerWidth / 2);//右辺
+		float P_Top		= Player->GetPos().y - (Player->PlayerHeight/ 2);//上辺
+		float P_Bottom  = Player->GetPos().y + (Player->PlayerHeight/ 2);//下辺
 
 		//　ブロックの各頂点座標の取得及び代入
+		float B_Left   = Block->GetPos().x - (Block->BlockWidth / 2);//左辺
+		float B_Right  = Block->GetPos().x + (Block->BlockWidth / 2);//右辺
+		float B_Top  = Block->GetPos().y - (Block->BlockHeight / 2);//上辺
+		float B_Bottom = Block->GetPos().y + (Block->BlockHeight / 2);//下辺
 
-		D3DXVECTOR2 B_UpperLeft;
-		D3DXVECTOR2 B_UpperRight;
-		D3DXVECTOR2 B_BottomLeft;
-		D3DXVECTOR2 B_BottomRight;
-		float B_Upper;
-		float B_Bottom;
-		float B_Right;
-		float B_Left;
-
-		B_Upper = Block->GetPos().y - Block->BlockHeight / 2;
-		B_Bottom = Block->GetPos().y + Block->BlockHeight / 2;
-		B_Right = Block->GetPos().x + Block->BlockWidth / 2;
-		B_Left = Block->GetPos().x - Block->BlockWidth / 2;
-		
-
-		//着地しているかの判定
-		//ブロックの上端のY座標より下にくるか？
-		if (P_BottomLeft.y > B_UpperRight.y || P_BottomRight.y > B_UpperLeft.y)
+		//矩形Bのほうを基準に考えて、各辺で境界線をつくり、
+        //矩形Aの反対側の辺が境界線より大きいか小さいかを判定する
+		if (B_Left < P_Right)//Bの左辺よりPの右辺が右にある
 		{
-			//ブロックの左上端X座標より右に位置、且つ、ORブロックの右上端X座標より左に位置するか
-			if (P_BottomRight.x > B_UpperLeft.x && P_BottomLeft.x < B_UpperRight.x)
+			if (B_Right > P_Left)//Bの右辺よりPの左辺が左にある
 			{
-				return true;
+				Player->SetPos(P_Left - 50, Player->GetPos().y);
+				if (B_Top < P_Bottom)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
+				{
+					if (B_Bottom > P_Top)//Bの下辺よりPの上辺が上にある（Y値はPの方が下)
+					{
+						//4辺の判定が真であればヒットしている
+						return true;
+					}
+				}
 			}
-
 		}
+		return false;
+	}
 
+	//境界箱（バウンディングボックス）の当たり判定
+	bool HitCheckBB(D3DXVECTOR2 boxApos, float boxAwidth, float boxAheight,
+		D3DXVECTOR2 boxBpos, float boxBwidth, float boxBheight)
+	{
+		//矩形Aの各辺の座標を作る
+		float boxAminX = boxApos.x - (boxAwidth / 2);//左辺
+		float boxAmaxX = boxApos.x + (boxAwidth / 2);//右辺
+		float boxAminY = boxApos.y - (boxAheight / 2);//上辺
+		float boxAmaxY = boxApos.y + (boxAheight / 2);//下辺
+		//矩形Bの各辺の座標を作る
+		float boxBminX = boxBpos.x - (boxBwidth / 2);//左辺
+		float boxBmaxX = boxBpos.x + (boxBwidth / 2);//右辺
+		float boxBminY = boxBpos.y - (boxBheight / 2);//上辺
+		float boxBmaxY = boxBpos.y + (boxBheight / 2);//下辺
+
+		//矩形Bのほうを基準に考えて、各辺で境界線をつくり、
+		//矩形Aの反対側の辺が境界線より大きいか小さいかを判定する
+		if (boxBminX < boxAmaxX)
+		{
+			if (boxBmaxX > boxAminX)
+			{
+				if (boxBminY < boxAmaxY)
+				{
+					if (boxBmaxY > boxAminY)
+					{
+						//4辺の判定が真であればヒットしている
+						return true;
+					}
+				}
+			}
+		}
+		//どこかの判定で偽となればヒットしていない
+		return false;
+	}
+
+
+	bool HitGroundCheck(class Actor* Block, class Player* Player)
+	{
+		//　プレイヤの各頂点座標の取得及び代入
+
+		float P_Left = Player->GetPos().x - (Player->PlayerWidth / 2);//左辺
+		float P_Right = Player->GetPos().x + (Player->PlayerWidth / 2);//右辺
+		float P_Top = Player->GetPos().y - (Player->PlayerHeight / 2);//上辺
+		float P_Bottom = Player->GetPos().y + (Player->PlayerHeight / 2);//下辺
+
+		//　ブロックの各頂点座標の取得及び代入
+		float B_Left = Block->GetPos().x - (Block->BlockWidth / 2);//左辺
+		float B_Right = Block->GetPos().x + (Block->BlockWidth / 2);//右辺
+		float B_Top = Block->GetPos().y - (Block->BlockHeight / 2);//上辺
+		float B_Bottom = Block->GetPos().y + (Block->BlockHeight / 2);//下辺
+
+		//矩形Bのほうを基準に考えて、各辺で境界線をつくり、
+		//矩形Aの反対側の辺が境界線より大きいか小さいかを判定する
+		if (B_Top < P_Bottom)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
+		{
+				return true;
+		}
 		return false;
 	}
 
