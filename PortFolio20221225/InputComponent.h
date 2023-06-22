@@ -21,6 +21,6 @@ class InputComponent :
 	void ProcessInput(void) override;
 
 
-
 	private:
+    int buffertime = 0;//場面を切り替えた際に前の場面での操作が次の場面に反映されないようバッファを設定する。
 };

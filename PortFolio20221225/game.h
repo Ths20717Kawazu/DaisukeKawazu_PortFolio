@@ -13,6 +13,12 @@ public:
 	const int GridRow = 15;
 	const int GridColumn = 30;
 
+	enum Scene 
+	{
+		OPENING,
+		STAGE,
+		ENDING
+	};
 	/*bool HitCheckBB
 	(
 		D3DXVECTOR2 boxApos,
@@ -73,7 +79,9 @@ public:
   	
 	class Grid* getGrid(int posX, int posY);
 
-
+	Scene GetScene() { return mScene; }
+	void SetScene(Scene scene) { mScene = scene; }
+	
 private:
 	std::vector<class Actor*>mActors;
 	std::vector<class Block*>mBlocks;
@@ -88,17 +96,8 @@ private:
 	CameraComponent* mCameraComponent;
 	SpriteComponent* mOPSprite;
 
-	enum Scene 
-	{
-		OPENING,
-		STAGE,
-		ENDING
-	};
-
-	Scene scene = Scene::ENDING;
+	Scene mScene = Scene::OPENING;
 	
-
-
 	bool GameClear = false;
 	Grid* mGrids[15][30];
 

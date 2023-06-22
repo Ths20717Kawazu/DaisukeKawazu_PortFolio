@@ -47,7 +47,7 @@ void Actor::RemoveComponent(Component* component)
 
 void Actor::ProcessInput(void)
 {
-	//Playerは飛ばしてそのままComponentー＞InputComponentのProcessInputが呼び出される
+	//InputComponentはPlayerのみが保有しているため、ProcessInputが自動的に呼び出される
 	for (auto comp : mComponents) {
 		comp->ProcessInput();
 	}

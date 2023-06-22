@@ -120,9 +120,9 @@ void Game::gameUpdate(void) {
 	//}
 	//========================//
 	//Actor* a;
+	
 
-
-	switch (scene)
+	switch (mScene)
 	{
 	case OPENING:
 		for (auto actor : mActors)
@@ -166,7 +166,7 @@ void Game::gameUpdate(void) {
 //•`‰æ‚Í•Ê‚É—pˆÓ‚·‚é
 void Game::gameDraw(void)
 {
-	switch (scene)
+	switch (mScene)
 	{
 	case OPENING:
 		for (auto component : mSprites)
