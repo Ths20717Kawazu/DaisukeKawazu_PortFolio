@@ -118,44 +118,46 @@ void Game::gameUpdate(void) {
 	//	count = enemy->count;
 	//}
 	//========================//
-	Actor* a;
-	
-	//switch(int scene)
-    //case 1:   
-	//break;
-	//case 2:
-	//
-	for (auto actor : mActors)
-	{
-		if (actor->GetState() == Actor::EActive)
-		{
-			actor->UpdateActor();
-		}
+	//Actor* a;
 
-		if (actor->GetState() == Actor::EDead)
+
+	switch (scene) 
+	{
+	case OPENING:
+
+		break;
+	case STAGE:
+		for (auto actor : mActors)
 		{
-			delete actor;
+			if (actor->GetState() == Actor::EActive)
+			{
+				actor->UpdateActor();
+			}
+
+			if (actor->GetState() == Actor::EDead)
+			{
+				delete actor;
+			}
 		}
+		break;
+	case ENDING:
+
+		break;
 	}
 
-	//case 3:
-	// for(auto actor :mActors){
-	// if(!mActors.end)
-	// delete actor;
-	// }
-	// 
-	//break;
-	//checkGameClear();
+
 }
 
 
 //描画は別に用意する
 void Game::gameDraw(void)
 {
+	switch (scene)
+	{
+	case OPENING:
 
-	//switch(int scene)
-	//case 1:   
-		//アニメーションを伴うものとそうでないものを分ける必用がある。（アニメーションするキャラクタが２重で描画されるため）
+		break;
+	case STAGE:
 		for (auto component : mSprites)
 		{
 				//アニメーションを伴うActorの描画処理
@@ -163,17 +165,11 @@ void Game::gameDraw(void)
 				//アニメーションが無いActorの描画処理
 				component->StaticDraw();
 		}
-	//break
-	//case 2;
-	//mStartSprite->StaticDraw
-    //break
-    //case 3
-	//mEndSprite->StaticDraw
+		break;
+	case ENDING:
 
-
-	/*for (auto actor : mActors)
-	{
-	}*/
+		break;
+	}
 };
 
 void Game::RemoveActor(class Actor* actor) 

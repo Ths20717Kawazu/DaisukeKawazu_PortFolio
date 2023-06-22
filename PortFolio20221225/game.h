@@ -89,6 +89,18 @@ private:
 	Obstacle* mObstacle;
 	CameraComponent* mCameraComponent;
 
+
+	enum Scene 
+	{
+		OPENING,
+		STAGE,
+		ENDING
+	};
+
+	Scene scene = Scene::STAGE;
+	
+
+
 	bool GameClear = false;
 	Grid* mGrids[15][30];
 

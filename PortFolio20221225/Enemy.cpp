@@ -36,7 +36,7 @@ Enemy::~Enemy(){
 
 void Enemy::UpdateActor() 
 {		
-
+	Actor::GetPos();
 	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 
 	if (mMygrid != newMygrid)

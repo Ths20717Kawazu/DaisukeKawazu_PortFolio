@@ -44,8 +44,6 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	:Actor(game, tag),
 	mGame(game),
 	mSpeed(10.0f),
-	//PlayerHeight(300),
-	//PlayerWidth(300),
 	mGravity(2.0f),
 	P_mLift(0.0f),
 	mJumpVel(0.0f),
@@ -132,14 +130,15 @@ Player::~Player()
 
 void Player::UpdateActor(void)
 {
-	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	Actor::GetPos();
+	//Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 
-	if (mMygrid != newMygrid)
-	{
-		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
-		mMygrid = newMygrid;//新たなグリッドを代入
-		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
-	}
+	//if (mMygrid != newMygrid)
+	//{
+	//	mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
+	//	mMygrid = newMygrid;//新たなグリッドを代入
+	//	mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
+	//}
 
 
 	//========================無敵時間の処理============================//
@@ -178,7 +177,8 @@ void Player::UpdateActor(void)
 	mVel = mDir * mSpeed;
 	mJumpVel += Actor::mGravity;//重力により減衰
 	mVel.y += mJumpVel;
-
+	//※地面との接触判定が正常に実施されない場合、無限にmJumpVelが増大し、ある時点で地面を貫通して画面外に出る現象が発生する
+	//2023/06/22
 
 	////入力を受け付けた場合の将来座標
 	futurePos.x = curPos.x + mVel.x;
@@ -204,13 +204,13 @@ void Player::UpdateActor(void)
 	{
 		if (actor->GetTag() == Actor::Block)
 		{
-			if (HitCheckBC(futurePos, 100, actor->GetPos(), 100))
-			{
-				//mVel = { 0.0, 0.0 };
-				mVel.y = 0.0f;
-				isInAir = false;
-				
-			}
+			//if (HitCheckBC(futurePos, 100, actor->GetPos(), 100))
+			//{
+			//	//mVel = { 0.0, 0.0 };
+			//	mVel.y = 0.0f;
+			//	isInAir = false;
+			//	
+			//}
 			//if (HitCheckBLK2(actor, this) == true)
 			//{
 			//	//isInAir = false;
@@ -224,20 +224,20 @@ void Player::UpdateActor(void)
 			//		//SetPos(GetPos().x, GetPos().y - 50);
 			//	}
 			//}
-			//if (HitCheckBLK(futurePos, actor, this) == true)
-			//{
-			//	isInAir = false;
-			//	/*mVel.y = 0.0f;
-			//	mVel.x = -1.0;*/
-			//	mVel *= -1.0;
-			//	mJumpVel = 0.0f;
-			//	/*if(HitGroundCheck(actor, this) == true)
-			//	{
-			//		isInAir = false;
-			//		mVel.y = 0.0f;
-			//	
-			//	}*/	
-			//}
+			if (HitCheckBLK(futurePos, actor, this) == true)
+			{
+				isInAir = false;
+				/*mVel.y = 0.0f;
+				mVel.x = -1.0;*/
+				mVel *= -1.0;
+				mJumpVel = 0.0f;
+				/*if(HitGroundCheck(actor, this) == true)
+				{
+					isInAir = false;
+					mVel.y = 0.0f;
+				
+				}*/	
+			}
 		}
 
 	    else if (actor->GetTag() == Actor::Enemy) 
@@ -261,7 +261,7 @@ void Player::UpdateActor(void)
 	////*************************接触判定処理オワリ*************************//
 	mDir = { 0.0f, 0.0f };
 	mPos += {mVel.x, mVel.y};
-	//mActor.pos += {mVel.x, mVel.y};
+	mActor.pos += {mVel.x, mVel.y};
 	Actor::SetPos(mPos.x, mPos.y);
 
 	//カメラ座標の更新
