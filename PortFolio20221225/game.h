@@ -73,8 +73,6 @@ public:
   	
 	class Grid* getGrid(int posX, int posY);
 
-	
-
 
 private:
 	std::vector<class Actor*>mActors;
@@ -88,7 +86,7 @@ private:
 	Player* mPlayer;
 	Obstacle* mObstacle;
 	CameraComponent* mCameraComponent;
-
+	SpriteComponent* mOPSprite;
 
 	enum Scene 
 	{
@@ -97,7 +95,7 @@ private:
 		ENDING
 	};
 
-	Scene scene = Scene::STAGE;
+	Scene scene = Scene::ENDING;
 	
 
 

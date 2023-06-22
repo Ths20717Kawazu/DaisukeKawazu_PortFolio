@@ -11,11 +11,20 @@ BackGround::BackGround(Game* game, enum Actor::Tag tag):Actor(game, tag)
 	auto SC = new SpriteComponent(this, 100);
 	SC->SetTextureID(LoadTexture((char*)"images/mori.jpg"));
 }
+	//SC->SetTextureID(LoadTexture((char*)"images/OPENING.png"));
 
 BackGround::~BackGround() {};
 
 void BackGround::UpdateActor() 
-{
+{};
+
+
+
+
+
+
+
+
 	//プレイヤの移動速度を入手して、逆方向へ移動させる
 	//=================================================//
 	/*D3DXVECTOR2 Pvel;
@@ -30,4 +39,3 @@ void BackGround::UpdateActor()
 //初期化の際に、Playerのコンストラクタが呼び出される前にBackgroundのコンストラクタが呼び出されるため
 //GetPosはNULLであるためエラーが発生する。よって、描画順序とコンストラクタは別にする必用がある。
   //mPlayerPos = GetPPos();
-};

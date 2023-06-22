@@ -42,7 +42,9 @@ class Actor
 			Balloon,
 			Obstacle,
 			Background,
-			UI
+			UI,
+			OPENING,
+			ENDING
 		};
 
 		Actor(class Game* game, enum Tag tag);
@@ -102,10 +104,10 @@ class Actor
 
 		int TextureID;
 		//GameクラスのPublicなメンバへのアクセスのためのポインタ
-		class Game* mGame;
 		class Player* mPlayer;
 		
 protected:
+		class Game* mGame;
 		ACTOR mActor;
 		std::vector<class Component*> mComponents;
 		enum Tag mTag;

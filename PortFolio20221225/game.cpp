@@ -24,6 +24,8 @@
 #include "GameStart.h"
 #include "Life.h"
 #include "Grid.h"
+#include "Opening.h"
+#include "Ending.h"
 #include <stdio.h>
 
 //========================追加======================//
@@ -36,10 +38,10 @@
 //bool hit;
 //int count = 0;
 //*****************************************************************************
-void Game::gameInit(void) 
+void Game::gameInit(void)
 {
 	mCameraComponent = new CameraComponent();
-
+	//mOpening = new Opening(this, Actor::OPENING, 100.0f, 100.0f, 500.0f, 500.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
 	Grid* grid;
 	for (int j = 0; j < Game::GridRow; j++)
@@ -52,14 +54,16 @@ void Game::gameInit(void)
 	}
 
 	Actor* a;
+
+	a = new Opening(this, Actor::OPENING);
+	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+
+	a = new Ending(this, Actor::ENDING);
+	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+
 	a = new GameStart(this, Actor::Background);
 	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-
-	for (int i = 0; i < 5; i++)
-	{
-		a = new Life(this, Actor::Background, 950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, i);
-		//a->SetACTOR(950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-	}
+	//※アニメーションしないアクタについては、必ずSetActorで初期の表示サイズ等を設定すること。
 
 	a = new UserInterface(this, Actor::Background);
 	a->SetACTOR(950.0f, 400.0f, 500.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -67,15 +71,20 @@ void Game::gameInit(void)
 	a = new BackGround(this, Actor::Background);
 	a->SetACTOR(1000.0f, 1000.0f, 2000.0f, 2000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 
+	for (int i = 0; i < 5; i++)
+	{
+		a = new Life(this, Actor::Background, 950.0f + 50 * i, 870.0f, 50.0f, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, i);
+	}
+
 	for (int Y = 0; Y < 10; Y++) //行
 	{
 		for (int X = 0; X < 100; X++)//列 
 		{
-			if (maps[Y][X] == 1) a = new Block(this,    Actor::Block,    100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 1) a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 			if (maps[Y][X] == 2) a = new Obstacle(this, Actor::Obstacle, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			if (maps[Y][X] == 3) a = new Enemy(this,    Actor::Enemy,    100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			if (maps[Y][X] == 4) a = new Player(this,   Actor::Player,   100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			if (maps[Y][X] == 5) a = new Block(this,    Actor::Block,    100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 3) a = new Enemy(this, Actor::Enemy, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 4) a = new Player(this, Actor::Player, 100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 5) a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 		}
 	}
 
@@ -90,24 +99,16 @@ void Game::gameUninit(void) {
 
 void Game::gameRunloop(void)
 {
-
-	//StartTime;
-
 	// バックバッファクリア
 	ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	Clear();
 	//描画実施
-	
 	gameProcessInput();
 	gameDraw();
 	gameUpdate();
-	
-	
-	
+
 	//バックバッファ、
 	SwapBuffers();
-
-	//EndTime;
 }
 
 void Game::gameUpdate(void) {
@@ -121,10 +122,17 @@ void Game::gameUpdate(void) {
 	//Actor* a;
 
 
-	switch (scene) 
+	switch (scene)
 	{
 	case OPENING:
-
+		for (auto actor : mActors)
+		{
+			if(actor->GetTag() == Actor::OPENING)
+			//if (actor->GetTag() == Actor::Background)
+			{
+				actor->UpdateActor();
+			}
+		}
 		break;
 	case STAGE:
 		for (auto actor : mActors)
@@ -141,7 +149,13 @@ void Game::gameUpdate(void) {
 		}
 		break;
 	case ENDING:
-
+		for (auto actor : mActors)
+		{
+			if (actor->GetTag() == Actor::ENDING)
+			{
+				actor->UpdateActor();
+			}
+		}
 		break;
 	}
 
@@ -155,6 +169,13 @@ void Game::gameDraw(void)
 	switch (scene)
 	{
 	case OPENING:
+		for (auto component : mSprites)
+		{
+			if (component->getOwner()->GetTag() == Actor::OPENING)
+			{
+				component->StaticDraw();
+			}
+		}
 
 		break;
 	case STAGE:
@@ -167,7 +188,13 @@ void Game::gameDraw(void)
 		}
 		break;
 	case ENDING:
-
+		for (auto component : mSprites)
+		{
+			if (component->getOwner()->GetTag() == Actor::ENDING)
+			{
+				component->StaticDraw();
+			}
+		}
 		break;
 	}
 };
