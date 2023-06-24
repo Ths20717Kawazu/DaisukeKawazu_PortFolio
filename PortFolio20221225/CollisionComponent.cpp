@@ -38,23 +38,22 @@ void CollisionComponent::Update()
 
 	//接触判定を基底クラスであるActorをダウンキャストして継承先クラス毎に接触判定を変えようと思ったがうまくいかなかったため、
 	//引数のBlockクラスをActorクラスに変更した。それに伴い、BlockクラスのBlockWidthとBlockHeightはActor.hに移した。
-	bool HitCheckBLK(D3DXVECTOR2 tempPos, class Actor* Block, class Player* Player)
+	bool HitCheckBLK(D3DXVECTOR2* futurepos, class Actor* Block, class Player* Player)
 	{
-		//　プレイヤの各頂点座標の取得及び代入
-		D3DXVECTOR2 P_UpperLeft;
-		D3DXVECTOR2 P_UpperRight;
-		D3DXVECTOR2 P_BottomLeft;
-		D3DXVECTOR2 P_BottomRight;
-		float P_Bottom;
-		float P_Upper;
-		float P_Left;
-		float P_Right;
+		//プレイヤの将来座標の代入
+		D3DXVECTOR2 FP_UpperLeft;
+		D3DXVECTOR2 FP_UpperRight;
+		D3DXVECTOR2 FP_BottomLeft;
+		D3DXVECTOR2 FP_BottomRight;
+		float FP_Bottom;
+		float FP_Top;
+		float FP_Left;
+		float FP_Right;
 
-		P_Upper = tempPos.y - Player->PlayerHeight / 2;
-		P_Bottom = tempPos.y + Player->PlayerHeight / 2;
-		P_Left = tempPos.x - Player->PlayerWidth / 2;
-		P_Right = tempPos.x + Player->PlayerWidth / 2;
-
+		FP_Top = futurepos->y - Player->PlayerHeight / 2;
+		FP_Bottom = futurepos->y + Player->PlayerHeight / 2;
+		FP_Left = futurepos->x - Player->PlayerWidth / 2;
+		FP_Right = futurepos->x + Player->PlayerWidth / 2;
 
 		//　ブロックの各頂点座標の取得及び代入
 
@@ -73,13 +72,82 @@ void CollisionComponent::Update()
 		B_Left = Block->GetPos().x - Block->BlockWidth / 2;
 
 
-		if (P_Right > B_Left && P_Left < B_Right && P_Bottom > B_Upper && P_Upper < B_Bottom )
+		//ブロックと将来座標が接触している場合
+		if (FP_Right > B_Left && FP_Left < B_Right && FP_Bottom > B_Upper && FP_Top < B_Bottom )
 		{
+			//// X軸方向のめり込み量を計算
+			float OverLapX = 0.0f;
+			if (FP_Right > B_Right) //プレイヤはブロックの右側から接触
+			{
+				OverLapX = FP_Left - B_Right;//ﾏｲﾅｽ値
+			}
+			else if (FP_Left < B_Left)//プレイヤはブロックの左側から接触
+			{
+				OverLapX = FP_Right - B_Left;
+			}
+
+			// Y軸方向のめり込み量を計算
+			float OverLapY = 0.0f;
+			if (FP_Bottom > B_Bottom)//プレイヤはブロックの下から接触
+			{
+				OverLapY = FP_Top - B_Bottom;
+			}
+			else if (FP_Top < B_Upper)
+			{
+				OverLapY = FP_Bottom - B_Upper;
+			}
+
+			// めり込みを解消した段階のプレイヤのあるべき座標
+			futurepos->x -= OverLapX;
+			futurepos->y -= OverLapY;
+
 			return true;
 		}
 		return false;
+	}
+
+
+	int PushBack(Actor* Block, Player* Player)
+	{
+		//現在のプレイヤの位置
+		D3DXVECTOR2 CP_UpperLeft;
+		D3DXVECTOR2 CP_UpperRight;
+		D3DXVECTOR2 CP_BottomLeft;
+		D3DXVECTOR2 CP_BottomRight;
+
+		int CP_Bottom;
+		int CP_Upper;
+		int CP_Left;
+		int CP_Right;
+
+		CP_Upper = Player->GetPos().y - Player->PlayerHeight / 2;
+		CP_Bottom = Player->GetPos().y + Player->PlayerHeight / 2;
+		CP_Left = Player->GetPos().x - Player->PlayerWidth / 2;
+		CP_Right = Player->GetPos().x + Player->PlayerWidth / 2;
+	
+		//　ブロックの各頂点座標の取得及び代入
+
+		D3DXVECTOR2 B_UpperLeft;
+		D3DXVECTOR2 B_UpperRight;
+		D3DXVECTOR2 B_BottomLeft;
+		D3DXVECTOR2 B_BottomRight;
+		int B_Upper;
+		int B_Bottom;
+		int B_Right;
+		int B_Left;
+
+		B_Upper = Block->GetPos().y - Block->BlockHeight / 2;
+		B_Bottom = Block->GetPos().y + Block->BlockHeight / 2;
+		B_Right = Block->GetPos().x + Block->BlockWidth / 2;
+		B_Left = Block->GetPos().x - Block->BlockWidth / 2;
+
+		//接触判定ののち、プレイヤの現在位置とブロックの差分（めり込んでいる量）を求め押し返す量を返す。
+		int Y_DIfferenceOne = CP_Bottom - B_Left;
+		return Y_DIfferenceOne;
+
 
 	}
+
 
 
 	//=================================================================================
@@ -87,16 +155,16 @@ void CollisionComponent::Update()
 	{
 		//　プレイヤの各頂点座標の取得及び代入
 
-		float P_Left	= Player->GetPos().x - (Player->PlayerWidth / 2);//左辺
-		float P_Right	= Player->GetPos().x + (Player->PlayerWidth / 2);//右辺
-		float P_Top		= Player->GetPos().y - (Player->PlayerHeight/ 2);//上辺
-		float P_Bottom  = Player->GetPos().y + (Player->PlayerHeight/ 2);//下辺
+		int P_Left	= Player->GetPos().x - (Player->PlayerWidth / 2);//左辺
+		int P_Right	= Player->GetPos().x + (Player->PlayerWidth / 2);//右辺
+		int P_Top   = Player->GetPos().y - (Player->PlayerHeight/ 2);//上辺
+		int P_Bottom  = Player->GetPos().y + (Player->PlayerHeight/ 2);//下辺
 
 		//　ブロックの各頂点座標の取得及び代入
-		float B_Left   = Block->GetPos().x - (Block->BlockWidth / 2);//左辺
-		float B_Right  = Block->GetPos().x + (Block->BlockWidth / 2);//右辺
-		float B_Top  = Block->GetPos().y - (Block->BlockHeight / 2);//上辺
-		float B_Bottom = Block->GetPos().y + (Block->BlockHeight / 2);//下辺
+		int B_Left   = Block->GetPos().x - (Block->BlockWidth / 2);//左辺
+		int B_Right  = Block->GetPos().x + (Block->BlockWidth / 2);//右辺
+		int B_Top    = Block->GetPos().y - (Block->BlockHeight / 2);//上辺
+		int B_Bottom = Block->GetPos().y + (Block->BlockHeight / 2);//下辺
 
 		//矩形Bのほうを基準に考えて、各辺で境界線をつくり、
         //矩形Aの反対側の辺が境界線より大きいか小さいかを判定する
@@ -104,19 +172,19 @@ void CollisionComponent::Update()
 		{
 			if (B_Right > P_Left)//Bの右辺よりPの左辺が左にある
 			{
-				Player->SetPos(P_Left - 50, Player->GetPos().y);
-				if (B_Top < P_Bottom)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
+				//Player->SetPos(P_Left - 50, Player->GetPos().y);
+				if (B_Bottom > P_Top)//Bの下辺よりPの上辺が上にある（Y値はPの方が下)
 				{
-					if (B_Bottom > P_Top)//Bの下辺よりPの上辺が上にある（Y値はPの方が下)
-					{
-						//4辺の判定が真であればヒットしている
-						return true;
-					}
+					//4辺の判定が真であればヒットしている
+					return true;
 				}
 			}
 		}
 		return false;
 	}
+				//if (B_Top < P_Bottom)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
+				//{
+				//}
 
 	//境界箱（バウンディングボックス）の当たり判定
 	bool HitCheckBB(D3DXVECTOR2 boxApos, float boxAwidth, float boxAheight,
@@ -153,25 +221,34 @@ void CollisionComponent::Update()
 		return false;
 	}
 
-
 	bool HitGroundCheck(class Actor* Block, class Player* Player)
 	{
 		//　プレイヤの各頂点座標の取得及び代入
+		//左辺と右辺については他の辺よりも小さく設定（接地の計算の時のみ）
+		int FP_Left = Player->GetPos().x - (Player->PlayerWidth / 4);//左辺
+		int FP_Right = Player->GetPos().x + (Player->PlayerWidth / 4);//右辺
+		int FP_Top = Player->GetPos().y - (Player->PlayerHeight / 2);//上辺
+		int FP_Bottom = Player->GetPos().y + (Player->PlayerHeight / 2);//下辺
 
-		float P_Left = Player->GetPos().x - (Player->PlayerWidth / 2);//左辺
-		float P_Right = Player->GetPos().x + (Player->PlayerWidth / 2);//右辺
-		float P_Top = Player->GetPos().y - (Player->PlayerHeight / 2);//上辺
-		float P_Bottom = Player->GetPos().y + (Player->PlayerHeight / 2);//下辺
+		int CP_Bottom;
+		int CP_Upper;
+		int CP_Left;
+		int CP_Right;
+
+		CP_Upper = Player->GetPos().y - Player->PlayerHeight / 2;
+		CP_Bottom = Player->GetPos().y + Player->PlayerHeight / 2;
+		CP_Left = Player->GetPos().x - Player->PlayerWidth / 2;
+		CP_Right = Player->GetPos().x + Player->PlayerWidth / 2;
 
 		//　ブロックの各頂点座標の取得及び代入
-		float B_Left = Block->GetPos().x - (Block->BlockWidth / 2);//左辺
-		float B_Right = Block->GetPos().x + (Block->BlockWidth / 2);//右辺
-		float B_Top = Block->GetPos().y - (Block->BlockHeight / 2);//上辺
-		float B_Bottom = Block->GetPos().y + (Block->BlockHeight / 2);//下辺
+		int B_Left = Block->GetPos().x - (Block->BlockWidth / 2);//左辺
+		int B_Right = Block->GetPos().x + (Block->BlockWidth / 2);//右辺
+		int B_Top = Block->GetPos().y - (Block->BlockHeight / 2);//上辺
+		int B_Bottom = Block->GetPos().y + (Block->BlockHeight / 2);//下辺
 
 		//矩形Bのほうを基準に考えて、各辺で境界線をつくり、
 		//矩形Aの反対側の辺が境界線より大きいか小さいかを判定する
-		if (B_Top < P_Bottom)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
+		if (FP_Right > B_Left && FP_Left < B_Right && B_Top < FP_Bottom)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
 		{
 				return true;
 		}
@@ -204,6 +281,8 @@ void CollisionComponent::Update()
 		D3DXVECTOR2 B_UpperRight;
 		D3DXVECTOR2 B_BottomLeft;
 		D3DXVECTOR2 B_BottomRight;
+		D3DXVECTOR2 B_Center;
+
 
 		B_UpperLeft.x = Block->GetPos().x - Block->BlockWidth / 2;
 		B_UpperLeft.y = Block->GetPos().y - Block->BlockHeight / 2;
@@ -217,6 +296,9 @@ void CollisionComponent::Update()
 		B_BottomRight.x = Block->GetPos().x + Block->BlockWidth / 2;
 		B_BottomRight.y = Block->GetPos().y + Block->BlockHeight / 2;
 
+
+		B_Center.x = Block->GetPos().x;
+		B_Center.y = Block->GetPos().y;
 
 		//着地しているかの判定
 		//ブロックの上端のY座標より下にくるか？

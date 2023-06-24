@@ -67,8 +67,8 @@ public:
       void SetLift(float lift) { P_mLift = lift; }
       float GetLift() { return P_mLift; }
 
-      float GetJumpVel() { return mJumpVel; }
-      void SetJumpVel(float jumpvel) { mJumpVel = jumpvel; }
+      /*float GetJumpVel() { return mJumpVel; }
+      void SetJumpVel(float jumpvel) { mJumpVel = jumpvel; }*/
 
       bool GetCloseToEnemy() { return mCloseToEnemy; }
       void SetClosetoEnemy(bool closetoenemy) { mCloseToEnemy = closetoenemy; }
@@ -89,6 +89,12 @@ public:
     int mcount = 0;
 
 private:
+    D3DXVECTOR2 futurePos = { 0.0f,0.0f };
+    D3DXVECTOR2 curPos = { 0.0f,0.0f };
+
+
+
+
     //‰æ‘œ”z—ñ
     std::vector<int>mIdleImages;
     std::vector<int>mWalkImages;
@@ -110,11 +116,10 @@ private:
     int mHP ;
 
     float mSpeed = 0;
-    float mGravity= 0;
-    float mJumpVel= 0;
+    const float mJumpVel= 0.5f;
     float P_mLift = 0;
     
-    bool isInAir = false;
+    bool isInAir = true;
     bool hasBalloon = false;
     bool mCloseToEnemy = false;
 

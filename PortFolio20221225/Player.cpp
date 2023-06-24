@@ -44,9 +44,7 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	:Actor(game, tag),
 	mGame(game),
 	mSpeed(10.0f),
-	mGravity(2.0f),
 	P_mLift(0.0f),
-	mJumpVel(0.0f),
 	mRemainLives(5)
 {
 	//親クラスであるActorのProtectedのメンバ変数の初期化は↓のように実施する必用がある。
@@ -55,7 +53,6 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	animate = true;
 	SetACTOR(posX, posY, BoxH, BoxW, UvU, UvV, VH, VW, Rot);
 	mPos = { posX, posY };
-	
 	//Gridへの登録
 	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 	mMygrid->addMembersIngrid(this);
@@ -99,23 +96,11 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	AddAnimOrders(2, WALK);
 	AddAnimOrders(2, WALK);
 
-
-
 	//プレイヤがERUN状態の画像
 	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
 	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
 	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
 	
-	////プレイヤがEJUMP状態の画像
-	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
-	
-	////プレイヤがEFALL状態の画像
-	//AC->AddImage(LoadTexture((char*)"images/Player.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_2.png"), EIDLE);
-	//AC->AddImage(LoadTexture((char*)"images/Player_3.png"), EIDLE);
-
 GetGame()->AddPlayer(this);
 }
 
@@ -124,21 +109,21 @@ Player::~Player()
 	/*Actor* a;
 	a = new GameOver(mGame, Actor::Background);
 	a->SetACTOR(1000.0f, 500.0f, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);*/
-
-
 };
 
 void Player::UpdateActor(void)
 {
 	Actor::GetPos();
-	//Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 
-	//if (mMygrid != newMygrid)
-	//{
-	//	mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
-	//	mMygrid = newMygrid;//新たなグリッドを代入
-	//	mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
-	//}
+	//if (!isInAir)Actor::mGravity = 0.0;
+
+	if (mMygrid != newMygrid)
+	{
+		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
+		mMygrid = newMygrid;//新たなグリッドを代入
+		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
+	}
 
 
 	//========================無敵時間の処理============================//
@@ -149,6 +134,7 @@ void Player::UpdateActor(void)
 	}
 	//*************************無敵時間の処理オワリ*************************//
 
+	//*************************アニメーションの処理*************************//
 
 	//プレイヤのState
 	enum Player::PlayerState curstate = Player::GetState();
@@ -157,26 +143,27 @@ void Player::UpdateActor(void)
 		Actor::AnimImages = GetAnimImages(Player::GetState());//基盤クラスの画像配列にState毎の画像を入力し、AnimationComponent。
 		Actor::AnimOrders = GetAnimOrders(Player::GetState());
 	}
+	//**********************************************************************//
 
 
-	//========================移動に関する処理============================//
+	//*************************=移動に関する処理***************************//
 
+	int PushBack = 0;
 	//現在のプレイヤの位置情報	
-	D3DXVECTOR2 futurePos;
-	D3DXVECTOR2 curPos;
+	
 	//D3DXVECTOR2 lastPos;
 	curPos = Actor::GetPos();
-	
-	//if (!P_mLift == 0)
-	//{
-	//	isInAir = true;
-	//}
 
 	////移動方向をベクトル正規化
 	D3DXVec2Normalize(&mDir, &mDir);
 	mVel = mDir * mSpeed;
-	mJumpVel += Actor::mGravity;//重力により減衰
-	mVel.y += mJumpVel;
+	mVel.y = mJumpVel * mDir.y;
+	if (isInAir) 
+	{
+		mVel.y += Actor::mGravity;//重力により減衰
+	}
+	//mVel.y += mJumpVel;
+	
 	//※地面との接触判定が正常に実施されない場合、無限にmJumpVelが増大し、ある時点で地面を貫通して画面外に出る現象が発生する
 	//2023/06/22
 
@@ -184,85 +171,57 @@ void Player::UpdateActor(void)
 	futurePos.x = curPos.x + mVel.x;
 	futurePos.y = curPos.y + mVel.y;
 
-	////画面外への移動を禁止
-	///*if (futurePos.x <= 0 || futurePos.x >= 1500)
-	//{
-	//	mVel.x = 0.0;
-	//}*/
-	////画面外の上下限界まで行くと死亡判定	
-	////if (futurePos.y >= 1000 || futurePos.y <= 0)
-	////{
-	////	mVel.x = 0.0;
-	////	//Actor::SetState(EDead);
-	////}
-	////*************************移動に関する処理オワリ*************************//
-
-
-
 	////=======================接触判定処理==========================//
-	for (auto actor : mMygrid->GetGridMembers())
 	{
-		if (actor->GetTag() == Actor::Block)
+		for (auto actor : mMygrid->GetGridMembers())
 		{
-			//if (HitCheckBC(futurePos, 100, actor->GetPos(), 100))
-			//{
-			//	//mVel = { 0.0, 0.0 };
-			//	mVel.y = 0.0f;
-			//	isInAir = false;
-			//	
-			//}
-			//if (HitCheckBLK2(actor, this) == true)
-			//{
-			//	//isInAir = false;
-			//	//mVel.y = 0.0f;
-			//	//setSpeed(10.0f);
-			//	mJumpVel = 0.0f;
-			//	if (HitGroundCheck(actor, this) == true)
-			//	{
-			//		isInAir = false;
-			//		mVel.y = -0.0f;
-			//		//SetPos(GetPos().x, GetPos().y - 50);
-			//	}
-			//}
-			if (HitCheckBLK(futurePos, actor, this) == true)
+			//=========================================//
+			if (actor->GetTag() == Actor::Block)
 			{
-				isInAir = false;
-				/*mVel.y = 0.0f;
-				mVel.x = -1.0;*/
-				mVel *= -1.0;
-				mJumpVel = 0.0f;
-				/*if(HitGroundCheck(actor, this) == true)
+				HitCheckBLK(&futurePos, actor, this);
+				if(HitGroundCheck(actor, this) == true)
 				{
 					isInAir = false;
-					mVel.y = 0.0f;
-				
-				}*/	
+				}
 			}
-		}
-
-	    else if (actor->GetTag() == Actor::Enemy) 
-	    {
-			//HitCheckBC(futurePos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
-			//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をfuturePosにする必用があるのか？
-			if (HitCheckBC(futurePos, 50, actor->GetPos(), 50))
+			//=========================================//
+			else if (actor->GetTag() == Actor::Enemy) 
 			{
-				mVel = { 0.0, 0.0 };
-				if (damageable)
+				//HitCheckBC(futurePos, 10, enemy->GetPos(), 10)の第２及び第３引数の値が大きすぎると、エネミー側の当たり判定が実行されない
+				//つまり、エネミー側にあたる前にストップしてしまう。そもそも、Posの値をfuturePosにする必用があるのか？
+				if (HitCheckBC(curPos, 50, actor->GetPos(), 50))
 				{
-					Damage(0);
-					damageableTime = 0;
-					damageable = false;
+					mVel = { 0.0, 0.0 };
+					if (damageable)
+					{
+						Damage(0);
+						damageableTime = 0;
+						damageable = false;
+					}
 				}
 			}
 		}
+
 	}
 
 
 	////*************************接触判定処理オワリ*************************//
-	mDir = { 0.0f, 0.0f };
-	mPos += {mVel.x, mVel.y};
-	mActor.pos += {mVel.x, mVel.y};
+
+
+	//mVel = futurePos;//めり込みを解消したfuturePosをVelに代入、これによりmVelは修正された移動量に更新となる
+	////ここのコメントアウトを外すとvectorでエラーが発生する。原因究明中 =>　急速に数値が増大したため。
+	//原因は、加速度であるmVelに座標が代入されていたため = futurePos
+	//mPos += {mVel.x, mVel.y};//更新することにより、プレイヤの座標が変わる
+     
+	mDir = { 0.0f, 0.0f };//都度DIｒを０に戻さないと一度入力した方向へずっと進んでいくことになる
+
+	mPos = { futurePos.x, futurePos.y };
 	Actor::SetPos(mPos.x, mPos.y);
+
+	////*************************移動に関する処理オワリ*************************//
+
+	//mActor.pos += {mVel.x, mVel.y};
+
 
 	//カメラ座標の更新
 	float camera_x, camera_y;
@@ -354,3 +313,16 @@ std::vector<int> Player::GetAnimOrders(Player::PlayerState state)
 	}
 }
 
+
+
+	////画面外への移動を禁止
+	///*if (futurePos.x <= 0 || futurePos.x >= 1500)
+	//{
+	//	mVel.x = 0.0;
+	//}*/
+	////画面外の上下限界まで行くと死亡判定	
+	////if (futurePos.y >= 1000 || futurePos.y <= 0)
+	////{
+	////	mVel.x = 0.0;
+	////	//Actor::SetState(EDead);
+	////}

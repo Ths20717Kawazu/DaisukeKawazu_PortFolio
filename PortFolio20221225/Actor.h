@@ -97,8 +97,8 @@ class Actor
 		std::vector<int> GetActorAnimOrders(){ return AnimOrders; }
 
 		bool getAnimate() { return animate;  }
-		float BlockWidth = 200.0f;
-		float BlockHeight = 200.0f;
+		float BlockWidth = 100.0f;
+		float BlockHeight = 100.0f;
 
 	private:
 
@@ -112,7 +112,7 @@ protected:
 		std::vector<class Component*> mComponents;
 		enum Tag mTag;
 		enum STATE mState;
-		float mGravity = 2.0f;
+		float mGravity = 0.5f;
 		int mHP;
 		Grid* mMygrid;
 		bool animate;
