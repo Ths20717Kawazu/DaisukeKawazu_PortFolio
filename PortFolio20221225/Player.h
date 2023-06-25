@@ -52,12 +52,14 @@ public:
       float  getPlayerHeight() { return PlayerHeight; }
       float  getPlayerWidth() { return PlayerWidth; }
 
-      float getGravity() { return mGravity; };
+      float getGravity() { return Actor::mGravity; };
+      void setGravity(float gravity) { Actor::mGravity = gravity;}
+
 
       D3DXVECTOR2 getDir() { return mDir; }
       void setDir(D3DXVECTOR2 dir) { mDir = dir; }
       D3DXVECTOR2 getVel() { return mVel; }
-      void setVel(D3DXVECTOR2 vel) { mVel = vel; }
+      void setVel(float x, float y) { mVel.x = x, mVel.y = y; }
      /* D3DXVECTOR2 getPos() { return mPos; }
       void setPos(D3DXVECTOR2 pos) { mPos = pos; }*/
 
@@ -67,8 +69,8 @@ public:
       void SetLift(float lift) { P_mLift = lift; }
       float GetLift() { return P_mLift; }
 
-      /*float GetJumpVel() { return mJumpVel; }
-      void SetJumpVel(float jumpvel) { mJumpVel = jumpvel; }*/
+      float GetJumpVel() { return mJumpVel; }
+      void SetJumpVel(float jumpvel) { mJumpVel = jumpvel; }
 
       bool GetCloseToEnemy() { return mCloseToEnemy; }
       void SetClosetoEnemy(bool closetoenemy) { mCloseToEnemy = closetoenemy; }
@@ -116,7 +118,7 @@ private:
     int mHP ;
 
     float mSpeed = 0;
-    const float mJumpVel= 0.5f;
+    float mJumpVel= 0.0f;
     float P_mLift = 0;
     
     bool isInAir = true;

@@ -112,7 +112,7 @@ protected:
 		std::vector<class Component*> mComponents;
 		enum Tag mTag;
 		enum STATE mState;
-		float mGravity = 0.5f;
+		float mGravity = 1.0f;
 		int mHP;
 		Grid* mMygrid;
 		bool animate;

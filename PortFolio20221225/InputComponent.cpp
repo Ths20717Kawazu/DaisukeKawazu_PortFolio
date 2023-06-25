@@ -11,10 +11,10 @@
 
 enum Scene;
 
-InputComponent::InputComponent(Actor* Owner):MoveComponent(Owner)
-{
-
-}
+//InputComponent::InputComponent(Actor* Owner):MoveComponent(Owner)
+//{
+//
+//}
 
 InputComponent::InputComponent(Actor* Owner, class Player* Player):MoveComponent(Owner, Player)
 {
@@ -35,79 +35,75 @@ void InputComponent::ProcessInput(void)
 	}
 	
 
-	if (mPlayer->GetGame()->GetScene() == mPlayer->GetGame()->Game::STAGE) 
+	if (mPlayer->GetGame()->GetScene() == mPlayer->GetGame()->Game::STAGE)
 	{
 		buffertime++;//OPENINGでの操作がダイレクトに反映されないよう、バッファを設定する。
-		if (buffertime > 50) 
+		if (buffertime > 50)
 		{
 			D3DXVECTOR2 dir = mPlayer->getDir();
 			if (mPlayer->getState() != Actor::EDead)
-		{
-			if (GetKeyboardPress(DIK_LEFT))
 			{
-				dir.x = -1.0f;
-				mPlayer->setDir(dir);
-			}
-
-			if (GetKeyboardPress(DIK_RIGHT))
-			{
-				dir.x = 1.0f;
-				mPlayer->setDir(dir);
-			}
-		
-			if (GetKeyboardPress(DIK_DOWN))
-			{
-				dir.y = 1.0f;
-				mPlayer->setDir(dir);
-			}
-
-			if (!mPlayer->getIsInAir() && GetKeyboardTrigger(DIK_SPACE))
-			//if (GetKeyboardTrigger(DIK_SPACE))
-			{
-				//float lift = mPlayer->GetLift();
-				dir.y = -1.0f;
-				//mPlayer->SetJumpVel(-50.0f + lift);
-
-				mPlayer->setDir(dir);
-				mPlayer->setIsInAir(true);
-			}
-			//if if と　if else ifの組み合わせは挙動が異なる
-
-			if (!mPlayer->GetHasballoon())
-			{
-				if (GetKeyboardTrigger(DIK_RETURN)) 
+				if (GetKeyboardPress(DIK_LEFT))
 				{
-					Actor* a;
-					a = new Balloon(mPlayer->GetGame(), Actor::Balloon);
-					a->SetACTOR(mPlayer->Actor::GetPos().x + 50, mPlayer->Actor::GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-					mPlayer->SetHasballoon(true);
+					dir.x = -1.0f;
+					mPlayer->setDir(dir);
 				}
-			}
-			else if (mPlayer->GetHasballoon()) 
-			{
 
+				if (GetKeyboardPress(DIK_RIGHT))
+				{
+					dir.x = 1.0f;
+					mPlayer->setDir(dir);
+				}
 
-				if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
+				if (GetKeyboardPress(DIK_DOWN))
+				{
+					/*dir.y = 1.0f;
+					mPlayer->setDir(dir);*/
+				}
+
+				if (mPlayer->getIsInAir() == false && GetKeyboardTrigger(DIK_SPACE))
+				{
+					//float lift = mPlayer->GetLift();
+					dir.y = -1.0f;
+					mPlayer->SetJumpVel(-20.0f);
+
+					mPlayer->setDir(dir);
+					mPlayer->setIsInAir(true);
+				}
+				//if if と　if else ifの組み合わせは挙動が異なる
+
+				if (!mPlayer->GetHasballoon())
 				{
 					if (GetKeyboardTrigger(DIK_RETURN))
 					{
-						mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetObstacle());
+						Actor* a;
+						a = new Balloon(mPlayer->GetGame(), Actor::Balloon);
+						a->SetACTOR(mPlayer->Actor::GetPos().x + 50, mPlayer->Actor::GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+						mPlayer->SetHasballoon(true);
 					}
 				}
-				////風船をリリース
-				if (GetKeyboardTrigger(DIK_RETURN))
+
+				else if (mPlayer->GetHasballoon())
 				{
-					 mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+					/*if (HitCheckBC(mPlayer->GetGame()->GetBalloon()->GetPos(), 150, mPlayer->GetGame()->GetObstacle()->GetPos(), 150))
+					{
+						if (GetKeyboardTrigger(DIK_RETURN))
+						{
+							mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetObstacle());
+						}
+					}*/
+					////風船をリリース
+					if (GetKeyboardTrigger(DIK_RETURN))
+					{
+						mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+					}
+					mPlayer->setDir(dir);
+
 				}
 
-
-			mPlayer->setDir(dir);
-
+			}
 		}
-
 	}
-		}
-
 }
 
 	
@@ -144,7 +140,7 @@ void InputComponent::ProcessInput(void)
 			}*/
 
 
-		}
+
 
 		//if (mPlayer->GetHasballoon()) 
 		//{

@@ -116,8 +116,6 @@ void Player::UpdateActor(void)
 	Actor::GetPos();
 	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 
-	//if (!isInAir)Actor::mGravity = 0.0;
-
 	if (mMygrid != newMygrid)
 	{
 		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
@@ -153,36 +151,85 @@ void Player::UpdateActor(void)
 	
 	//D3DXVECTOR2 lastPos;
 	curPos = Actor::GetPos();
-
+	
 	////移動方向をベクトル正規化
 	D3DXVec2Normalize(&mDir, &mDir);
 	mVel = mDir * mSpeed;
-	mVel.y = mJumpVel * mDir.y;
+	/*mVel.y = mJumpVel * mDir.y;*/
+	//if (mVel.y < 0) 
+	//{
+	//	setIsInAir(false);
+	//}
+
+	for (auto actor : mMygrid->GetGridMembers())
+	{
+		//=========================================//
+		if (actor->GetTag() == Actor::Block)
+		{
+			if (!actor->GetPos().y == (Actor::GetPos().y + ((PlayerHeight / 2) + (Actor::BlockHeight / 2))))
+			{
+				break;
+			}
+			else
+			{
+				setIsInAir(true);
+			}
+		}
+	}
+
+
 	if (isInAir) 
 	{
-		mVel.y += Actor::mGravity;//重力により減衰
+		setGravity(1.0f);
 	}
-	//mVel.y += mJumpVel;
+	else
+	{
+		//setGravity(0.0f);
+		SetJumpVel(0.0f);
+	}
+	
+	//※下への貫通対策として、下方向への加速度に制限を設けた。
+	mJumpVel += Actor::mGravity;//重力により減衰
+	if (mJumpVel >= 10.0f) {mJumpVel = 10.0f;}
+	mVel.y += mJumpVel;
+	if (mVel.y >= 10.0f) {mVel.y = 10.0f;}
 	
 	//※地面との接触判定が正常に実施されない場合、無限にmJumpVelが増大し、ある時点で地面を貫通して画面外に出る現象が発生する
 	//2023/06/22
 
 	////入力を受け付けた場合の将来座標
-	futurePos.x = curPos.x + mVel.x;
+ 	futurePos.x = curPos.x + mVel.x;
 	futurePos.y = curPos.y + mVel.y;
 
 	////=======================接触判定処理==========================//
 	{
 		for (auto actor : mMygrid->GetGridMembers())
 		{
+
 			//=========================================//
 			if (actor->GetTag() == Actor::Block)
 			{
+				//if(actor->GetPos().y == (Actor::GetPos().y + ((PlayerHeight / 2) + (Actor::BlockHeight/2))))
+				//{
+				//	//setIsInAir(false);
+				//	break;
+				//}
+				//else
+				//{
+				//	setIsInAir(true);
+				//}
+
 				HitCheckBLK(&futurePos, actor, this);
-				if(HitGroundCheck(actor, this) == true)
+				
+				/*if(HitGroundCheck(actor, this) == true)
 				{
 					isInAir = false;
+					setGravity(0.0f);
 				}
+				else if (HitGroundCheck(actor, this) == false)
+				{
+					isInAir = true;
+				}*/
 			}
 			//=========================================//
 			else if (actor->GetTag() == Actor::Enemy) 
@@ -216,7 +263,9 @@ void Player::UpdateActor(void)
 	mDir = { 0.0f, 0.0f };//都度DIｒを０に戻さないと一度入力した方向へずっと進んでいくことになる
 
 	mPos = { futurePos.x, futurePos.y };
+
 	Actor::SetPos(mPos.x, mPos.y);
+	
 
 	////*************************移動に関する処理オワリ*************************//
 

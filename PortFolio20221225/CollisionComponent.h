@@ -21,7 +21,7 @@ public:
 private:
     /*float mHalfW;
     float mHalfH;*/
-
+    Actor* mOwner{nullptr};
 };
 
 
