@@ -1,19 +1,11 @@
 #include "CollisionComponent.h"
 #include "game.h"
 
-CollisionComponent::CollisionComponent(class Actor* Owner) :Component(Owner)
-{
-	mOwner = Owner;
-
-}
+CollisionComponent::CollisionComponent(class Actor* Owner) :Component(Owner){mOwner = Owner;}
 
 CollisionComponent::~CollisionComponent() {};
 
-void CollisionComponent::Update() 
-{
-
-}
-
+void CollisionComponent::Update() {}
 
 //境界円（バウンディングサークル）の当たり判定
 	bool HitCheckBC(D3DXVECTOR2 posA, float rA, D3DXVECTOR2 posB, float rB)
@@ -80,11 +72,8 @@ void CollisionComponent::Update()
 			{
 				OverLapY = FP_Bottom - B_Upper;
 				Player->setIsInAir(false);//実質的に接地計算判定も兼ねている
+				//※
 			}
-			else
-			/*{
-				Player->setIsInAir(true);
-			}*/
 
 			if (Player->getIsInAir()) 
 			{
@@ -122,8 +111,6 @@ void CollisionComponent::Update()
 		P_Left = Player->GetPos().x - Player->PlayerWidth / 4;
 		P_Right = Player->GetPos().x + Player->PlayerWidth / 4;
 		
-
-
 		float B_Top;
 		float B_Bottom;
 		float B_Right;
@@ -133,13 +120,7 @@ void CollisionComponent::Update()
 		B_Bottom = Block->GetPos().y + Block->BlockHeight / 2;
 		B_Right = Block->GetPos().x + Block->BlockWidth / 2;
 		B_Left = Block->GetPos().x - Block->BlockWidth / 2;
-		
-
-		//if (P_Bottom >= B_Top)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
-		//	{
-		//		return true;
-		//	}
-			
+				
 		if ( P_Bottom > B_Top && P_Top < B_Bottom) //プレイヤの下辺と潜在的に接触している可能性あるブロック
 		{
 			if (P_Right > B_Left && P_Left < B_Right)//Bの上辺よりPの下辺が下にある（Y値はPの方が上)
