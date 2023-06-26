@@ -37,9 +37,26 @@ void InputComponent::ProcessInput(void)
 
 	if (mPlayer->GetGame()->GetScene() == mPlayer->GetGame()->Game::STAGE)
 	{
+			
 		buffertime++;//OPENINGでの操作がダイレクトに反映されないよう、バッファを設定する。
+		
 		if (buffertime > 50)
 		{
+			canMove = true;
+		}
+
+		if(canMove == true)
+		{
+			if (canShoot == false) 
+			{
+				shootBuffer++;
+			}
+			if (shootBuffer >= 50)
+			{
+				shootBuffer = 0;
+				canShoot = true;
+			}
+
 			D3DXVECTOR2 dir = mPlayer->getDir();
 			if (mPlayer->getState() != Actor::EDead)
 			{
@@ -72,14 +89,14 @@ void InputComponent::ProcessInput(void)
 				}
 				//if if と　if else ifの組み合わせは挙動が異なる
 
-				if (!mPlayer->GetHasballoon())
+				if (!mPlayer->GetHasballoon() && canShoot)
 				{
 					if (GetKeyboardTrigger(DIK_RETURN))
 					{
+						mPlayer->SetHasballoon(true);
 						Actor* a;
 						a = new Balloon(mPlayer->GetGame(), Actor::Balloon);
 						a->SetACTOR(mPlayer->Actor::GetPos().x + 50, mPlayer->Actor::GetPos().y - 50, 250.0f, 250.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-						mPlayer->SetHasballoon(true);
 					}
 				}
 
@@ -96,6 +113,9 @@ void InputComponent::ProcessInput(void)
 					if (GetKeyboardTrigger(DIK_RETURN))
 					{
 						mPlayer->GetGame()->GetBalloon()->SetOwner(0);
+						mPlayer->SetHasballoon(false);
+						canShoot = false;
+						shootBuffer = 0;
 					}
 					mPlayer->setDir(dir);
 

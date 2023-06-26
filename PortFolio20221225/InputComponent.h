@@ -19,8 +19,11 @@ class InputComponent :
     InputComponent(class Actor* Owner, class Player* Player);
     virtual ~InputComponent();
 	void ProcessInput(void) override;
-
+    bool canShoot = true;
 
 	private:
+    int shootBuffer = 0;
+  bool canMove = false;
+
     int buffertime = 0;//場面を切り替えた際に前の場面での操作が次の場面に反映されないようバッファを設定する。
 };

@@ -94,9 +94,6 @@ private:
     D3DXVECTOR2 futurePos = { 0.0f,0.0f };
     D3DXVECTOR2 curPos = { 0.0f,0.0f };
 
-
-
-
     //画像配列
     std::vector<int>mIdleImages;
     std::vector<int>mWalkImages;
@@ -116,6 +113,9 @@ private:
     D3DXVECTOR2 mLastpos{ 0, 0 };
 
     int mHP ;
+    int mScore = 0 ;
+    int mRemainLives = 0;
+    int damageableTime = 0;//別で定める時間を超えるとダメージを受ける。
 
     float mSpeed = 0;
     float mJumpVel= 0.0f;
@@ -124,11 +124,6 @@ private:
     bool isInAir = true;
     bool hasBalloon = false;
     bool mCloseToEnemy = false;
-
-    int mScore = 0 ;
-
-    int mRemainLives = 0;
-
-    int damageableTime = 0;//別で定める時間を超えるとダメージを受ける。
     bool damageable = false;
+  
 };

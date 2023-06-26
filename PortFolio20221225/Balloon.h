@@ -27,7 +27,7 @@ private:
     int mDamage;
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 Dir;
-    float speed;
+    float mSpeed = 30.0f;
     float mLift;
     Actor* mOwner;
     

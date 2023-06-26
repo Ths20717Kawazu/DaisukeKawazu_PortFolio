@@ -40,7 +40,6 @@ void Balloon::SetOwner(class Actor* owner)
 
 void Balloon::UpdateActor()
 {
-
 	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 
 	if (mMygrid != newMygrid)
@@ -72,7 +71,6 @@ void Balloon::UpdateActor()
 			GetGame()->GetPlayer()->SetLift(0.0f);
 		}
 		//Ownerが敵の場合
-		//if (mOwner->GetTag() >= 1000 || mOwner->GetTag() <= 9999)
 		if(mOwner->GetTag() == Actor::Enemy)
 		{
 			mActor.pos = mOwner->GetPos();
@@ -80,16 +78,10 @@ void Balloon::UpdateActor()
 			mActor.pos.y -= 10.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		}
-
-		//Balloon::mActor.pos = mOwner->GetPos();
-		//Balloon::mActor.pos.y -= mLift;
-		//mOwner->Actor::SetPos(Balloon::mActor.pos.x, Balloon::mActor.pos.y);
-
 	}
 	//Owner不在でBalloonがリリースされた場合（プレイヤもしくはObstacleに属していないフリーな状態）
 	else if(!mOwner)
 	{
-
 	//***************************************************************************************************************************//
 	//プレイヤの速度を取得して風船の移動に反映
 	//=======================================//
@@ -101,23 +93,20 @@ void Balloon::UpdateActor()
 		//====================//
 		mActor.pos = Actor::GetPos();
 		mActor.pos.x += 5.0f;
-		mActor.pos.y -= 5.0f;
+		mSpeed -= Actor::mGravity;
+		mActor.pos.y -= mSpeed;
+
 		//====================//
 
 		//風船の移動に上で取得したプレイヤの移動速度を反映
 		//====================//
-		mActor.pos -= Pvel;
+		//mActor.pos -= Pvel;
 		//====================//
 
 		//上で風船に反映すべき移動速度を処理して最終的に反映
 		Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		//***************************************************************************************************************************//
-
-
 		//風船が直接敵に当たった場合（場合分けしない場合、Obstacleの当たり判定と２重に判定されエラーとなる。
-
-
-
 		for (auto enemy : GetGame()->GetEnemies())
 		{
 			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))
