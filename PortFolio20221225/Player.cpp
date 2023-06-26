@@ -155,11 +155,6 @@ void Player::UpdateActor(void)
 	////ˆÚ“®•ûŒü‚ğƒxƒNƒgƒ‹³‹K‰»
 	D3DXVec2Normalize(&mDir, &mDir);
 	mVel = mDir * mSpeed;
-	/*mVel.y = mJumpVel * mDir.y;*/
-	//if (mVel.y < 0) 
-	//{
-	//	setIsInAir(false);
-	//}
 
 	for (auto actor : mMygrid->GetGridMembers())
 	{
@@ -176,7 +171,6 @@ void Player::UpdateActor(void)
 			}
 		}
 	}
-
 
 	if (isInAir) 
 	{
@@ -205,31 +199,10 @@ void Player::UpdateActor(void)
 	{
 		for (auto actor : mMygrid->GetGridMembers())
 		{
-
 			//=========================================//
 			if (actor->GetTag() == Actor::Block)
 			{
-				//if(actor->GetPos().y == (Actor::GetPos().y + ((PlayerHeight / 2) + (Actor::BlockHeight/2))))
-				//{
-				//	//setIsInAir(false);
-				//	break;
-				//}
-				//else
-				//{
-				//	setIsInAir(true);
-				//}
-
 				HitCheckBLK(&futurePos, actor, this);
-				
-				/*if(HitGroundCheck(actor, this) == true)
-				{
-					isInAir = false;
-					setGravity(0.0f);
-				}
-				else if (HitGroundCheck(actor, this) == false)
-				{
-					isInAir = true;
-				}*/
 			}
 			//=========================================//
 			else if (actor->GetTag() == Actor::Enemy) 
@@ -375,3 +348,23 @@ std::vector<int> Player::GetAnimOrders(Player::PlayerState state)
 	////	mVel.x = 0.0;
 	////	//Actor::SetState(EDead);
 	////}
+				//if(actor->GetPos().y == (Actor::GetPos().y + ((PlayerHeight / 2) + (Actor::BlockHeight/2))))
+				//{
+				//	//setIsInAir(false);
+				//	break;
+				//}
+				//else
+				//{
+				//	setIsInAir(true);
+				//}
+
+				
+				/*if(HitGroundCheck(actor, this) == true)
+				{
+					isInAir = false;
+					setGravity(0.0f);
+				}
+				else if (HitGroundCheck(actor, this) == false)
+				{
+					isInAir = true;
+				}*/

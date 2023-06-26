@@ -25,6 +25,10 @@ public:
     enum EnemyState SetState(enum EnemyState state) { mState = state; }
     enum EnemyState GetState() { return mState; }
 
+    float getGravity() { return Actor::mGravity; };
+    void setGravity(float gravity) { Actor::mGravity = gravity; }
+
+
     int getWidth() { return EnemyWidth;}
     int getHeight() { return EnemyHeight; }
 
@@ -32,6 +36,8 @@ public:
 
     int GetEScore() { return mEscore; }
 private:
+    D3DXVECTOR2 mDir{ 1.0f, 0 };
+    bool isInAir = false;
     int EnemyWidth = 100;
     int EnemyHeight = 100;
     D3DXVECTOR2 mVel{0.0f, 0.0f};
@@ -42,6 +48,6 @@ private:
     //‰æ‘œ•\¦‡˜
     std::vector<int>animIdleOrders;
     int mEscore;
-
+    float mSpeed = 2.0f;
 };
 

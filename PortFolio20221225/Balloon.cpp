@@ -50,7 +50,7 @@ void Balloon::UpdateActor()
 	}
 
 
-	if (Actor::GetPos().x > 1500 || Actor::GetPos().y < 0)
+	if (Actor::GetPos().x > 5000 || Actor::GetPos().x < -100 || Actor::GetPos().y < 0 || Actor::GetPos().y > 2000)
 	{
 		Actor::SetState(EDead);
 	}

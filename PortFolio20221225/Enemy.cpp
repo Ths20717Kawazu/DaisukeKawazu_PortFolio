@@ -38,6 +38,8 @@ void Enemy::UpdateActor()
 {		
 	Actor::GetPos();
 	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
+	D3DXVec2Normalize(&mDir, &mDir);
+
 
 	if (mMygrid != newMygrid)
 	{
@@ -46,18 +48,53 @@ void Enemy::UpdateActor()
 		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
 	}
 
+	for (auto actor : mMygrid->GetGridMembers())
+	{
+		//=========================================//
+		if (actor->GetTag() == Actor::Block)
+		{
+			if (!actor->GetPos().y == (Actor::GetPos().y + ((EnemyHeight / 2) + (Actor::BlockHeight / 2))))
+			{
+				isInAir = true;
+				break;
+			}
+			else
+			{
+				isInAir = false;
+			}
+		}
+	}
+
+	if (isInAir)
+	{
+		setGravity(1.0f);
+	}
+	else
+	{
+		setGravity(0.0f);
+	}
+
+
+
 	D3DXVECTOR2 futurePos;
 	D3DXVECTOR2 curPos;
 	D3DXVECTOR2 lastPos;
 
-	curPos = Actor::GetPos();
 
+
+
+	curPos = Actor::GetPos();
+	mVel.y += Actor::mGravity;
+	if (mVel.y >= 10.0f) { mVel.y = 10.0f; }
+	mVel.x = mDir.x * mSpeed;
 	//将来座標
 	futurePos.x = curPos.x + mVel.x;
+	futurePos.y = curPos.y + mVel.y;
+	
+	
+	
 
-	mVel.y += Actor::mGravity;
-	futurePos.y = curPos.y + mVel.y + ( getHeight() / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
-
+	//futurePos.y = curPos.y + mVel.y + ( getHeight() / 2 );//Enemy画像の丁度下端でブロックとの衝突判定
 	//エネミーのState
 	enum Enemy::EnemyState curstate = Enemy::GetState();
 	if (curstate != Enemy::GetState())//Stateが切り替わったのなら、新たな画像配列を基底クラスが有する画像配列等に入力する。
@@ -71,48 +108,33 @@ void Enemy::UpdateActor()
 	{
 		if (actor->GetTag() == Actor::Block)
 		{
-			if (HitCheckBLK(futurePos, actor, this) == true)
-			{
-				mVel.y = 0.0f;
-			}
+			HitCheckBLK(&futurePos, actor, this);
 		}
 	}
 
 	//***************************************************************************************************************************//
-	//プレイヤの速度を取得してエネミーの移動に反映
-	//if()
-	//=======================================//
-		//D3DXVECTOR2 Pvel;
-		//if (GetGame()->GetPlayer()->GetState() == Actor::EActive) 
-		//{
-		//	//Pvel = GetGame()->GetPlayer()->getVel();
-		//	//=======================================//
 
-		//	//エネミーの移動に上で取得したプレイヤの移動速度を反映
-		//	//====================//
-		//	//mActor.pos -= Pvel;
-		//	//====================//
-		//}
-		//上でエネミーに反映すべき移動速度を処理して最終的に反映
+	//=======================================//
+
 			//エネミーの移動速度
 			//====================//
 			mActor.pos = Actor::GetPos();
-			mActor.pos.x += mVel.x;
-			mActor.pos.y += mVel.y;
+			mActor.pos.x = futurePos.x;
+			mActor.pos.y = futurePos.y;
+
 			//====================//
 
 		Actor::SetPos(mActor.pos.x, mActor.pos.y);
 	//***************************************************************************************************************************//
 
-	if (futurePos.y >= 1200 || futurePos.y <= 0)
+	if (futurePos.y < 0 || futurePos.y >= 2000)
 	{
-		mVel.x = 0.0;
 		Actor::SetState(EDead);
 	}
-	/*if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) 
+	if (HitCheckBC(Enemy::GetPos(), 100, GetGame()->GetPlayer()->GetPos(), 50)) 
 	{
 		GetGame()->GetPlayer()->Damage(100.0f);;
-	};*/
+	};
 
 }
 
