@@ -35,7 +35,7 @@ public:
     void SetVel(float x, float y) { mVel.x = x, mVel.y = y;  }
 
     int GetEScore() { return mEscore; }
-private:
+protected:
     D3DXVECTOR2 mDir{ 1.0f, 0 };
     bool isInAir = false;
     int EnemyWidth = 100;

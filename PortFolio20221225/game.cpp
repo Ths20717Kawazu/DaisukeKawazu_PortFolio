@@ -26,6 +26,8 @@
 #include "Grid.h"
 #include "Opening.h"
 #include "Ending.h"
+#include "Bat.h"
+
 #include <stdio.h>
 
 //========================’Ç‰Á======================//
@@ -85,6 +87,7 @@ void Game::gameInit(void)
 			if (maps[Y][X] == 3) a = new Enemy (this, Actor::Enemy, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 			if (maps[Y][X] == 4) a = new Player(this, Actor::Player, 100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 			if (maps[Y][X] == 5) a = new Block (this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 6) a = new Bat(this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 		}
 	}
 

@@ -292,7 +292,7 @@ void Player::Damage(int damage)
 	if (!mLives.empty()) 
 	{
 		Life* life = mLives[0];//mLivesはVector配列のため、動的にサイズが変更されている
-			life->Actor::SetState(Actor::EDead);//よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
+		life->Actor::SetState(Actor::EDead);//よって常に配列の先頭アドレスを代入し、先頭のライフを削除していく
 		}
 	else if (mLives.empty())
 	{

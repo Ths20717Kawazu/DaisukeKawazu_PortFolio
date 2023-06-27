@@ -48,7 +48,7 @@ void Balloon::UpdateActor()
 	}
 
 
-	if (Actor::GetPos().x > 5000 || Actor::GetPos().x < -100 || Actor::GetPos().y < 0 || Actor::GetPos().y > 2000)
+	if (Actor::GetPos().x > 5000 || Actor::GetPos().x < -100 || Actor::GetPos().y < -500 || Actor::GetPos().y > 2000)
 	{
 		Actor::SetState(EDead);
 	}
@@ -59,8 +59,8 @@ void Balloon::UpdateActor()
 		if (mOwner->GetTag() == Actor::Player) 
 		{
 			mActor.pos = mOwner->GetPos();
-			mActor.pos.x += 100.0f;
-			mActor.pos.y -= 10.0f;
+			mActor.pos.x += 50.0f;
+			mActor.pos.y -= 100.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		}
 		//風船が手元から離れた場合、プレイヤーのP_Liftを０にする。でないと、風船が手元を離れても消滅するまでプレイヤーは浮かんでしまう。
@@ -80,10 +80,9 @@ void Balloon::UpdateActor()
 		if (mOwner->GetTag() == Actor::Mono)
 		{
 			mActor.pos = mOwner->GetPos();
-			mActor.pos.x += 100.0f;
-			mActor.pos.y -= 100.0f;
+			mActor.pos.x += 50.0f;
+			mActor.pos.y -= 200.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
-			//mOwner->Actor::setLift(mLift);
 		}
 
 
@@ -110,14 +109,6 @@ void Balloon::UpdateActor()
 		Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		//***************************************************************************************************************************//
 		//風船が直接敵に当たった場合（場合分けしない場合、Monoの当たり判定と２重に判定されエラーとなる。
-		for (auto enemy : GetGame()->GetEnemies())
-		{
-			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))
-			{
-				enemy->Damage(mDamage);//ヒットした対象にBalloonに設定したダメージを与える
-				//Actor::SetState(EDead);//Balloonがヒットしたら消滅する。
-			};
-		}
 		for (auto actor : mMygrid->GetGridMembers()) 
 		{
 			if (actor->GetTag() == Actor::Mono) 
@@ -132,6 +123,14 @@ void Balloon::UpdateActor()
 					//}
 				}		
 
+			}
+			if (actor->GetTag() == Actor::Enemy)
+			{
+				if (HitCheckBC(Actor::GetPos(), 100, actor->GetPos(), 100))
+				{
+					actor->Damage(mDamage);//ヒットした対象にBalloonに設定したダメージを与える
+					//Actor::SetState(EDead);//Balloonがヒットしたら消滅する。
+				};
 			}
 		}
 	}

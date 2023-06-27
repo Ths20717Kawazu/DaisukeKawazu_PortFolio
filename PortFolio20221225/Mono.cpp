@@ -37,15 +37,26 @@ void Mono::UpdateActor()
 		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
 	}
 
-	for (auto enemy : GetGame()->GetEnemies()) 
+	if (Actor::GetPos().x > 5000 || Actor::GetPos().x < -100 || Actor::GetPos().y < -500 || Actor::GetPos().y > 2000)
 	{
-		if (HitCheckBC(Mono::GetPos(), 100, enemy->GetPos(), 100))
-		{
-			enemy->Damage(mDamage);
-			Actor::SetState(EDead);
-			//hit = true;
-		};
+		Actor::SetState(EDead);
 	}
+
+
+	for (auto actor : mMygrid->GetGridMembers()) 
+	{
+		  if (actor->GetTag() == Actor::Enemy)
+		 {
+				if (HitCheckBC(Actor::GetPos(), 100, actor->GetPos(), 100))
+				{
+					actor->Damage(mDamage);
+					Actor::SetState(EDead);
+					//hit = true;
+				};
+		 }
+	}
+
+
 	Actor::mPos.y = GetPos().y;
 	Actor::mPos.y += Actor::M_mlift;
 	Actor::mPos.x = GetPos().x;

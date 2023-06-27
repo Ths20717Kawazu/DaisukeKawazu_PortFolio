@@ -136,6 +136,7 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Balloon.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Balloon.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
