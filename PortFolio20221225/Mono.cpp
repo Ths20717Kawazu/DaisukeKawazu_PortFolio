@@ -37,20 +37,6 @@ void Mono::UpdateActor()
 		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
 	}
 
-
-	//プレイヤの移動速度を入手して、逆方向へ移動させる
-//=================================================//
-	//D3DXVECTOR2 Pvel;
-	////Playerが消滅した際に、UpdateActorが更新されなくなる不具合を下記の条件文を入れて解消する。
-	////Playerの位置情報を取得し続ける部分については、この条件式が不可欠
-	//if (GetGame()->GetPlayer()->GetState() == Actor::EActive) 
-	//{
-	//	Pvel = GetGame()->GetPlayer()->getVel();
-	//	mActor.pos -= Pvel;
-	//}
-	//SetPos(mActor.pos.x, mActor.pos.y);
-	////=================================================//
-
 	for (auto enemy : GetGame()->GetEnemies()) 
 	{
 		if (HitCheckBC(Mono::GetPos(), 100, enemy->GetPos(), 100))
@@ -60,4 +46,9 @@ void Mono::UpdateActor()
 			//hit = true;
 		};
 	}
+	Actor::mPos.y = GetPos().y;
+	Actor::mPos.y += Actor::M_mlift;
+	Actor::mPos.x = GetPos().x;
+	Actor::SetPos(mPos.x, mPos.y);
+
 }

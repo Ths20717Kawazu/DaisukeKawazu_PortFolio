@@ -73,7 +73,7 @@ void Balloon::UpdateActor()
 		{
 			mActor.pos = mOwner->GetPos();
 			mActor.pos.x += 100.0f;
-			mActor.pos.y -= 10.0f;
+			mActor.pos.y -= 100.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		}
 		//mOwner‚ªMono‚Ìê‡
@@ -81,8 +81,9 @@ void Balloon::UpdateActor()
 		{
 			mActor.pos = mOwner->GetPos();
 			mActor.pos.x += 100.0f;
-			mActor.pos.y -= 10.0f;
+			mActor.pos.y -= 100.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
+			//mOwner->Actor::setLift(mLift);
 		}
 
 
@@ -124,6 +125,7 @@ void Balloon::UpdateActor()
 				if (HitCheckBC(Actor::GetPos(), 100, actor->Actor::GetPos(), 100))
 				{
 					SetOwner(actor);
+					actor->Actor::setLift(mLift);
 					//if (GetKeyboardTrigger(DIK_RETURN))
 					//{
 					//	mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetMono());

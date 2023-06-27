@@ -8,7 +8,6 @@ public:
     ~Mono();
     void UpdateActor() override;
     void SetDamage(int damage) { mDamage = damage; }
-
 private:
     int mDamage;
     D3DXVECTOR2 Dir;

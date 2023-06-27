@@ -119,7 +119,7 @@ private:
 
     float mSpeed = 0;
     float mJumpVel= 0.0f;
-    float P_mLift = 0.0f;
+    float P_mLift = 0.0f;//間接的に風船を所持した状態で風船の持つmLiftの値が代入される
     
     bool isInAir = true;
     bool hasBalloon = false;

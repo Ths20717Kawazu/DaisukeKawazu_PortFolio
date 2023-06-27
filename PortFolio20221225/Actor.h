@@ -100,6 +100,8 @@ class Actor
 		float BlockWidth = 100.0f;
 		float BlockHeight = 100.0f;
 
+		void setLift(float lift) { M_mlift = lift; }
+
 	private:
 
 		int TextureID;
@@ -117,7 +119,7 @@ protected:
 		Grid* mMygrid;
 		bool animate;
 		D3DXVECTOR2 mPos;
-
+		float M_mlift = 0.0f;
 
 
 		std::vector<int>AnimImages;//各派生クラス共通の画像⇒各クラスのStateが切り替わる度にこの配列に入力される。
