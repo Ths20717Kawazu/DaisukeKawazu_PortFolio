@@ -34,5 +34,5 @@ bool HitCheckBB(D3DXVECTOR2 boxApos, float boxAwidth, float boxAheight,
      D3DXVECTOR2 boxBpos, float boxBwidth, float boxBheight);
 bool HitCheckBLK(D3DXVECTOR2* futurepos, class Actor* , class Player*);
 bool HitCheckBLK(D3DXVECTOR2* futurePos, class Actor* , class Enemy*);
-//bool CheckObstacles(D3DXVECTOR2 posA);
+//bool CheckMonos(D3DXVECTOR2 posA);
 int PushBack(Actor* Block, Player* Player);

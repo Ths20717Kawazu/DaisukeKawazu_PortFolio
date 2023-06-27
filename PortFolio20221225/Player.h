@@ -119,7 +119,7 @@ private:
 
     float mSpeed = 0;
     float mJumpVel= 0.0f;
-    float P_mLift = 0;
+    float P_mLift = 0.0f;
     
     bool isInAir = true;
     bool hasBalloon = false;

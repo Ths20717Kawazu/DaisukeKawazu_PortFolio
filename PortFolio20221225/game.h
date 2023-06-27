@@ -43,7 +43,7 @@ public:
 
 
 	void AddBalloon(class Balloon* balloon) { mBalloon = balloon; }
-	void AddObstacle(class Obstacle* obstacle) { mObstacle = obstacle; }
+	void AddMono(class Mono* Mono) { mMono = Mono; }
 	
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
@@ -67,7 +67,7 @@ public:
 
 	Player* GetPlayer() { return mPlayer; }
 	Balloon* GetBalloon() { return mBalloon; }
-	Obstacle* GetObstacle() { return mObstacle; }
+	Mono* GetMono() { return mMono; }
 	CameraComponent* GetCamera() { return mCameraComponent; }
 
 
@@ -75,7 +75,7 @@ public:
 	std::vector<class Actor*>& GetActors() { return mActors; }
 	std::vector<class Block*>& GetBlocks() { return mBlocks; }
 	std::vector<class Enemy*>& GetEnemies() { return mEnemies; }
-	std::vector<class Obstacle*>& GetObstacles() { return mObstacles; }	
+	std::vector<class Mono*>& GetMonos() { return mMonos; }	
   	
 	class Grid* getGrid(int posX, int posY);
 
@@ -87,12 +87,12 @@ private:
 	std::vector<class Block*>mBlocks;
 	std::vector<class Enemy*>mEnemies;
 	std::vector<class Life*> mLives;
-	std::vector<class Obstacle*>mObstacles;
+	std::vector<class Mono*>mMonos;
 	std::vector<class SpriteComponent*>mSprites;
 	std::vector<class AnimationComponent*>mAnimComponents;
 	Balloon* mBalloon;
 	Player* mPlayer;
-	Obstacle* mObstacle;
+	Mono* mMono;
 	CameraComponent* mCameraComponent;
 	SpriteComponent* mOPSprite;
 
@@ -113,8 +113,8 @@ private:
 		 { 0,0,0,0,0,4,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
 		 { 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,5, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
 
-		 { 0,0,0,0,0,0,0,0,0,0, 0,3,0,0,0,0,0,0,0,5, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
-		 { 0,0,0,0,5,5,5,5,5,5, 5,5,5,5,5,5,0,0,5,5, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
+		 { 0,0,2,0,0,0,0,2,0,0, 0,3,0,0,0,2,0,0,0,5, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
+		 { 5,5,5,5,5,5,5,5,5,5, 5,5,5,5,5,5,0,0,5,5, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
 
 		 { 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  },
 		 { 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0  }

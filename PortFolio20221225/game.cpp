@@ -17,7 +17,7 @@
 #include "MoveComponent.h"
 #include "InputComponent.h"
 #include "Block.h"
-#include "Obstacle.h"
+#include "Mono.h"
 #include "BackGround.h"
 #include "UserInterface.h"
 #include "GameOver.h"
@@ -80,11 +80,11 @@ void Game::gameInit(void)
 	{
 		for (int X = 0; X < 100; X++)//—ñ 
 		{
-			if (maps[Y][X] == 1) a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			if (maps[Y][X] == 2) a = new Obstacle(this, Actor::Obstacle, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			if (maps[Y][X] == 3) a = new Enemy(this, Actor::Enemy, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 1) a = new Block (this, Actor::Block, 100.0f * X, 100.0f * Y, 200.0f, 200.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 2) a = new Mono  (this, Actor::Mono, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 3) a = new Enemy (this, Actor::Enemy, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 			if (maps[Y][X] == 4) a = new Player(this, Actor::Player, 100.0f * X, 100.0f * Y, PLAYER_HEIGHT, PLAYER_WIDTH, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-			if (maps[Y][X] == 5) a = new Block(this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+			if (maps[Y][X] == 5) a = new Block (this, Actor::Block, 100.0f * X, 100.0f * Y, 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 		}
 	}
 

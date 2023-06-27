@@ -5,7 +5,6 @@
 #include "Enemy.h"
 
 Balloon::Balloon(Game* game, enum Actor::Tag tag): Actor(game, tag),
-mLift(5.0f),
 mDamage(100)
 {
 	auto SC = new SpriteComponent(this, 500);
@@ -14,9 +13,8 @@ mDamage(100)
 	SetOwner(GetGame()->GetPlayer());//最初のオーナーをプレイヤーに設定
 	animate = false;
 	Actor::SetTag(tag);
-	GetGame()->GetPlayer()->SetLift(-2.03f);//プレイヤに浮力を与える
+	GetGame()->GetPlayer()->SetLift(mLift);//プレイヤに浮力を与える
 	GetGame()->AddBalloon(this);
-
 	//Gridへの登録
 	mMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 	mMygrid->addMembersIngrid(this);
@@ -78,8 +76,18 @@ void Balloon::UpdateActor()
 			mActor.pos.y -= 10.0f;
 			Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		}
+		//mOwnerがMonoの場合
+		if (mOwner->GetTag() == Actor::Mono)
+		{
+			mActor.pos = mOwner->GetPos();
+			mActor.pos.x += 100.0f;
+			mActor.pos.y -= 10.0f;
+			Actor::SetPos(mActor.pos.x, mActor.pos.y);
+		}
+
+
 	}
-	//Owner不在でBalloonがリリースされた場合（プレイヤもしくはObstacleに属していないフリーな状態）
+	//Owner不在でBalloonがリリースされた場合（プレイヤもしくはMonoに属していないフリーな状態）
 	else if(!mOwner)
 	{
 	//***************************************************************************************************************************//
@@ -97,16 +105,10 @@ void Balloon::UpdateActor()
 		mActor.pos.y -= mSpeed;
 
 		//====================//
-
-		//風船の移動に上で取得したプレイヤの移動速度を反映
-		//====================//
-		//mActor.pos -= Pvel;
-		//====================//
-
 		//上で風船に反映すべき移動速度を処理して最終的に反映
 		Actor::SetPos(mActor.pos.x, mActor.pos.y);
 		//***************************************************************************************************************************//
-		//風船が直接敵に当たった場合（場合分けしない場合、Obstacleの当たり判定と２重に判定されエラーとなる。
+		//風船が直接敵に当たった場合（場合分けしない場合、Monoの当たり判定と２重に判定されエラーとなる。
 		for (auto enemy : GetGame()->GetEnemies())
 		{
 			if (HitCheckBC(Actor::GetPos(), 100, enemy->GetPos(), 100))
@@ -114,6 +116,21 @@ void Balloon::UpdateActor()
 				enemy->Damage(mDamage);//ヒットした対象にBalloonに設定したダメージを与える
 				//Actor::SetState(EDead);//Balloonがヒットしたら消滅する。
 			};
+		}
+		for (auto actor : mMygrid->GetGridMembers()) 
+		{
+			if (actor->GetTag() == Actor::Mono) 
+			{
+				if (HitCheckBC(Actor::GetPos(), 100, actor->Actor::GetPos(), 100))
+				{
+					SetOwner(actor);
+					//if (GetKeyboardTrigger(DIK_RETURN))
+					//{
+					//	mPlayer->GetGame()->GetBalloon()->SetOwner(mPlayer->GetGame()->GetMono());
+					//}
+				}		
+
+			}
 		}
 	}
 }

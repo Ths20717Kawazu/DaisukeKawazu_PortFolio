@@ -12,18 +12,16 @@
 
 class InputComponent :
     public MoveComponent
-
 {
     public:
-    InputComponent(class Actor* Owner);
-    InputComponent(class Actor* Owner, class Player* Player);
-    virtual ~InputComponent();
-	void ProcessInput(void) override;
-    bool canShoot = true;
-
-	private:
-    int shootBuffer = 0;
-  bool canMove = false;
-
-    int buffertime = 0;//場面を切り替えた際に前の場面での操作が次の場面に反映されないようバッファを設定する。
+        InputComponent(class Actor* Owner);
+        InputComponent(class Actor* Owner, class Player* Player);
+        virtual ~InputComponent();
+	    void ProcessInput(void) override;
+	
+    private:
+        bool canShoot = true;
+        bool canMove = false;
+         int shootBuffer = 0;
+         int buffertime = 0;//場面を切り替えた際に前の場面での操作が次の場面に反映されないようバッファを設定する。
 };

@@ -28,7 +28,7 @@ private:
     D3DXVECTOR2 mPos;
     D3DXVECTOR2 Dir;
     float mSpeed = 30.0f;
-    float mLift;
+    float mLift = -10.5f;
     Actor* mOwner;
     
 };

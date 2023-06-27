@@ -40,7 +40,7 @@ class Actor
 			Enemy,
 			Block,
 			Balloon,
-			Obstacle,
+			Mono,
 			Background,
 			UI,
 			OPENING,

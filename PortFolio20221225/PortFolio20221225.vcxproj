@@ -149,7 +149,7 @@
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
-    <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Mono.cpp" />
     <ClCompile Include="Opening.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -177,7 +177,7 @@
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="Life.h" />
     <ClInclude Include="MoveComponent.h" />
-    <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="Mono.h" />
     <ClInclude Include="Opening.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="renderer.h" />

@@ -15,6 +15,19 @@
 #include "Grid.h"
 #include "CameraComponent.h"
 
+
+/*
+■■■■■■■■■■■■■■■■■■■■■
+●コンストラクタ
+
+●UpdateActor
+1.移動処理
+2.無敵時間
+3.接触判定
+4.アニメーション
+■■■■■■■■■■■■■■■■■■■■■
+*/
+
 //定数宣言
 #define BOX_WIDTH	(100.0f) //箱の幅
 #define BOX_HEIGHT	(100.0f) //箱の高さ
@@ -31,6 +44,9 @@ static int g_AnimePtn;
 static int g_AnimeWait;
 static int g_Muki;
 
+
+
+
 //データをあらかじめテーブル化する
 static float g_AnimeUV[4] =
 {
@@ -44,7 +60,6 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	:Actor(game, tag),
 	mGame(game),
 	mSpeed(10.0f),
-	P_mLift(0.0f),
 	mRemainLives(5)
 {
 	//親クラスであるActorのProtectedのメンバ変数の初期化は↓のように実施する必用がある。
@@ -64,6 +79,8 @@ Player::Player(Game* game, enum Actor::Tag tag, float posX, float posY, float Bo
 	auto CC = new CollisionComponent(this);
 	//auto AC = new AnimationComponent(this, this);//Playerと他のアニメーションするキャラを別にしていたが、その必用性はない
 	auto AC = new AnimationComponent(this, 600);
+
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■//
 
 	//==================各State毎に使用する画像をそれぞれ配列にいれていく======================//
 
@@ -113,9 +130,9 @@ Player::~Player()
 
 void Player::UpdateActor(void)
 {
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■パーティション■■■■■■■■■■■■■■■■■■■■■■■//
 	Actor::GetPos();
 	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
-
 	if (mMygrid != newMygrid)
 	{
 		mMygrid->removeMembersIngrid(this);//現在のグリッドから削除
@@ -123,16 +140,16 @@ void Player::UpdateActor(void)
 		mMygrid->addMembersIngrid(this);//更新されたグリッドに自らを追加
 	}
 
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■無敵時間の処理■■■■■■■■■■■■■■■■■■■■■■■//
 
-	//========================無敵時間の処理============================//
 	damageableTime++;
 	if (damageableTime > 100) 
 	{
 		damageable = true;
 	}
-	//*************************無敵時間の処理オワリ*************************//
+	
+	//■■■■■■■■■■■■■■■■■■■■アニメーションの処理■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■//
 
-	//*************************アニメーションの処理*************************//
 
 	//プレイヤのState
 	enum Player::PlayerState curstate = Player::GetState();
@@ -141,11 +158,10 @@ void Player::UpdateActor(void)
 		Actor::AnimImages = GetAnimImages(Player::GetState());//基盤クラスの画像配列にState毎の画像を入力し、AnimationComponent。
 		Actor::AnimOrders = GetAnimOrders(Player::GetState());
 	}
-	//**********************************************************************//
 
 
-	//*************************=移動に関する処理***************************//
 
+	//■■■■■■■■■■■■■■■■■■■■■■■移動に関する処理■■■■■■■■■■■■■■■■■■■■■■■■■■■//
 	int PushBack = 0;
 	//現在のプレイヤの位置情報	
 	
@@ -185,7 +201,12 @@ void Player::UpdateActor(void)
 	//※下への貫通対策として、下方向への加速度に制限を設けた。
 	mJumpVel += Actor::mGravity;//重力により減衰
 	if (mJumpVel >= 10.0f) {mJumpVel = 10.0f;}
+
 	mVel.y += mJumpVel;
+
+	if (hasBalloon) 
+	{	mVel.y += P_mLift;	}
+	//mVel.y += P_mLift;
 	if (mVel.y >= 10.0f) {mVel.y = 10.0f;}
 	
 	//※地面との接触判定が正常に実施されない場合、無限にmJumpVelが増大し、ある時点で地面を貫通して画面外に出る現象が発生する
@@ -195,6 +216,8 @@ void Player::UpdateActor(void)
  	futurePos.x = curPos.x + mVel.x;
 	futurePos.y = curPos.y + mVel.y;
 
+
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■//
 	////=======================接触判定処理==========================//
 	{
 		for (auto actor : mMygrid->GetGridMembers())

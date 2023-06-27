@@ -1,4 +1,4 @@
-#include "Obstacle.h"
+#include "Mono.h"
 #include "Enemy.h"
 #include "game.h"
 #include "texture.h"
@@ -8,25 +8,25 @@
 
 
 
-Obstacle::Obstacle(Game* game, enum Actor::Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot) :Actor(game, tag),
+Mono::Mono(Game* game, enum Actor::Tag tag, float posX, float posY, float BoxH, float BoxW, float UvU, float UvV, float VH, float VW, float Rot) :Actor(game, tag),
 mDamage(100)
 {
 	SetACTOR(posX, posY, BoxH, BoxW, UvU, UvV, VH, VW, Rot);
 	mHP = 100;
 	auto SC = new SpriteComponent(this,200);
 	auto CC = new CollisionComponent(this);
-	SC->SetTextureID(LoadTexture((char*)"images/obstacle.png"));
-	GetGame()->AddObstacle(this);
+	SC->SetTextureID(LoadTexture((char*)"images/Mono.png"));
+	GetGame()->AddMono(this);
 	mMygrid = GetGame()->getGrid(posX, posY);
 	mMygrid->addMembersIngrid(this);
 }
 
-Obstacle::~Obstacle() {
+Mono::~Mono() {
 
 
 }
 
-void Obstacle::UpdateActor() 
+void Mono::UpdateActor() 
 {
 	Grid* newMygrid = GetGame()->getGrid(Actor::GetPos().x, Actor::GetPos().y);
 
@@ -53,7 +53,7 @@ void Obstacle::UpdateActor()
 
 	for (auto enemy : GetGame()->GetEnemies()) 
 	{
-		if (HitCheckBC(Obstacle::GetPos(), 100, enemy->GetPos(), 100))
+		if (HitCheckBC(Mono::GetPos(), 100, enemy->GetPos(), 100))
 		{
 			enemy->Damage(mDamage);
 			Actor::SetState(EDead);
